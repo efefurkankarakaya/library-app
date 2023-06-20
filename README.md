@@ -1,5 +1,7 @@
 # Library App
 
+A library application.
+
 # Technologies
 
 - React Native (0.71.8)
@@ -10,8 +12,8 @@
 - <a href="https://nodejs.org/en">Node.js 18.16.0 LTS</a>
 - <a href="https://brew.sh/">Brew</a> (to install pods and watchman)
 - <a href="https://www.ruby-lang.org/en/">Ruby</a> (optional, for pods)
-- <a href="">Android Studio</a> (to install SDKs and emulator)
-- <a href="">Xcode</a> (to build iOS)
+- <a href="https://developer.android.com/studio">Android Studio</a> (to install SDKs and emulator)
+- <a href="https://developer.apple.com/xcode/">Xcode</a> (to build iOS)
 - <a href="https://www.oracle.com/tr/java/technologies/javase/jdk11-archive-downloads.html">Java Development Kit (JDK) 11</a>
 
 # How To Run?
