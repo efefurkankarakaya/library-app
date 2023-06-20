@@ -1,3 +1,4 @@
+// React & React Native
 import { useCallback } from "react";
 import { View } from "react-native";
 
@@ -6,20 +7,27 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./src/types/navigationTypes";
 
-// Expo
+// Expo Tools
 import { StatusBar } from "expo-status-bar";
 import { useFonts, Montserrat_400Regular, Montserrat_100Thin } from "@expo-google-fonts/montserrat";
 import * as SplashScreen from "expo-splash-screen";
+
+// Database
+import Realm from "realm";
+import { createRealmContext } from "@realm/react";
+import User from "./src/models/User";
 
 // Redux
 import { Provider } from "react-redux";
 import { store } from "./src/store/store";
 
-// Screensa
+// Screens
 import LoginScreen from "./src/screens/auth/LoginScreen";
-
-import AppStyles from "./App.style";
 import HomeScreen from "./src/screens/home";
+import SignUpScreen from "./src/screens/auth/SignUpScreen";
+
+import AppStyle from "./App.style";
+
 // https://reactnative.dev/docs/environment-setup?guide=quickstart&package-manager=npm
 // https://reactnative.dev/docs/typescript
 // https://docs.expo.dev/workflow/customizing/
@@ -28,6 +36,12 @@ import HomeScreen from "./src/screens/home";
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 SplashScreen.preventAutoHideAsync();
+
+const realmConfig: Realm.Configuration = {
+  schema: [User],
+};
+
+const { RealmProvider, useRealm, useObject, useQuery } = createRealmContext(realmConfig);
 
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
@@ -46,7 +60,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <View style={AppStyles.container} onLayout={onLayoutRootView}>
+    <View style={AppStyle.container} onLayout={onLayoutRootView}>
       <NavigationContainer>
         <RootStack.Navigator initialRouteName="Login">
           <RootStack.Screen
@@ -63,6 +77,13 @@ const App: React.FC = () => {
               title: "Home",
             }}
           />
+          <RootStack.Screen
+            name="SignUp"
+            component={SignUpScreen}
+            options={{
+              title: "Sign Up",
+            }}
+          />
         </RootStack.Navigator>
       </NavigationContainer>
     </View>
@@ -74,9 +95,11 @@ const App: React.FC = () => {
  */
 const Root: React.FC = () => {
   return (
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <RealmProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </RealmProvider>
   );
 };
 

@@ -1,17 +1,20 @@
 import { useState } from "react";
-import { SafeAreaView, Text, TextInput } from "react-native";
+import { SafeAreaView, Text, TextInput, TextProps } from "react-native";
 import Style from "./CustomText.style";
 import CustomText from "../CustomText";
 import { combineStyles } from "../../helpers/styleHelpers";
 import { TStyleSheet } from "../../types/commonTypes";
+import { TextInputProps } from "react-native";
 
 // type TKeyboardType = "default" | "number-pad" | "decimal-pad" | "numeric" | "email-address" | "phone-pad" | "url";
 
 interface CustomTextInputProps {
-  label: string;
+  label?: string;
   customContainerStyle?: TStyleSheet;
   customLabelStyle?: TStyleSheet;
   customTextInputStyle?: TStyleSheet;
+  textProps?: TextProps;
+  textInputProps?: TextInputProps;
 }
 
 const CustomTextInput = ({
@@ -19,7 +22,8 @@ const CustomTextInput = ({
   customContainerStyle,
   customLabelStyle,
   customTextInputStyle,
-  ...textInputProps
+  textProps,
+  textInputProps,
 }: CustomTextInputProps) => {
   const [text, onChangeText] = useState("");
 
@@ -29,7 +33,9 @@ const CustomTextInput = ({
 
   return (
     <SafeAreaView style={combinedContainerStyle}>
-      <CustomText customTextStyle={combinedLabelStyle}>{label}</CustomText>
+      <CustomText customTextStyle={combinedLabelStyle} {...textProps}>
+        {label}
+      </CustomText>
       <TextInput style={combinedTextInputStyle} onChangeText={onChangeText} value={text} {...textInputProps} />
     </SafeAreaView>
   );

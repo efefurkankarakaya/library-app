@@ -3,7 +3,7 @@ import { Image } from "expo-image";
 import LibIcon from "../../../../assets/lib3.jpg";
 
 import CustomTextInput from "../../../components/CustomTextInput";
-import Styles from "./LoginScreen.style";
+import Style from "./LoginScreen.style";
 import CustomText from "../../../components/CustomText";
 import CustomButton from "../../../components/CustomButton";
 import { NavigationProp } from "@react-navigation/native";
@@ -24,25 +24,29 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
   const onPressLogin = () => {
     navigation.navigate("Home");
-    // Remove these.
-    console.log(user);
-    dispatch(logIn());
-    console.log(user);
-    dispatch(logOut());
-    console.log(user);
-    dispatch(logIn());
-    console.log(user);
+    // TODO: Remove these.
+    // console.log(user);
+    // dispatch(logIn());
+    // console.log(user);
+    // dispatch(logOut());
+    // console.log(user);
+    // dispatch(logIn());
+    // console.log(user);
+  };
+
+  const onPressSignUp = () => {
+    navigation.navigate("SignUp");
   };
 
   return (
-    <SafeAreaView style={Styles.container}>
-      {/* <Image style={Styles.image} source={LibIcon} placeholder={blurhash} contentFit="cover" transition={1000} /> */}
-      <CustomText customTextStyle={Styles.title}>Logo</CustomText>
+    <SafeAreaView style={Style.container}>
+      {/* <Image style={Style.image} source={LibIcon} placeholder={blurhash} contentFit="cover" transition={1000} /> */}
+      <CustomText customTextStyle={Style.title}>Logo</CustomText>
       <CustomTextInput label="E-mail" />
       <CustomTextInput label="Password" />
       <CustomButton touchableOpacityProps={{ onPress: onPressLogin }}>Login</CustomButton>
       <CustomButton>Forgot password?</CustomButton>
-      <CustomButton>Sign Up</CustomButton>
+      <CustomButton touchableOpacityProps={{ onPress: onPressSignUp }}>Sign Up</CustomButton>
     </SafeAreaView>
   );
 };
