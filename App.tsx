@@ -27,6 +27,7 @@ import HomeScreen from "./src/screens/home";
 import SignUpScreen from "./src/screens/auth/SignUpScreen";
 
 import AppStyle from "./App.style";
+import { AppRealmContext } from "./src/models";
 
 // https://reactnative.dev/docs/environment-setup?guide=quickstart&package-manager=npm
 // https://reactnative.dev/docs/typescript
@@ -37,11 +38,12 @@ const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 SplashScreen.preventAutoHideAsync();
 
-const realmConfig: Realm.Configuration = {
-  schema: [User],
-};
+// const realmConfig: Realm.Configuration = {
+//   path: "database.realm",
+//   schema: [User],
+// };
 
-const { RealmProvider, useRealm, useObject, useQuery } = createRealmContext(realmConfig);
+// const { RealmProvider, useRealm, useObject, useQuery } = createRealmContext(realmConfig);
 
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
@@ -94,6 +96,8 @@ const App: React.FC = () => {
  * @note Root allows to use store in <App /> component.
  */
 const Root: React.FC = () => {
+  const { RealmProvider } = AppRealmContext;
+
   return (
     <RealmProvider>
       <Provider store={store}>

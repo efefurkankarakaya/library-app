@@ -10,16 +10,28 @@ import CustomTextInput from "../../../components/CustomTextInput";
 import CustomButton from "../../../components/CustomButton";
 
 import Style from "./SignUpScreen.style";
+import { AppRealmContext } from "../../../models";
+import { useEffect } from "react";
 
 interface SignUpScreenProps {
   navigation: NavigationProp<RootStackParamList>;
 }
 
+// https://github.com/realm/realm-js/tree/main/packages/realm-react#readme
+// https://blog.logrocket.com/realm-react-native/
+// https://www.mongodb.com/docs/realm/sdk/node/users/create-delete-users/
 const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenProps) => {
+  const { useRealm, useObject, useQuery } = AppRealmContext;
+  const realm = useRealm();
+
+  useEffect(() => {
+    console.log("Sign Up Screen is mounted.");
+    console.log(`Realm: ${realm.path}`);
+  }, []);
+
   const onPressSignUp = () => {
     navigation.navigate("Login");
   };
-  // https://www.mongodb.com/docs/realm/sdk/react-native/
   // https://www.mongodb.com/docs/realm/sdk/react-native/manage-users/manage-email-password-users/
   // https://realm.io/?utm_source=google&utm_campaign=search_gs_pl_evergreen_realm_product_prosp-brand_gic-null_ww-multi_ps-all_desktop_eng_lead&utm_term=realm&utm_medium=cpc_paid_search&utm_ad=p&utm_ad_campaign_id=11303420057&adgroup=132586004050&cq_cmp=11303420057&gad=1&gclid=EAIaIQobChMIlr_4rb_P_wIVsItoCR0b9gmnEAAYASAAEgIKw_D_BwE
   // https://reactnative.dev/docs/textinput
