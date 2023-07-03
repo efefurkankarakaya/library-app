@@ -36,7 +36,7 @@ const CustomTextInput = ({
       <CustomText customTextStyle={combinedLabelStyle} {...textProps}>
         {label}
       </CustomText>
-      <TextInput style={combinedTextInputStyle} onChangeText={onChangeText} value={text} {...textInputProps} />
+      <TextInput style={combinedTextInputStyle} onChangeText={onChangeText} value={text} {...textInputProps} autoCapitalize="none" />
     </SafeAreaView>
   );
 };

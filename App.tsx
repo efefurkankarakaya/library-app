@@ -12,10 +12,17 @@ import { StatusBar } from "expo-status-bar";
 import { useFonts, Montserrat_400Regular, Montserrat_100Thin } from "@expo-google-fonts/montserrat";
 import * as SplashScreen from "expo-splash-screen";
 
+/*
+  WARN  https://github.com/realm/realm-js/issues/3714
+  BSON: For React Native please polyfill crypto.getRandomValues, 
+  e.g. using: https://www.npmjs.com/package/react-native-get-random-values.
+*/
+import "react-native-get-random-values";
+
 // Database
-import Realm from "realm";
-import { createRealmContext } from "@realm/react";
-import User from "./src/models/User";
+// import Realm from "realm";
+// import { createRealmContext } from "@realm/react";
+// import User from "./src/models/User";
 
 // Redux
 import { Provider } from "react-redux";
@@ -45,6 +52,7 @@ SplashScreen.preventAutoHideAsync();
 
 // const { RealmProvider, useRealm, useObject, useQuery } = createRealmContext(realmConfig);
 
+// https://reactnative.dev/docs/testing-overview
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
     // Montserrat_100Thin,
