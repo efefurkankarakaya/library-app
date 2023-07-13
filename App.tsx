@@ -101,7 +101,7 @@ const App: React.FC = () => {
 };
 
 /**
- * @note Root allows to use store in <App /> component.
+ * @note Root allows to use application-level implementations.
  */
 const Root: React.FC = () => {
   const { RealmProvider } = AppRealmContext;
