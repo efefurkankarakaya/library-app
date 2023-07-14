@@ -144,7 +144,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
 
   const onChangeText = (text: string, textKey: UserDataKeys) => {
     const pureText: string = text;
-    let processedText: string | null = null;
+    let processedText: string = pureText;
 
     switch (textKey) {
       case "firstName":
@@ -155,7 +155,6 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
         processedText = onChangePhoneNumber(pureText);
         const isPhoneNumberOK = validatePhoneNumber(processedText);
         console.log(isPhoneNumberOK);
-        // Just specific special characters, no space
         break;
       case "email":
         // Regex
