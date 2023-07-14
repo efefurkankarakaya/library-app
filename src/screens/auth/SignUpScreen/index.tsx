@@ -14,7 +14,7 @@ import { AppRealmContext } from "../../../models";
 import { useEffect, useState } from "react";
 import User from "../../../models/User";
 import { createUseQuery } from "@realm/react/dist/useQuery";
-import { logJSON, logWithTime } from "../../../utils/utils";
+import { logJSON, logWithTime, validateText } from "../../../utils/utils";
 
 interface UserData {
   firstName: string;
@@ -44,8 +44,6 @@ type UserDataKeys = keyof UserData;
 //   console.log(user);
 // }
 
-const validateText = (text: string, regex: string) => new RegExp(regex, "g").test(text);
-
 function validatePassword(password: string): boolean {
   /*
     - At least 1 uppercase,
@@ -55,7 +53,8 @@ function validatePassword(password: string): boolean {
     - At least 1 special character (_, !, ?, *, or what else?)
   */
   const passwordRegex = /g/;
-  return passwordRegex.test(password);
+  // return passwordRegex.test(password);
+  return validateText(password, passwordRegex);
 }
 
 function validatePhoneNumber(phoneNumber: string): boolean {
@@ -128,9 +127,36 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
   const onChangePhoneNumber = (text: string): string => {
     let phoneNumber = text;
 
+    // // To clean prefix
+    // if (phoneNumber == "0 ") {
+    //   phoneNumber = "";
+    // }
+
+    // If user removes any character
+    if (phoneNumber.length < userData.phoneNumber.length) {
+      const activeSpecialChar: string | undefined = [" (", ") ", " ", " ", "(", ")"].find((postfix) => phoneNumber.endsWith(postfix));
+
+      if (activeSpecialChar) {
+        // This line breaks the confusion of repeatable characters of characters by finding the active one from the end of the string.
+        const indexOfActiveSpecialChar = phoneNumber.length - activeSpecialChar?.length;
+        console.log("index: " + indexOfActiveSpecialChar);
+
+        phoneNumber = phoneNumber.substring(0, indexOfActiveSpecialChar - 1);
+      }
+    }
+
+    // If user types any character
     if (phoneNumber.length >= userData.phoneNumber.length) {
-      if (phoneNumber[0] !== "(") phoneNumber = "(" + phoneNumber;
-      const mask = [null, null, null, null, ") ", null, null, null, null, " "];
+      const isPrefixIncorrect = phoneNumber.substring(0, 3) !== "0 (";
+
+      if (phoneNumber === "0" && isPrefixIncorrect) {
+        phoneNumber = "0 (";
+      } else if (isPrefixIncorrect) {
+        phoneNumber = "0 (" + phoneNumber;
+      }
+
+      const mask = [null, null, "(", null, null, null, ") ", null, null, null, null, " ", null, null, " "];
+      console.log(phoneNumber.length, mask[phoneNumber.length]);
       phoneNumber += mask[phoneNumber.length] != null ? mask[phoneNumber.length] : "";
     }
 
@@ -171,6 +197,8 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
       [textKey]: processedText,
     };
     setUserData(data);
+
+    // TODO: Validate all inputs current statuses here.
   };
 
   // https://www.mongodb.com/docs/realm/sdk/react-native/crud/
@@ -222,7 +250,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           placeholder: "Phone Number",
           onChangeText: (text: string) => onChangeText(text, "phoneNumber"),
           value: userData.phoneNumber,
-          maxLength: 14,
+          maxLength: 17,
         }}
       />
 

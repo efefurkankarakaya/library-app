@@ -9,3 +9,7 @@ export function logJSON(message: string, JSONData: JSON | object): void {
   const beautifiedJSON: string = JSON.stringify(JSONData, null, "\t");
   logWithTime(`${message}\n ${beautifiedJSON}`);
 }
+
+export function validateText(text: string, regex: RegExp): boolean {
+  return new RegExp(regex, "g").test(text);
+}
