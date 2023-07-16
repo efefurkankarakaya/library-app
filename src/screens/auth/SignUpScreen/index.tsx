@@ -1,19 +1,22 @@
+import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native";
 
 // Navigation
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../../types/navigationTypes";
 
+// Database
+import { AppRealmContext } from "../../../models";
+import User from "../../../models/User";
+import { createUseQuery } from "@realm/react/dist/useQuery"; // TODO: Remove unused import
+
 // Custom Components
-import CustomText from "../../../components/CustomText";
+import CustomText from "../../../components/CustomText"; // TODO: Remove unused import
 import CustomTextInput from "../../../components/CustomTextInput";
 import CustomButton from "../../../components/CustomButton";
 
+// Others
 import Style from "./SignUpScreen.style";
-import { AppRealmContext } from "../../../models";
-import { useEffect, useState } from "react";
-import User from "../../../models/User";
-import { createUseQuery } from "@realm/react/dist/useQuery";
 import { logJSON, logWithTime, validateText } from "../../../utils/utils";
 
 interface UserData {
@@ -58,7 +61,14 @@ function validatePassword(password: string): boolean {
 }
 
 function validatePhoneNumber(phoneNumber: string): boolean {
-  const phoneNumberRegex = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s0-9]{9}$/;
+  /* 
+  Regex 1: /0 [+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[\s0-9]{4}[\s0-9]{3}[\s0-9]{3}$/
+  Valid Inputs: 0 (555) 555 55 55
+
+  Regex 2: /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s0-9]{9}$/
+  Valid Inputs: (555)-555 55 55, (555) 555 55 55, (555) 555-5555
+  */
+  const phoneNumberRegex = /0 [+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[\s0-9]{4}[\s0-9]{3}[\s0-9]{3}$/;
   return phoneNumberRegex.test(phoneNumber);
 }
 
@@ -74,7 +84,7 @@ function createUser(realm: Realm, userData: UserData): void {
     const { firstName, lastName, phoneNumber, email, password } = userData;
     const user = User.create(firstName, lastName, phoneNumber, email, password);
 
-    // TODO: Check if phoneNumber exists
+    // TODO: Check if phoneNumber &| e-mail address exists
 
     realm.write(() => {
       realm.create("User", user);
@@ -87,7 +97,7 @@ function createUser(realm: Realm, userData: UserData): void {
 
 // Components and basic functions are written as arrow functions
 const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenProps) => {
-  const { useRealm, useObject, useQuery } = AppRealmContext;
+  const { useRealm, useObject, useQuery } = AppRealmContext; // TODO: Remove unused destructuring
   const realm = useRealm();
   const users = useQuery(User);
 
@@ -125,47 +135,17 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
   /* Events */
 
   const onChangePhoneNumber = (text: string): string => {
-    let phoneNumber = text;
-
-    // // To clean prefix
-    // if (phoneNumber == "0 ") {
-    //   phoneNumber = "";
-    // }
-
-    // If user removes any character
-    if (phoneNumber.length < userData.phoneNumber.length) {
-      const activeSpecialChar: string | undefined = [" (", ") ", " ", " ", "(", ")"].find((postfix) => phoneNumber.endsWith(postfix));
-
-      if (activeSpecialChar) {
-        // This line breaks the confusion of repeatable characters of characters by finding the active one from the end of the string.
-        const indexOfActiveSpecialChar = phoneNumber.length - activeSpecialChar?.length;
-        console.log("index: " + indexOfActiveSpecialChar);
-
-        phoneNumber = phoneNumber.substring(0, indexOfActiveSpecialChar - 1);
-      }
-    }
-
-    // If user types any character
-    if (phoneNumber.length >= userData.phoneNumber.length) {
-      const isPrefixIncorrect = phoneNumber.substring(0, 3) !== "0 (";
-
-      if (phoneNumber === "0" && isPrefixIncorrect) {
-        phoneNumber = "0 (";
-      } else if (isPrefixIncorrect) {
-        phoneNumber = "0 (" + phoneNumber;
-      }
-
-      const mask = [null, null, "(", null, null, null, ") ", null, null, null, null, " ", null, null, " "];
-      console.log(phoneNumber.length, mask[phoneNumber.length]);
-      phoneNumber += mask[phoneNumber.length] != null ? mask[phoneNumber.length] : "";
-    }
+    const phoneNumber = text
+      .replace(/\D/g, "")
+      .replace(/(^[^0])/, "") /* Replace all except 0 */
+      .replace(/(^[0])(\d)/, "$1 $2") /* Allow 2 groups and set a whitespace between 0 and 555 */
+      .replace(/(\d{3})(\d)/, "($1) $2") /* Allow 2 groups and cover the first group with parantheses: 0 (555) */
+      /* The rest covers the parantheses and previous whitespaces */
+      .replace(/([(]\d{3}[)]\s\d{3})(\d{1,2})/, "$1 $2") /* 0 (555) 555 */
+      .replace(/([(]\d{3}[)]\s\d{3}\s\d{2})(\d{1,2})/, "$1 $2") /* 0 (555) 555 55 */
+      .replace(/([(]\d{3}[)]\s\d{3}\s\d{2}\s\d{2})\d+?$/, "$1"); /* 0 (555) 555 55 55 */
 
     return phoneNumber;
-    // setUserData({ ...userData, phoneNumber: text });
-    // console.log(text);
-    // const isValid = validateData(data, regexTypes.phone);
-    // validations[2] = isValid;
-    // inputs[2] = data;
   };
 
   const onChangeText = (text: string, textKey: UserDataKeys) => {
