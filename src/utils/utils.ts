@@ -1,7 +1,11 @@
 const moment = require("moment-timezone");
 
+export function getCurrentTime(): string {
+  return moment().format("DD/MM/YYYY, HH:mm:ss");
+}
+
 export function logWithTime(message: string): void {
-  const currentTime: string = moment().format("DD/MM/YYYY, hh:mm:ss");
+  const currentTime: string = getCurrentTime();
   console.log(`[${currentTime}] ${message}`);
 }
 

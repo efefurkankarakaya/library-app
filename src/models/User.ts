@@ -7,7 +7,7 @@ class User extends Realm.Object<User> {
   phoneNumber!: string;
   email!: string;
   password!: string;
-  createdAt!: Date;
+  createdAt!: Date; // TODO: Should I consider use moment() here?
 
   static create(firstName: string, lastName: string, phoneNumber: string, email: string, password: string) {
     return {
@@ -17,7 +17,7 @@ class User extends Realm.Object<User> {
       phoneNumber: phoneNumber,
       email: email,
       password: password,
-      createdAt: new Date(),
+      createdAt: new Date(), // TODO: Should I consider use moment() here?
     };
   }
 
@@ -30,7 +30,7 @@ class User extends Realm.Object<User> {
       phoneNumber: "string",
       email: "string",
       password: "string",
-      createdAt: "date",
+      createdAt: "date", // TODO: Should I consider use moment() here?
     },
     primaryKey: "_id",
   };
