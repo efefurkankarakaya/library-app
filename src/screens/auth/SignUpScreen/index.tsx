@@ -32,7 +32,7 @@ interface SignUpScreenProps {
 }
 
 // https://stackoverflow.com/questions/62635831/typescript-create-interface-having-keys-of-another-interface
-type UserDataStatus = {
+type UserDataValidationStatus = {
   [key in keyof UserData]: boolean;
 };
 
@@ -47,17 +47,9 @@ type UserDataKeys = keyof UserData;
 //   console.log(user);
 // }
 
-function validatePassword(password: string): boolean {
-  /*
-    - At least 1 uppercase,
-    - At least 1 number,
-    - At least 1 lowercase,
-    - No repeatable characters or ordinary numbers more than 3,
-    - At least 1 special character (_, !, ?, *, or what else?)
-  */
-  const passwordRegex = /g/;
-  // return passwordRegex.test(password);
-  return validateText(password, passwordRegex);
+function validateName(name: string): boolean {
+  const nameRegex = /[a-zA-ZçğıöşüÇĞİÖŞÜ ]+/g;
+  return validateText(name, nameRegex);
 }
 
 function validatePhoneNumber(phoneNumber: string): boolean {
@@ -69,12 +61,25 @@ function validatePhoneNumber(phoneNumber: string): boolean {
   Valid Inputs: (555)-555 55 55, (555) 555 55 55, (555) 555-5555
   */
   const phoneNumberRegex = /0 [+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[\s0-9]{4}[\s0-9]{3}[\s0-9]{3}$/;
-  return phoneNumberRegex.test(phoneNumber);
+  return phoneNumberRegex.test(phoneNumber); // TODO: Use validateText()
 }
 
 function validateEmail(email: string): boolean {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return emailRegex.test(email);
+}
+
+function validatePassword(password: string): boolean {
+  /*
+    - At least 1 uppercase,
+    - At least 1 number,
+    - At least 1 lowercase,
+    - No repeatable characters or ordinary numbers more than 3,
+    - At least 1 special character (_, !, ?, *, or what else?)
+  */
+  const passwordRegex = /g/;
+  // return passwordRegex.test(password);
+  return validateText(password, passwordRegex);
 }
 
 // TODO: Move outside
@@ -109,7 +114,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
     password: "",
   });
 
-  const [isUserDataOK, setIsUserDataOK] = useState<UserDataStatus>({
+  const [isUserDataOK, setIsUserDataOK] = useState<UserDataValidationStatus>({
     firstName: false,
     lastName: false,
     phoneNumber: false,
@@ -130,9 +135,21 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
 
   useEffect(() => {
     logJSON("Current status of inputs", userData);
+    logJSON("User Data Validation Status", isUserDataOK);
   }, [userData]);
 
   /* Events */
+  const onChangeName = (text: string): string => {
+    /* TODO: Trim to clean up extra whitespaces at the begin or the end of the string */
+    /*
+     * Allow regular alphabet, Turkish characters and Whitespace.
+     * Unbreakable space is not allowed.
+     * /i: insensitive identifier does not support 'İ'.
+     */
+    // const name = text.replace(/([^a-zçğıöşüİ ])/gi, "").replaceAll(/[ ]{2,}/g, " ");
+    const name = text.replace(/[^a-zA-ZçğıöşüÇĞİÖŞÜ ]/g, "").replaceAll(/[ ]{2,}/g, " ");
+    return name;
+  };
 
   const onChangePhoneNumber = (text: string): string => {
     const phoneNumber = text
@@ -148,19 +165,27 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
     return phoneNumber;
   };
 
+  const onChangeEmailAddress = (text: string): string => {
+    return "";
+  };
+
+  /* On Change Main Handler */
   const onChangeText = (text: string, textKey: UserDataKeys) => {
     const pureText: string = text;
+
     let processedText: string = pureText;
+    let isTextOK: boolean = false;
 
     switch (textKey) {
       case "firstName":
       case "lastName":
         // No special characters and also need trim
+        processedText = onChangeName(pureText);
+        isTextOK = validateName(processedText);
         break;
       case "phoneNumber":
         processedText = onChangePhoneNumber(pureText);
-        const isPhoneNumberOK = validatePhoneNumber(processedText);
-        console.log(isPhoneNumberOK);
+        isTextOK = validatePhoneNumber(processedText);
         break;
       case "email":
         // Regex
@@ -179,6 +204,12 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
     setUserData(data);
 
     // TODO: Validate all inputs current statuses here.
+    const validationStatus: UserDataValidationStatus = {
+      ...isUserDataOK,
+      [textKey]: isTextOK,
+    };
+
+    setIsUserDataOK(validationStatus);
   };
 
   // https://www.mongodb.com/docs/realm/sdk/react-native/crud/
@@ -211,6 +242,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           placeholder: "First Name",
           onChangeText: (text: string) => onChangeText(text, "firstName"),
           value: userData.firstName,
+          inputMode: "text",
         }}
       />
 
@@ -220,6 +252,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           placeholder: "Last Name",
           onChangeText: (text: string) => onChangeText(text, "lastName"),
           value: userData.lastName,
+          inputMode: "text",
         }}
       />
 
@@ -234,13 +267,14 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
         }}
       />
 
-      {/* E-mail */}
+      {/* E-mail Address */}
       <CustomTextInput
         textInputProps={{
           placeholder: "E-mail Address",
           keyboardType: "email-address",
           onChangeText: (text: string) => onChangeText(text, "email"),
           value: userData.email,
+          inputMode: "email",
         }}
       />
 
