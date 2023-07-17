@@ -1,6 +1,8 @@
 const moment = require("moment-timezone");
 
 export function getCurrentTime(): string {
+  // hh:mm:ss - 12h
+  // HH:mm:ss - 24h
   return moment().format("DD/MM/YYYY, HH:mm:ss");
 }
 
