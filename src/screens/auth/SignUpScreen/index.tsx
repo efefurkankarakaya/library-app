@@ -25,6 +25,7 @@ interface UserData {
   phoneNumber: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 interface SignUpScreenProps {
@@ -66,23 +67,32 @@ function validatePhoneNumber(phoneNumber: string): boolean {
 
 function validateEmailAddress(email: string): boolean {
   // const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  /**
+   * https://stackoverflow.com/questions/201323/how-can-i-validate-an-email-address-using-a-regular-expression
+   * https://emailregex.com/
+   * General Email Regex (RFC 5322 Official Standard)
+   */
   const emailRegex =
     /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g;
-  // return emailRegex.test(email);
   return validateText(email, emailRegex);
 }
 
+// https://stackoverflow.com/questions/1054022/best-way-to-store-password-in-database
 function validatePassword(password: string): boolean {
   /*
-    - At least 1 uppercase,
-    - At least 1 number,
-    - At least 1 lowercase,
-    - No repeatable characters or ordinary numbers more than 3,
-    - At least 1 special character (_, !, ?, *, or what else?)
-  */
-  const passwordRegex = /g/;
-  // return passwordRegex.test(password);
+   * https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+   * At least one upper case Turkish-keyboard letter, (?=.*?[A-ZÇĞİÖŞÜ])
+   * At least one lower case Turkish-keyboard letter, (?=.*?[a-zçğıöşü])
+   * At least one digit, (?=.*?[0-9])
+   * At least one special character, (?=.*?[#?!@$%^&*-_.+])
+   * Minimum 8-characters length .{8,} (with the anchors)
+   */
+  const passwordRegex = /^(?=.*?[A-ZÇĞİÖŞÜ])(?=.*?[a-zçğıöşü])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.+_]).{8,}$/g;
   return validateText(password, passwordRegex);
+}
+
+function confirmPassword(password: string, confirm: string): boolean {
+  return password === confirm;
 }
 
 // TODO: Move outside
@@ -115,6 +125,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
     phoneNumber: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [isUserDataOK, setIsUserDataOK] = useState<UserDataValidationStatus>({
@@ -123,6 +134,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
     phoneNumber: false,
     email: false,
     password: false,
+    confirmPassword: false,
   });
 
   /* Effects */
@@ -196,8 +208,12 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
         isTextOK = validateEmailAddress(processedText);
         break;
       case "password":
-        // Does it provide conditions?
+        // TODO: Should I consider hashing every change?
+        // processedText = pureText;
+        isTextOK = validatePassword(processedText);
         break;
+      case "confirmPassword":
+        isTextOK = confirmPassword(userData.password, processedText);
       default:
         break;
     }
@@ -287,6 +303,15 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           secureTextEntry: true,
           onChangeText: (text: string) => onChangeText(text, "password"),
           value: userData.password,
+        }}
+      />
+
+      <CustomTextInput
+        textInputProps={{
+          placeholder: "Confirm Password",
+          secureTextEntry: true,
+          onChangeText: (text: string) => onChangeText(text, "confirmPassword"),
+          value: userData.confirmPassword,
         }}
       />
       {/* // TODO: Add show password button */}
