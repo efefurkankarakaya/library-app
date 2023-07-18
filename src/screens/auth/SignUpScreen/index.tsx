@@ -84,10 +84,13 @@ function validatePassword(password: string): boolean {
    * At least one upper case Turkish-keyboard letter, (?=.*?[A-ZÇĞİÖŞÜ])
    * At least one lower case Turkish-keyboard letter, (?=.*?[a-zçğıöşü])
    * At least one digit, (?=.*?[0-9])
-   * At least one special character, (?=.*?[#?!@$%^&*-_.+])
+   * At least one special character, (?=.*?[#.?,!+@_$%^&*-])
    * Minimum 8-characters length .{8,} (with the anchors)
+   *
+   NOTE: [*-_] pattern can be interpreted as: *-_ matches a single character in the range between * (index 42) and _ (index 95) (case sensitive)
+   Therefore, the dash (-) symbol should be used at the end of the pattern if required to be use as a character.
    */
-  const passwordRegex = /^(?=.*?[A-ZÇĞİÖŞÜ])(?=.*?[a-zçğıöşü])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.+_]).{8,}$/g;
+  const passwordRegex = /^(?=.*?[A-ZÇĞİÖŞÜ])(?=.*?[a-zçğıöşü])(?=.*?[0-9])(?=.*?[#.?,!+@_$%^&*-]).{8,}$/g;
   return validateText(password, passwordRegex);
 }
 
