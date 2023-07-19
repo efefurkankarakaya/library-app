@@ -6,9 +6,9 @@ export function getCurrentTime(): string {
   return moment().format("DD/MM/YYYY, HH:mm:ss");
 }
 
-export function logWithTime(message: string): void {
+export function logWithTime(message: string | any, ...rest: any[]): void {
   const currentTime: string = getCurrentTime();
-  console.log(`[${currentTime}] ${message}`);
+  console.log(`[${currentTime}] ${message}`, ...rest);
 }
 
 export function logJSON(message: string, JSONData: JSON | object): void {

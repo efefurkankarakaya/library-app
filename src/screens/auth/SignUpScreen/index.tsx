@@ -124,7 +124,7 @@ async function createUser(realm: Realm, userData: UserData): Promise<void> {
       realm.create("User", user);
       logWithTime("Succcessfully signed up: ", user.email);
     });
-  } catch (error) {
+  } catch (error: unknown) {
     logWithTime("[Realm | createUser]");
     logWithTime(error);
   }
@@ -296,6 +296,11 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
   // https://www.mongodb.com/docs/realm/sdk/react-native/manage-users/manage-email-password-users/
   // https://realm.io/?utm_source=google&utm_campaign=search_gs_pl_evergreen_realm_product_prosp-brand_gic-null_ww-multi_ps-all_desktop_eng_lead&utm_term=realm&utm_medium=cpc_paid_search&utm_ad=p&utm_ad_campaign_id=11303420057&adgroup=132586004050&cq_cmp=11303420057&gad=1&gclid=EAIaIQobChMIlr_4rb_P_wIVsItoCR0b9gmnEAAYASAAEgIKw_D_BwE
   // https://reactnative.dev/docs/textinput
+  /* TODO: Refactor these components */
+
+  /* TODO: Commonize password and e-mail props with login page */
+
+  /* TODO: Add User Agreement checkbox */
   return (
     <SafeAreaView style={Style.container}>
       {/* First Name */}
@@ -316,7 +321,6 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           inputMode: "text",
         }}
       />
-
       {/* Last Name */}
       <CustomTextInput
         activateSublabel={true}
@@ -335,7 +339,6 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           inputMode: "text",
         }}
       />
-
       {/* Phone Number */}
       <CustomTextInput
         activateSublabel={true}
@@ -355,7 +358,6 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           maxLength: 17,
         }}
       />
-
       {/* E-mail Address */}
       <CustomTextInput
         activateSublabel={true}
@@ -375,7 +377,6 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           inputMode: "email",
         }}
       />
-
       <CustomTextInput
         activateSublabel={true}
         showSublabel={userData.password.length > 0}
@@ -397,7 +398,6 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           value: userData.password,
         }}
       />
-
       <CustomTextInput
         activateSublabel={true}
         showSublabel={userData.confirmPassword.length > 0}
@@ -415,7 +415,6 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           value: userData.confirmPassword,
         }}
       />
-      {/* TODO: Commonize password and e-mail props with login page */}
       <CustomButton touchableOpacityProps={{ onPress: onPressSignUp }}>Sign Up</CustomButton>
     </SafeAreaView>
   );
