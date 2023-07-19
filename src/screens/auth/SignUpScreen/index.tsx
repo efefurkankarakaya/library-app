@@ -51,7 +51,7 @@ type UserDataKeys = keyof UserData;
 // }
 
 function validateName(name: string): boolean {
-  const nameRegex = /[a-zA-ZçğıöşüÇĞİÖŞÜ ]+/g;
+  const nameRegex = /[a-zA-ZçğıöşüÇĞİÖŞÜ ]{2,}/g;
   return validateText(name, nameRegex);
 }
 
@@ -111,18 +111,22 @@ async function createUser(realm: Realm, userData: UserData): Promise<void> {
    */
   try {
     const { firstName, lastName, phoneNumber, email, password } = userData;
+
+    const trimmedFirstName = firstName.trim();
+    const trimmedLastName = lastName.trim();
     const encryptedPassword = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, password);
-    console.log(encryptedPassword);
-    const user = User.create(firstName, lastName, phoneNumber, email, encryptedPassword);
+
+    const user = User.create(trimmedFirstName, trimmedLastName, phoneNumber, email, encryptedPassword);
 
     // TODO: Check if phoneNumber &| e-mail address exists
 
     realm.write(() => {
       realm.create("User", user);
+      logWithTime("Succcessfully signed up: ", user.email);
     });
   } catch (error) {
-    console.log("[Realm | createUser]");
-    console.log(error);
+    logWithTime("[Realm | createUser]");
+    logWithTime(error);
   }
 }
 
@@ -131,6 +135,9 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
   const { useRealm, useObject, useQuery } = AppRealmContext; // TODO: Remove unused destructuring
   const realm = useRealm();
   const users = useQuery(User);
+  // realm.write(() => {
+  //   realm.delete(users);
+  // });
 
   const [userData, setUserData] = useState<UserData>({
     firstName: "",
@@ -247,6 +254,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
   // https://www.mongodb.com/docs/realm/sdk/react-native/crud/
   // https://www.mongodb.com/docs/realm/sdk/react-native/crud/read/
   const onPressSignUp = () => {
+    let isAnyErrorExisted = false;
     // TODO: When user is being created, you should check if phoneNumber or e-mail is existed already and if it's
     // interrupt the registration.
     // And you should check this in database function, and also validation. If validation does not allow,
@@ -255,7 +263,29 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
     //   realm.create("User", User.create("Efe", "KARAKAYA", "efefurkankarakaya@outlook.com", "1234"));
     // });
 
-    // TODO: DO NOT ALLOW EMPTY FIELDS.
+    const isEmailAlreadyInUse = users.some((user) => user.email === userData.email);
+    const isPhoneAlreadyInUse = users.some((user) => user.phoneNumber === userData.phoneNumber);
+
+    const isValidationFailed = Object.values(isUserDataOK).some((userDataStatus) => !userDataStatus);
+
+    if (isValidationFailed) {
+      logWithTime("Validation failed.");
+      isAnyErrorExisted = true;
+    }
+
+    if (isEmailAlreadyInUse) {
+      logWithTime("E-mail address is already in use.");
+      isAnyErrorExisted = true;
+    }
+
+    if (isPhoneAlreadyInUse) {
+      logWithTime("Phone number is already in use.");
+      isAnyErrorExisted = true;
+    }
+
+    if (isAnyErrorExisted) {
+      return;
+    }
 
     createUser(realm, userData);
 
@@ -270,6 +300,15 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
     <SafeAreaView style={Style.container}>
       {/* First Name */}
       <CustomTextInput
+        activateSublabel={true}
+        showSublabel={userData.firstName.length > 0}
+        sublabel={isUserDataOK.firstName ? "Cool name 😎" : "Should be at least 2 characters."}
+        customSublabelStyle={{
+          fontSize: 10,
+          color: isUserDataOK.firstName ? "limegreen" : "red",
+          height: 15,
+          paddingLeft: "3%",
+        }}
         textInputProps={{
           placeholder: "First Name",
           onChangeText: (text: string) => onChangeText(text, "firstName"),
@@ -280,6 +319,15 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
 
       {/* Last Name */}
       <CustomTextInput
+        activateSublabel={true}
+        showSublabel={userData.lastName.length > 0}
+        sublabel={isUserDataOK.lastName ? "Cool last 😎" : "Should be at least 2 characters."}
+        customSublabelStyle={{
+          fontSize: 10,
+          color: isUserDataOK.lastName ? "limegreen" : "red",
+          height: 15,
+          paddingLeft: "3%",
+        }}
         textInputProps={{
           placeholder: "Last Name",
           onChangeText: (text: string) => onChangeText(text, "lastName"),
@@ -290,6 +338,15 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
 
       {/* Phone Number */}
       <CustomTextInput
+        activateSublabel={true}
+        showSublabel={userData.phoneNumber.length > 0}
+        sublabel={isUserDataOK.phoneNumber ? "Phone number is valid." : "Invalid phone number."}
+        customSublabelStyle={{
+          fontSize: 10,
+          color: isUserDataOK.phoneNumber ? "limegreen" : "red",
+          height: 15,
+          paddingLeft: "3%",
+        }}
         textInputProps={{
           keyboardType: "number-pad",
           placeholder: "Phone Number",
@@ -301,6 +358,15 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
 
       {/* E-mail Address */}
       <CustomTextInput
+        activateSublabel={true}
+        showSublabel={userData.email.length > 0}
+        sublabel={isUserDataOK.email ? "E-mail address is valid." : "Invalid e-mail address."}
+        customSublabelStyle={{
+          fontSize: 10,
+          color: isUserDataOK.email ? "limegreen" : "red",
+          height: 15,
+          paddingLeft: "3%",
+        }}
         textInputProps={{
           placeholder: "E-mail Address",
           keyboardType: "email-address",
@@ -311,6 +377,19 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
       />
 
       <CustomTextInput
+        activateSublabel={true}
+        showSublabel={userData.password.length > 0}
+        sublabel={
+          isUserDataOK.password
+            ? "Good password."
+            : "Password should contain at least one uppercase, one lowercase, one special character and 8 characters."
+        }
+        customSublabelStyle={{
+          fontSize: 10,
+          color: isUserDataOK.password ? "limegreen" : "red",
+          // height: 15,
+          paddingLeft: "3%",
+        }}
         textInputProps={{
           placeholder: "Password",
           secureTextEntry: true,
@@ -320,6 +399,15 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
       />
 
       <CustomTextInput
+        activateSublabel={true}
+        showSublabel={userData.confirmPassword.length > 0}
+        sublabel={isUserDataOK.confirmPassword ? "Passwords are matched!" : "Passwords do not match."} //
+        customSublabelStyle={{
+          fontSize: 10,
+          color: isUserDataOK.confirmPassword ? "limegreen" : "red",
+          height: 15,
+          paddingLeft: "3%",
+        }}
         textInputProps={{
           placeholder: "Confirm Password",
           secureTextEntry: true,
@@ -327,7 +415,6 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           value: userData.confirmPassword,
         }}
       />
-      {/* // TODO: Add show password button */}
       {/* TODO: Commonize password and e-mail props with login page */}
       <CustomButton touchableOpacityProps={{ onPress: onPressSignUp }}>Sign Up</CustomButton>
     </SafeAreaView>

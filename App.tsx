@@ -18,16 +18,10 @@ import * as SplashScreen from "expo-splash-screen";
  e.g. using: https://www.npmjs.com/package/react-native-get-random-values.
 */
 
-// import "react-native-get-random-values"; NOTE: Do not use with expo-crypto, causes the conflict below (in Realm functions).
+import "react-native-get-random-values"; // NOTE: Do not use with expo-crypto, causes the error below (in Realm functions).
 /**
  * [Error: Exception in HostFunction: unordered_map::at: key not found]
  */
-import { getRandomValues } from "expo-crypto"; // NOTE: Do not remove, Realm requires a polyfill for crypto.getRandomValues
-
-// Database
-// import Realm from "realm";
-// import { createRealmContext } from "@realm/react";
-// import User from "./src/models/User";
 
 // Redux
 import { Provider } from "react-redux";
@@ -40,7 +34,6 @@ import SignUpScreen from "./src/screens/auth/SignUpScreen";
 
 import AppStyle from "./App.style";
 import { AppRealmContext } from "./src/models";
-import { AppProvider } from "@realm/react";
 
 // https://reactnative.dev/docs/environment-setup?guide=quickstart&package-manager=npm
 // https://reactnative.dev/docs/typescript
