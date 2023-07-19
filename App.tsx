@@ -12,12 +12,17 @@ import { StatusBar } from "expo-status-bar";
 import { useFonts, Montserrat_400Regular, Montserrat_100Thin } from "@expo-google-fonts/montserrat";
 import * as SplashScreen from "expo-splash-screen";
 
-/*
-  WARN  https://github.com/realm/realm-js/issues/3714
-  BSON: For React Native please polyfill crypto.getRandomValues, 
-  e.g. using: https://www.npmjs.com/package/react-native-get-random-values.
+/**
+ WARN  https://github.com/realm/realm-js/issues/3714
+ BSON: For React Native please polyfill crypto.getRandomValues, 
+ e.g. using: https://www.npmjs.com/package/react-native-get-random-values.
 */
-import "react-native-get-random-values";
+
+// import "react-native-get-random-values"; NOTE: Do not use with expo-crypto, causes the conflict below (in Realm functions).
+/**
+ * [Error: Exception in HostFunction: unordered_map::at: key not found]
+ */
+import { getRandomValues } from "expo-crypto"; // NOTE: Do not remove, Realm requires a polyfill for crypto.getRandomValues
 
 // Database
 // import Realm from "realm";
@@ -35,6 +40,7 @@ import SignUpScreen from "./src/screens/auth/SignUpScreen";
 
 import AppStyle from "./App.style";
 import { AppRealmContext } from "./src/models";
+import { AppProvider } from "@realm/react";
 
 // https://reactnative.dev/docs/environment-setup?guide=quickstart&package-manager=npm
 // https://reactnative.dev/docs/typescript
@@ -107,11 +113,18 @@ const Root: React.FC = () => {
   const { RealmProvider } = AppRealmContext;
 
   return (
+    /**
+     * (Migration from local database functions to cloud functions)
+     * https://www.mongodb.com/docs/realm/sdk/react-native/manage-users/manage-email-password-users/#confirm-a-new-user-s-email-address
+     * https://www.mongodb.com/docs/atlas/app-services/authentication/email-password/#std-label-email-password-authentication
+     */
+    // <AppProvider id=""> /* to use Cloud Functions (e-mail confirmation, SSO, ..), app needs to be registered on Atlas to have a valid ID. */
     <RealmProvider>
       <Provider store={store}>
         <App />
       </Provider>
     </RealmProvider>
+    // </AppProvider>
   );
 };
 

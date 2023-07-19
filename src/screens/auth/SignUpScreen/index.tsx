@@ -19,6 +19,8 @@ import CustomButton from "../../../components/CustomButton";
 import Style from "./SignUpScreen.style";
 import { logJSON, logWithTime, validateText } from "../../../utils/utils";
 
+import * as Crypto from "expo-crypto"; // TODO: Do you really need the all?
+
 interface UserData {
   firstName: string;
   lastName: string;
@@ -100,10 +102,18 @@ function confirmPassword(password: string, confirm: string): boolean {
 
 // TODO: Move outside
 // TODO: Write a unit test
-function createUser(realm: Realm, userData: UserData): void {
+async function createUser(realm: Realm, userData: UserData): Promise<void> {
+  /**
+   * https://stackoverflow.com/questions/1054022/best-way-to-store-password-in-database
+   * https://stackoverflow.com/questions/674904/salting-your-password-best-practices
+   * https://stackoverflow.com/questions/947618/how-to-best-store-user-information-and-user-login-and-password
+   * https://security.stackexchange.com/questions/211/how-to-securely-hash-passwords
+   */
   try {
     const { firstName, lastName, phoneNumber, email, password } = userData;
-    const user = User.create(firstName, lastName, phoneNumber, email, password);
+    const encryptedPassword = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, password);
+    console.log(encryptedPassword);
+    const user = User.create(firstName, lastName, phoneNumber, email, encryptedPassword);
 
     // TODO: Check if phoneNumber &| e-mail address exists
 
@@ -147,7 +157,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
 
     // console.log(users);
     // checkIfUserExists(useQuery, "test");
-    // TODO: Check e-mail and phoneNumber, both should not be allows more than once.
+    // TODO: Check e-mail and phoneNumber, both should not be allowed more than once.
     const user = users.filter((user) => logJSON("User", user));
   }, []);
 
@@ -171,7 +181,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
 
   const onChangePhoneNumber = (text: string): string => {
     const phoneNumber = text
-      .replace(/\D/g, "")
+      .replace(/\D/g, "") /* Replace non-numeric characters */
       .replace(/(^[^0])/, "") /* Replace all except 0 */
       .replace(/(^[0])(\d)/, "$1 $2") /* Allow 2 groups and set a whitespace between 0 and 555 */
       .replace(/(\d{3})(\d)/, "($1) $2") /* Allow 2 groups and cover the first group with parantheses: 0 (555) */
@@ -184,7 +194,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
   };
 
   const onChangeEmailAddress = (text: string): string => {
-    const emailAddress = text.replace(/[^a-zA-Z0-9-+._@]/g, "");
+    const emailAddress = text.replace(/[^a-zA-Z0-9+._@-]/g, "");
     return emailAddress;
   };
 
