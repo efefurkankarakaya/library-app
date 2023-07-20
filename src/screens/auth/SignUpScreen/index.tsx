@@ -39,6 +39,11 @@ type UserDataValidationStatus = {
   [key in keyof UserData]: boolean;
 };
 
+type UserDataExistenceStatus = {
+  phoneNumber: boolean;
+  email: boolean;
+};
+
 type UserDataKeys = keyof UserData;
 
 // https://github.com/realm/realm-js/tree/main/packages/realm-react#readme
@@ -155,6 +160,11 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
     email: false,
     password: false,
     confirmPassword: false,
+  });
+
+  const [isUserDataAlreadyExisted, setIsUserDataAlreadyExisted] = useState<UserDataExistenceStatus>({
+    phoneNumber: false,
+    email: false,
   });
 
   /* Effects */
@@ -284,6 +294,11 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
     }
 
     if (isAnyErrorExisted) {
+      setIsUserDataAlreadyExisted({
+        ...isUserDataAlreadyExisted,
+        email: isEmailAlreadyInUse,
+        phoneNumber: isPhoneAlreadyInUse,
+      });
       return;
     }
 
@@ -301,6 +316,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
   /* TODO: Commonize password and e-mail props with login page */
 
   /* TODO: Add User Agreement checkbox */
+
   return (
     <SafeAreaView style={Style.container}>
       {/* First Name */}
@@ -343,10 +359,16 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
       <CustomTextInput
         activateSublabel={true}
         showSublabel={userData.phoneNumber.length > 0}
-        sublabel={isUserDataOK.phoneNumber ? "Phone number is valid." : "Invalid phone number."}
+        sublabel={
+          isUserDataOK.phoneNumber
+            ? isUserDataAlreadyExisted.phoneNumber
+              ? "Phone number is already in use."
+              : "Phone number is valid."
+            : "Invalid phone number."
+        }
         customSublabelStyle={{
           fontSize: 10,
-          color: isUserDataOK.phoneNumber ? "limegreen" : "red",
+          color: isUserDataOK.phoneNumber && !isUserDataAlreadyExisted.phoneNumber ? "limegreen" : "red",
           height: 15,
           paddingLeft: "3%",
         }}
@@ -362,10 +384,16 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
       <CustomTextInput
         activateSublabel={true}
         showSublabel={userData.email.length > 0}
-        sublabel={isUserDataOK.email ? "E-mail address is valid." : "Invalid e-mail address."}
+        sublabel={
+          isUserDataOK.email
+            ? isUserDataAlreadyExisted.email
+              ? "E-mail address is already in use."
+              : "E-mail address is valid."
+            : "Invalid e-mail address."
+        }
         customSublabelStyle={{
           fontSize: 10,
-          color: isUserDataOK.email ? "limegreen" : "red",
+          color: isUserDataOK.email && !isUserDataAlreadyExisted.email ? "limegreen" : "red",
           height: 15,
           paddingLeft: "3%",
         }}
@@ -377,6 +405,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           inputMode: "email",
         }}
       />
+      {/* (iOS only) https://github.com/facebook/react-native/issues/21911 */}
       <CustomTextInput
         activateSublabel={true}
         showSublabel={userData.password.length > 0}
