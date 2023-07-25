@@ -14,6 +14,14 @@ type TCombineStyles = (initial: TInitial, styleSheet: TStyleSheet) => TStyleShee
  * @returns {TStyleSheet[]} - An array of StyleSheet objects.
  */
 export const combineStyles: TCombineStyles = (initial: TInitial, style: TStyle): TStyleSheet[] => {
+  if (!initial) {
+    throw Error("Initial StyleSheet can't be a falsy value.");
+  }
+
+  if (!style) {
+    return [initial];
+  }
+
   const styleSheet: TStyle = StyleSheet.flatten(style);
 
   return Array.isArray(initial) ? [...initial, styleSheet] : [initial, styleSheet];

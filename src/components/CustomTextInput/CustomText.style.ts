@@ -9,7 +9,8 @@ export default StyleSheet.create({
   },
   textInput: {
     paddingLeft: 12,
-    borderRadius: 3,
+    height: 40,
+    borderRadius: 7,
     borderColor: "#e2e2e2",
     borderWidth: 1,
     /* 

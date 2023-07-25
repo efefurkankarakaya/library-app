@@ -20,6 +20,18 @@ import Style from "./SignUpScreen.style";
 import { logJSON, logWithTime, validateText } from "../../../utils/utils";
 
 import * as Crypto from "expo-crypto"; // TODO: Do you really need the all?
+import ValidatorTextInput from "../../../components/ValidatorTextInput";
+
+/* TODO: Add onFocus & onBlur events to these components (with changeable border and shadow color) */
+// https://stackoverflow.com/questions/34087459/focus-style-for-textinput-in-react-native
+
+/* TODO: Commonize password and e-mail props with login page */
+
+/* TODO: Add User Agreement checkbox */
+
+/* TODO: Add confirmation page (Show 6 random digits and let user write this digit by digit */
+
+/* TODO: After registration, show user a success page and route user to home / dashboard */
 
 interface UserData {
   firstName: string;
@@ -311,25 +323,15 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
   // https://www.mongodb.com/docs/realm/sdk/react-native/manage-users/manage-email-password-users/
   // https://realm.io/?utm_source=google&utm_campaign=search_gs_pl_evergreen_realm_product_prosp-brand_gic-null_ww-multi_ps-all_desktop_eng_lead&utm_term=realm&utm_medium=cpc_paid_search&utm_ad=p&utm_ad_campaign_id=11303420057&adgroup=132586004050&cq_cmp=11303420057&gad=1&gclid=EAIaIQobChMIlr_4rb_P_wIVsItoCR0b9gmnEAAYASAAEgIKw_D_BwE
   // https://reactnative.dev/docs/textinput
-  /* TODO: Refactor these components */
-
-  /* TODO: Commonize password and e-mail props with login page */
-
-  /* TODO: Add User Agreement checkbox */
 
   return (
     <SafeAreaView style={Style.container}>
       {/* First Name */}
-      <CustomTextInput
+      <ValidatorTextInput
+        isDataOK={isUserDataOK.firstName}
         activateSublabel={true}
         showSublabel={userData.firstName.length > 0}
         sublabel={isUserDataOK.firstName ? "Cool name 😎" : "Should be at least 2 characters."}
-        customSublabelStyle={{
-          fontSize: 10,
-          color: isUserDataOK.firstName ? "limegreen" : "red",
-          height: 15,
-          paddingLeft: "3%",
-        }}
         textInputProps={{
           placeholder: "First Name",
           onChangeText: (text: string) => onChangeText(text, "firstName"),
@@ -338,16 +340,11 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
         }}
       />
       {/* Last Name */}
-      <CustomTextInput
+      <ValidatorTextInput
+        isDataOK={isUserDataOK.lastName}
         activateSublabel={true}
         showSublabel={userData.lastName.length > 0}
         sublabel={isUserDataOK.lastName ? "Cool last 😎" : "Should be at least 2 characters."}
-        customSublabelStyle={{
-          fontSize: 10,
-          color: isUserDataOK.lastName ? "limegreen" : "red",
-          height: 15,
-          paddingLeft: "3%",
-        }}
         textInputProps={{
           placeholder: "Last Name",
           onChangeText: (text: string) => onChangeText(text, "lastName"),
@@ -356,7 +353,8 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
         }}
       />
       {/* Phone Number */}
-      <CustomTextInput
+      <ValidatorTextInput
+        isDataOK={isUserDataOK.phoneNumber && !isUserDataAlreadyExisted.phoneNumber}
         activateSublabel={true}
         showSublabel={userData.phoneNumber.length > 0}
         sublabel={
@@ -366,12 +364,6 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
               : "Phone number is valid."
             : "Invalid phone number."
         }
-        customSublabelStyle={{
-          fontSize: 10,
-          color: isUserDataOK.phoneNumber && !isUserDataAlreadyExisted.phoneNumber ? "limegreen" : "red",
-          height: 15,
-          paddingLeft: "3%",
-        }}
         textInputProps={{
           keyboardType: "number-pad",
           placeholder: "Phone Number",
@@ -381,7 +373,8 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
         }}
       />
       {/* E-mail Address */}
-      <CustomTextInput
+      <ValidatorTextInput
+        isDataOK={isUserDataOK.email && !isUserDataAlreadyExisted.email}
         activateSublabel={true}
         showSublabel={userData.email.length > 0}
         sublabel={
@@ -391,12 +384,6 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
               : "E-mail address is valid."
             : "Invalid e-mail address."
         }
-        customSublabelStyle={{
-          fontSize: 10,
-          color: isUserDataOK.email && !isUserDataAlreadyExisted.email ? "limegreen" : "red",
-          height: 15,
-          paddingLeft: "3%",
-        }}
         textInputProps={{
           placeholder: "E-mail Address",
           keyboardType: "email-address",
@@ -406,7 +393,8 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
         }}
       />
       {/* (iOS only) https://github.com/facebook/react-native/issues/21911 */}
-      <CustomTextInput
+      <ValidatorTextInput
+        isDataOK={isUserDataOK.password}
         activateSublabel={true}
         showSublabel={userData.password.length > 0}
         sublabel={
@@ -415,10 +403,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
             : "Password should contain at least one uppercase, one lowercase, one special character and 8 characters."
         }
         customSublabelStyle={{
-          fontSize: 10,
-          color: isUserDataOK.password ? "limegreen" : "red",
-          // height: 15,
-          paddingLeft: "3%",
+          height: "auto", // To show complete text of sublabel
         }}
         textInputProps={{
           placeholder: "Password",
@@ -427,16 +412,11 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           value: userData.password,
         }}
       />
-      <CustomTextInput
+      <ValidatorTextInput
+        isDataOK={isUserDataOK.confirmPassword}
         activateSublabel={true}
         showSublabel={userData.confirmPassword.length > 0}
         sublabel={isUserDataOK.confirmPassword ? "Passwords are matched!" : "Passwords do not match."} //
-        customSublabelStyle={{
-          fontSize: 10,
-          color: isUserDataOK.confirmPassword ? "limegreen" : "red",
-          height: 15,
-          paddingLeft: "3%",
-        }}
         textInputProps={{
           placeholder: "Confirm Password",
           secureTextEntry: true,

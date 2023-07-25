@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { NativeSyntheticEvent, SafeAreaView, Text, TextInput, TextInputChangeEventData, TextProps } from "react-native";
+import {
+  NativeSyntheticEvent,
+  SafeAreaView,
+  Text,
+  TextInput,
+  TextInputChangeEventData,
+  TextInputFocusEventData,
+  TextProps,
+} from "react-native";
 import Style from "./CustomText.style";
 import CustomText from "../CustomText";
 import { combineStyles } from "../../helpers/styleHelpers";
@@ -34,6 +42,7 @@ const CustomTextInput = ({
   textInputProps,
 }: CustomTextInputProps) => {
   const [text, setText] = useState<string>("");
+  const [borderColor, setBorderColor] = useState<string>(""); // TODO: Border color as prop
 
   const combinedContainerStyle: TStyleSheet = combineStyles(Style.container, customContainerStyle);
   const combinedLabelStyle: TStyleSheet = combineStyles(Style.label, customLabelStyle);
@@ -42,6 +51,7 @@ const CustomTextInput = ({
 
   // const onChange = (event: NativeSyntheticEvent<TextInputChangeEventData>) => setText(event.nativeEvent.text);
   const onChangeText = (content: string) => setText(content);
+  const onFocus = (event: NativeSyntheticEvent<TextInputFocusEventData>) => setBorderColor("#434343");
 
   return (
     <SafeAreaView style={combinedContainerStyle}>
@@ -51,6 +61,7 @@ const CustomTextInput = ({
       <TextInput
         style={combinedTextInputStyle}
         // onChange={onChange}
+        onFocus={onFocus}
         onChangeText={onChangeText}
         value={text}
         autoCapitalize="none"
