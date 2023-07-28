@@ -16,4 +16,5 @@ export const TextColor = {
   black: "#171717",
   grey: "#e2e2e2",
   darkgrey: "#414a4c",
+  urlBlue: "#3366CC",
 };

@@ -51,6 +51,8 @@ SplashScreen.preventAutoHideAsync();
 
 // const { RealmProvider, useRealm, useObject, useQuery } = createRealmContext(realmConfig);
 
+// TODO: A top navigation bar required to go back. After that, check the margin and paddings again.
+
 // https://reactnative.dev/docs/testing-overview
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, View } from "react-native";
 
 // Navigation
 import { NavigationProp } from "@react-navigation/native";
@@ -313,14 +313,34 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
 
   return (
     <SafeAreaView style={Style.container}>
-      {/* First Name */}
+      <View
+        style={{
+          marginLeft: 15,
+          marginRight: 15,
+          marginBottom: 10,
+          marginTop: 10,
+          alignContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CustomText
+          customTextStyle={{
+            fontSize: 25,
+          }}
+        >
+          Create an account
+        </CustomText>
+        <CustomText>You are just one step behind to the books!</CustomText>
+      </View>
+
+      {/* Full Name */}
       <ValidatorTextInput
         isDataOK={isUserDataOK.fullName}
         activateSublabel={true}
         showSublabel={userData.fullName.length > 0}
         sublabel={isUserDataOK.fullName ? "Cool name." : "Should be at least 2 characters."}
         textInputProps={{
-          placeholder: "First Name",
+          placeholder: "Full Name",
           onChangeText: (text: string) => onChangeText(text, "fullName"),
           value: userData.fullName,
           inputMode: "text",
@@ -404,6 +424,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           value: userData.confirmPassword,
         }}
       />
+      {/* TODO: Need margin here */}
       <CustomButton touchableOpacityProps={{ onPress: onPressSignUp }}>Sign Up</CustomButton>
     </SafeAreaView>
   );
