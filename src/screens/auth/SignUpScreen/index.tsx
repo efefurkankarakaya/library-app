@@ -184,16 +184,13 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
     logWithTime("Sign Up Screen is mounted.");
     logWithTime(`Realm: ${realm.path}`);
 
-    // console.log(users);
-    // checkIfUserExists(useQuery, "test");
-    // TODO: Check e-mail and phoneNumber, both should not be allowed more than once.
-    const user = users.filter((user) => logJSON("User", user));
+    // const user = users.filter((user) => logJSON("User", user)); // TODO: Remove.
   }, []);
 
-  useEffect(() => {
-    logJSON("Current status of inputs", userData);
-    logJSON("User Data Validation Status", isUserDataOK);
-  }, [userData]);
+  // useEffect(() => {
+  //   logJSON("Current status of inputs", userData);
+  //   logJSON("User Data Validation Status", isUserDataOK);
+  // }, [userData]);
 
   /* Events */
   const onChangeName = (text: string): string => {
@@ -237,7 +234,6 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
     switch (textKey) {
       case "firstName":
       case "lastName":
-        // No special characters and also need trim
         processedText = onChangeName(pureText);
         isTextOK = validateName(processedText);
         break;
@@ -277,10 +273,6 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
   // https://www.mongodb.com/docs/realm/sdk/react-native/crud/read/
   const onPressSignUp = () => {
     let isAnyErrorExisted = false;
-    // TODO: When user is being created, you should check if phoneNumber or e-mail is existed already and if it's
-    // interrupt the registration.
-    // And you should check this in database function, and also validation. If validation does not allow,
-    // then form can't be completed.
     // realm.write(() => {
     //   realm.create("User", User.create("Efe", "KARAKAYA", "efefurkankarakaya@outlook.com", "1234"));
     // });
@@ -371,6 +363,12 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           value: userData.phoneNumber,
           maxLength: 17,
         }}
+        // onFocusStyleProps={{
+        //   borderColor: "yellow",
+        //   shadowOpacity: 0.5,
+        //   shadowOffset: { width: 4, height: 16 },
+        //   shadowColor: "orange",
+        // }}
       />
       {/* E-mail Address */}
       <ValidatorTextInput

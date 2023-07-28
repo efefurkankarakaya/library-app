@@ -1,6 +1,6 @@
 import { TextInputProps } from "react-native";
 import { combineStyles } from "../../helpers/styleHelpers";
-import { TStyleSheet } from "../../types/commonTypes";
+import { TStyleSheet, onFocusStyleProps } from "../../types/commonTypes";
 import CustomTextInput from "../CustomTextInput";
 import Style from "./ValidatorTextInput.style";
 
@@ -11,6 +11,7 @@ interface ValidatorTextInputProps {
   sublabel?: string;
   customSublabelStyle?: TStyleSheet;
   textInputProps?: TextInputProps;
+  onFocusStyleProps?: onFocusStyleProps;
 }
 
 const ValidatorTextInput: React.FC<ValidatorTextInputProps> = ({
@@ -20,9 +21,9 @@ const ValidatorTextInput: React.FC<ValidatorTextInputProps> = ({
   sublabel,
   customSublabelStyle,
   textInputProps,
+  onFocusStyleProps,
 }) => {
   const combinedSublabelStyle = combineStyles(Style(isDataOK).sublabel, customSublabelStyle);
-  console.log(combinedSublabelStyle);
 
   return (
     <CustomTextInput
@@ -31,6 +32,7 @@ const ValidatorTextInput: React.FC<ValidatorTextInputProps> = ({
       sublabel={sublabel || "Sublabel"}
       customSublabelStyle={combinedSublabelStyle}
       textInputProps={textInputProps}
+      onFocusStyleProps={onFocusStyleProps}
     />
   );
 };
