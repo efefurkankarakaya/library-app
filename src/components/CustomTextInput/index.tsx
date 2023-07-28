@@ -6,6 +6,7 @@ import { combineStyles } from "../../helpers/styleHelpers";
 import type { TStyleSheet, onFocusStyleProps } from "../../types/commonTypes";
 
 import Style from "./CustomTextInput.style";
+import { BorderColor, TextColor } from "../../types/colorPalette";
 
 interface CustomTextInputProps {
   label?: string;
@@ -59,7 +60,7 @@ const CustomTextInput = ({
     /* for Android */
     if (Platform.OS === "android") {
       focusStyle = {
-        borderColor: onFocusStyleProps?.borderColor ?? "#414a4c",
+        borderColor: onFocusStyleProps?.borderColor ?? BorderColor.darkgrey,
       };
     } else if (Platform.OS === "ios") {
       /* for iOS */
@@ -93,6 +94,7 @@ const CustomTextInput = ({
         autoCapitalize="none"
         autoComplete="off"
         maxLength={32}
+        selectionColor={Platform.OS === "ios" ? TextColor.darkgrey : TextColor.grey}
         {...textInputProps}
       />
       {activateSublabel && <CustomText customTextStyle={combinedSublabelStyle}>{showSublabel ? sublabel : " "}</CustomText>}
