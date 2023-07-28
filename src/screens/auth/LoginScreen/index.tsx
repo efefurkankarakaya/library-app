@@ -91,7 +91,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             }
           }
         >
-          Still not have an account? &nbsp;
+          Still not have an account? <CustomText></CustomText>
         </CustomText>
 
         <CustomButton
@@ -115,6 +115,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
       {/* https://stackoverflow.com/questions/39344140/react-native-how-to-control-what-keyboard-pushes-up */}
       {/* AndroidManifest.xml -> android:windowSoftInputMode="adjustPan" */}
+      {/* Another solution is wrapping all the screen with KeyboardAvoidingView: https://reactnative.dev/docs/keyboardavoidingview */}
       <View style={Style.footer}>
         <CustomText
           customTextStyle={{
