@@ -95,7 +95,8 @@ const CustomTextInput = ({
         maxLength={32}
         {...textInputProps}
       />
-      {activateSublabel && <CustomText customTextStyle={combinedSublabelStyle}>{showSublabel && sublabel}</CustomText>}
+      {activateSublabel && <CustomText customTextStyle={combinedSublabelStyle}>{showSublabel ? sublabel : " "}</CustomText>}
+      {/* NOTE: To fix text-margin problem in iOS, keep there always a empty string. */}
     </SafeAreaView>
   );
 };

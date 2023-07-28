@@ -5,9 +5,8 @@ const Style = (isDataOK: boolean) =>
     sublabel: {
       fontSize: 10,
       color: isDataOK ? "limegreen" : "red",
-      // height: 25,
-      minHeight: 25,
-      paddingTop: Platform.OS === "ios" ? "1.5%" : 0,
+      minHeight: 15,
+      paddingTop: Platform.OS === "ios" ? 5 : 0 /* Keep label below shadow-offset */,
       paddingLeft: "3%",
     },
   });

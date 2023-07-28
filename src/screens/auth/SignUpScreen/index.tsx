@@ -323,7 +323,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
         isDataOK={isUserDataOK.firstName}
         activateSublabel={true}
         showSublabel={userData.firstName.length > 0}
-        sublabel={isUserDataOK.firstName ? "Cool name 😎" : "Should be at least 2 characters."}
+        sublabel={isUserDataOK.firstName ? "Cool name." : "Should be at least 2 characters."}
         textInputProps={{
           placeholder: "First Name",
           onChangeText: (text: string) => onChangeText(text, "firstName"),
