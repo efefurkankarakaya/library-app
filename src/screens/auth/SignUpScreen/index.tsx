@@ -34,8 +34,7 @@ import ValidatorTextInput from "../../../components/ValidatorTextInput";
 /* TODO: After registration, show user a success page and route user to home / dashboard */
 
 interface UserData {
-  firstName: string;
-  lastName: string;
+  fullName: string;
   phoneNumber: string;
   email: string;
   password: string;
@@ -127,13 +126,12 @@ async function createUser(realm: Realm, userData: UserData): Promise<void> {
    * https://security.stackexchange.com/questions/211/how-to-securely-hash-passwords
    */
   try {
-    const { firstName, lastName, phoneNumber, email, password } = userData;
+    const { fullName, phoneNumber, email, password } = userData;
 
-    const trimmedFirstName = firstName.trim();
-    const trimmedLastName = lastName.trim();
+    const trimmedFullName = fullName.trim();
     const encryptedPassword = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, password);
 
-    const user = User.create(trimmedFirstName, trimmedLastName, phoneNumber, email, encryptedPassword);
+    const user = User.create(trimmedFullName, phoneNumber, email, encryptedPassword);
 
     // TODO: Check if phoneNumber &| e-mail address exists
 
@@ -157,8 +155,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
   // });
 
   const [userData, setUserData] = useState<UserData>({
-    firstName: "",
-    lastName: "",
+    fullName: "",
     phoneNumber: "",
     email: "",
     password: "",
@@ -166,8 +163,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
   });
 
   const [isUserDataOK, setIsUserDataOK] = useState<UserDataValidationStatus>({
-    firstName: false,
-    lastName: false,
+    fullName: false,
     phoneNumber: false,
     email: false,
     password: false,
@@ -232,8 +228,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
     let isTextOK: boolean = false;
 
     switch (textKey) {
-      case "firstName":
-      case "lastName":
+      case "fullName":
         processedText = onChangeName(pureText);
         isTextOK = validateName(processedText);
         break;
@@ -320,27 +315,14 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
     <SafeAreaView style={Style.container}>
       {/* First Name */}
       <ValidatorTextInput
-        isDataOK={isUserDataOK.firstName}
+        isDataOK={isUserDataOK.fullName}
         activateSublabel={true}
-        showSublabel={userData.firstName.length > 0}
-        sublabel={isUserDataOK.firstName ? "Cool name." : "Should be at least 2 characters."}
+        showSublabel={userData.fullName.length > 0}
+        sublabel={isUserDataOK.fullName ? "Cool name." : "Should be at least 2 characters."}
         textInputProps={{
           placeholder: "First Name",
-          onChangeText: (text: string) => onChangeText(text, "firstName"),
-          value: userData.firstName,
-          inputMode: "text",
-        }}
-      />
-      {/* Last Name */}
-      <ValidatorTextInput
-        isDataOK={isUserDataOK.lastName}
-        activateSublabel={true}
-        showSublabel={userData.lastName.length > 0}
-        sublabel={isUserDataOK.lastName ? "Cool last 😎" : "Should be at least 2 characters."}
-        textInputProps={{
-          placeholder: "Last Name",
-          onChangeText: (text: string) => onChangeText(text, "lastName"),
-          value: userData.lastName,
+          onChangeText: (text: string) => onChangeText(text, "fullName"),
+          value: userData.fullName,
           inputMode: "text",
         }}
       />
