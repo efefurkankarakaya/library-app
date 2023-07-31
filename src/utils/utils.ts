@@ -1,5 +1,17 @@
 const moment = require("moment-timezone");
 
+export function isEmptyObject(value: {}): boolean {
+  return isObject(value) && Object.keys(value).length === 0;
+}
+
+export function isObject(value: any): boolean {
+  return !Array.isArray(value) && typeof value === "object" && value !== null;
+}
+
+export function isEmptyArray(array: []): boolean {
+  return Array.isArray(array) && array.length === 0;
+}
+
 export function getCurrentTime(): string {
   // hh:mm:ss - 12h
   // HH:mm:ss - 24h
