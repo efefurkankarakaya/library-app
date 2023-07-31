@@ -313,24 +313,9 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
 
   return (
     <SafeAreaView style={Style.container}>
-      <View
-        style={{
-          marginLeft: 15,
-          marginRight: 15,
-          marginBottom: 10,
-          marginTop: 10,
-          alignContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <CustomText
-          customTextStyle={{
-            fontSize: 25,
-          }}
-        >
-          Create an account
-        </CustomText>
-        <CustomText>You are just one step behind to the books!</CustomText>
+      <View style={Style.headerContainer}>
+        <CustomText customTextStyle={Style.header}>Create an account</CustomText>
+        <CustomText customTextStyle={Style.headerSubtext}>You are just one step away to the books!</CustomText>
       </View>
 
       {/* Full Name */}
@@ -365,6 +350,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           value: userData.phoneNumber,
           maxLength: 17,
         }}
+        /* Testing Purposes */
         // onFocusStyleProps={{
         //   borderColor: "yellow",
         //   shadowOpacity: 0.5,
@@ -402,9 +388,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
             ? "Good password."
             : "Password should contain at least one uppercase, one lowercase, one special character and 8 characters."
         }
-        customSublabelStyle={{
-          height: "auto", // To show complete text of sublabel
-        }}
+        customSublabelStyle={Style.passwordSublabel}
         textInputProps={{
           placeholder: "Password",
           secureTextEntry: true,

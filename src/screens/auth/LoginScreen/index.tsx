@@ -50,80 +50,41 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     <SafeAreaView style={Style.container}>
       <Image style={Style.image} source={LibIcon} placeholder={blurhash} contentFit="cover" transition={1000} />
       {/* <CustomText customTextStyle={Style.title}>Logo</CustomText> */}
-
       {/* TODO: Add marginLeft to the labels. */}
       <CustomTextInput label="E-mail" customContainerStyle={Style.email} />
       <CustomTextInput label="Password" customContainerStyle={Style.password} />
-
-      <CustomButton
-        touchableOpacityProps={{ onPress: onPressLogin }}
-        customButtonStyle={{
-          marginBottom: 10,
-        }}
-      >
+      {/* TODO: Add validation output */}
+      <CustomButton touchableOpacityProps={{ onPress: onPressLogin }} customButtonStyle={Style.loginButton}>
         Login
       </CustomButton>
       <CustomButton
         touchableOpacityProps={{
           onPress: onPressForgotPassword,
         }}
-        customButtonStyle={{
-          padding: 0,
-          border: "none",
-          backgroundColor: "transparent",
-          marginBottom: 10,
-        }}
-        customTextStyle={{
-          color: TextColor.urlBlue,
-        }}
+        customButtonStyle={Style.forgotPasswordButton}
+        customTextStyle={Style.forgotPasswordText}
       >
         Forgot password?
       </CustomButton>
-      <View
-        style={{
-          flexDirection: "row",
-        }}
-      >
-        <CustomText
-          customTextStyle={
-            {
-              // backgroundColor: "grey",
-            }
-          }
-        >
+      <View style={Style.signUpContainer}>
+        <CustomText>
           Still not have an account? <CustomText></CustomText>
         </CustomText>
 
         <CustomButton
           touchableOpacityProps={{ onPress: onPressSignUp }}
-          customButtonStyle={{
-            padding: 0,
-            margin: 0,
-            border: "none",
-            backgroundColor: "transparent",
-          }}
-          customTextStyle={{
-            color: TextColor.urlBlue,
-            margin: 0,
-            padding: 0,
-          }}
+          customButtonStyle={Style.signUpButton}
+          customTextStyle={Style.signUpText}
         >
           Sign up
         </CustomButton>
         <CustomText> now.</CustomText>
       </View>
-
       {/* https://stackoverflow.com/questions/39344140/react-native-how-to-control-what-keyboard-pushes-up */}
       {/* AndroidManifest.xml -> android:windowSoftInputMode="adjustPan" */}
-      {/* Another solution is wrapping all the screen with KeyboardAvoidingView: https://reactnative.dev/docs/keyboardavoidingview */}
+      {/* Another solution is wrapping all the component with KeyboardAvoidingView: https://reactnative.dev/docs/keyboardavoidingview */}
       <View style={Style.footer}>
-        <CustomText
-          customTextStyle={{
-            fontSize: 12,
-          }}
-        >
-          Library Inc.
-        </CustomText>
+        <CustomText customTextStyle={Style.footerText}>Library Inc.</CustomText>
       </View>
     </SafeAreaView>
   );
