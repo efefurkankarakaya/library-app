@@ -44,14 +44,15 @@ const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 SplashScreen.preventAutoHideAsync();
 
-// const realmConfig: Realm.Configuration = {
-//   path: "database.realm",
-//   schema: [User],
-// };
-
-// const { RealmProvider, useRealm, useObject, useQuery } = createRealmContext(realmConfig);
+// TODO: https://stackoverflow.com/questions/63159757/change-the-default-light-grey-background-color
+// TODO: https://reactnavigation.org/docs/stack-navigator/#animation-related-options
 
 // TODO: A top navigation bar required to go back. After that, check the margin and paddings again.
+
+const StackScreenOptions = {
+  title: "",
+  headerTransparent: true,
+};
 
 // https://reactnative.dev/docs/testing-overview
 const App: React.FC = () => {
@@ -72,29 +73,12 @@ const App: React.FC = () => {
 
   return (
     <View style={AppStyle.container} onLayout={onLayoutRootView}>
+      <StatusBar />
       <NavigationContainer>
         <RootStack.Navigator initialRouteName="Login">
-          <RootStack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{
-              title: "Login",
-            }}
-          />
-          <RootStack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{
-              title: "Home",
-            }}
-          />
-          <RootStack.Screen
-            name="SignUp"
-            component={SignUpScreen}
-            options={{
-              title: "Sign Up",
-            }}
-          />
+          <RootStack.Screen name="Login" component={LoginScreen} options={StackScreenOptions} />
+          <RootStack.Screen name="Home" component={HomeScreen} options={StackScreenOptions} />
+          <RootStack.Screen name="SignUp" component={SignUpScreen} options={StackScreenOptions} />
         </RootStack.Navigator>
       </NavigationContainer>
     </View>

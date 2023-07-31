@@ -1,9 +1,10 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    marginTop: Platform.OS === "ios" ? "7.5%" : "15%",
   },
   headerContainer: {
     marginLeft: 15,
@@ -19,5 +20,8 @@ export default StyleSheet.create({
   headerSubtext: {},
   passwordSublabel: {
     height: "auto", // To show complete text of sublabel
+  },
+  signUpButton: {
+    marginTop: Platform.OS === "ios" ? 0 : 10,
   },
 });

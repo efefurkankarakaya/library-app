@@ -1,9 +1,9 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { TextColor } from "../../../types/colorPalette";
 
 export default StyleSheet.create({
   container: {
-    marginTop: "7.5%",
+    marginTop: Platform.OS === "ios" ? "7.5%" : "15%",
     flex: 1,
     alignItems: "center",
   },

@@ -409,7 +409,9 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
         }}
       />
       {/* TODO: Need margin here */}
-      <CustomButton touchableOpacityProps={{ onPress: onPressSignUp }}>Sign Up</CustomButton>
+      <CustomButton customButtonStyle={Style.signUpButton} touchableOpacityProps={{ onPress: onPressSignUp }}>
+        Sign Up
+      </CustomButton>
     </SafeAreaView>
   );
 };

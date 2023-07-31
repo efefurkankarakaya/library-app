@@ -44,13 +44,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     // TODO: Navigate to Forgot Password
   };
 
-  // TODO: Move styles to the style file.
   // TODO: Before adding validation here, remove top navigation bar and make one to save screen space.
   return (
     <SafeAreaView style={Style.container}>
       <Image style={Style.image} source={LibIcon} placeholder={blurhash} contentFit="cover" transition={1000} />
       {/* <CustomText customTextStyle={Style.title}>Logo</CustomText> */}
-      {/* TODO: Add marginLeft to the labels. */}
       <CustomTextInput label="E-mail" customContainerStyle={Style.email} />
       <CustomTextInput label="Password" customContainerStyle={Style.password} />
       {/* TODO: Add validation output */}
