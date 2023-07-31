@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet } from "react-native";
 // Type Definitions
 type TStyleSheet = StyleProp<object>;
 type TInitial = TStyleSheet | TStyleSheet[];
-type TStyle = object | TStyleSheet | TStyleSheet[];
+type TStyle = TStyleSheet | TStyleSheet[];
 
 // Function Definitions
 type TCombineStyles = (initial: TInitial, styleSheet: TStyleSheet) => TStyle;
