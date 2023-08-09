@@ -8,3 +8,12 @@ export interface onFocusStyleProps extends Partial<ShadowStyleIOS> {
   borderRadius?: number;
   borderWidth?: number;
 }
+
+/* Sign Up Page */
+export interface UserData {
+  fullName: string;
+  phoneNumber: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}

@@ -52,15 +52,15 @@ async function authenticate(users: Results<User>, email: string, password: strin
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
   // const user = useAppSelector(({ user }) => user);
+
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [loginData, setLoginData] = useState<LoginData>({
     email: "",
     password: "",
   });
 
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-
-  const { useQuery } = AppRealmContext; // TODO: Remove unused destructuring
+  const { useQuery } = AppRealmContext;
   const users = useQuery(User);
 
   useEffect(() => {
