@@ -54,6 +54,14 @@ const StackScreenOptions = {
   headerTransparent: true,
 };
 
+const StackScreenHomeOptions = {
+  ...StackScreenOptions,
+  headerShown: false,
+  // TODO: Consider this.
+  // TODO: Or, headerShown: false for all and use bottom navigation to travel around the pages.
+  // TODO: Some pages can have previous page arrow, like settings page.
+};
+
 // https://reactnative.dev/docs/testing-overview
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
@@ -77,7 +85,7 @@ const App: React.FC = () => {
       <NavigationContainer>
         <RootStack.Navigator initialRouteName="Login">
           <RootStack.Screen name="Login" component={LoginScreen} options={StackScreenOptions} />
-          <RootStack.Screen name="Home" component={HomeScreen} options={StackScreenOptions} />
+          <RootStack.Screen name="Home" component={HomeScreen} options={StackScreenHomeOptions} />
           <RootStack.Screen name="SignUp" component={SignUpScreen} options={StackScreenOptions} />
         </RootStack.Navigator>
       </NavigationContainer>

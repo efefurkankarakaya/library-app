@@ -5,9 +5,9 @@ import { validateEmailAddress } from "./validationHelpers";
 import { logWithTime } from "../utils/utils";
 
 export async function authenticate(users: Results<User>, email: string, password: string): Promise<boolean> {
-  // If e-mail is not valid, then reject immediately.
   let isAuthenticated = false;
 
+  // If e-mail is not valid, then reject immediately.
   if (!email || !validateEmailAddress(email) || !password) {
     logWithTime("Login attempt with incorrect format.");
     return isAuthenticated;
