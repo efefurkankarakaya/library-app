@@ -8,16 +8,14 @@ import CustomText from "../../../components/CustomText";
 import CustomButton from "../../../components/CustomButton";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../../types/navigationTypes";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { useAppDispatch } from "../../../store/hooks";
 import { logIn, logOut } from "../../../store/slices/userSlice";
-import { TextColor } from "../../../types/colorPalette";
 import { AppRealmContext } from "../../../models";
 import User from "../../../models/User";
-import * as Crypto from "expo-crypto";
 import { logWithTime } from "../../../utils/utils";
 import { useEffect, useState } from "react";
-import { Results } from "realm";
 import ValidatorTextInput from "../../../components/ValidatorTextInput";
+import { authenticate } from "../../../helpers/authHelpers";
 
 interface LoginData {
   email: string;
@@ -32,21 +30,6 @@ const blurhash =
 
 interface LoginScreenProps {
   navigation: NavigationProp<RootStackParamList>;
-}
-
-async function authenticate(users: Results<User>, email: string, password: string): Promise<boolean> {
-  // If e-mail is not valid, then reject immediately.
-  let isAuthenticated = false;
-
-  const encryptEnteredPassword = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, password);
-  const user = users.find((user) => user.email === email);
-
-  if (user && encryptEnteredPassword === user.password) {
-    console.log("Password is correct!");
-    isAuthenticated = true;
-  }
-
-  return isAuthenticated;
 }
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
