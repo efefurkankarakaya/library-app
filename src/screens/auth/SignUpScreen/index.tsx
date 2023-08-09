@@ -8,11 +8,9 @@ import { RootStackParamList } from "../../../types/navigationTypes";
 // Database
 import { AppRealmContext } from "../../../models";
 import User from "../../../models/User";
-import { createUseQuery } from "@realm/react/dist/useQuery"; // TODO: Remove unused import
 
 // Custom Components
-import CustomText from "../../../components/CustomText"; // TODO: Remove unused import
-import CustomTextInput from "../../../components/CustomTextInput";
+import CustomText from "../../../components/CustomText";
 import CustomButton from "../../../components/CustomButton";
 
 // Others
@@ -80,7 +78,7 @@ function validatePhoneNumber(phoneNumber: string): boolean {
   Valid Inputs: (555)-555 55 55, (555) 555 55 55, (555) 555-5555
   */
   const phoneNumberRegex = /0 [+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[\s0-9]{4}[\s0-9]{3}[\s0-9]{3}$/;
-  return phoneNumberRegex.test(phoneNumber); // TODO: Use validateText()
+  return validateText(phoneNumber, phoneNumberRegex); // TODO: Use validateText()
 }
 
 function validateEmailAddress(email: string): boolean {

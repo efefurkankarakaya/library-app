@@ -4,12 +4,10 @@ import type { RootState } from "../store";
 
 interface UserState {
   isLoggedIn: boolean;
-  token: string | null;
 }
 
 const initialState: UserState = {
   isLoggedIn: false,
-  token: null,
 } as UserState;
 
 export const userSlice = createSlice({
@@ -21,10 +19,6 @@ export const userSlice = createSlice({
     },
     logOut: (state) => {
       state.isLoggedIn = false;
-    },
-    // TODO: Remove this fn
-    fn: (state, action: PayloadAction<string>) => {
-      state.token = action.payload;
     },
   },
 });

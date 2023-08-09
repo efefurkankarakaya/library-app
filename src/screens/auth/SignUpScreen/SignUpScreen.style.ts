@@ -22,6 +22,6 @@ export default StyleSheet.create({
     height: "auto", // To show complete text of sublabel
   },
   signUpButton: {
-    marginTop: Platform.OS === "ios" ? 0 : 10,
+    marginTop: 10,
   },
 });
