@@ -49,18 +49,6 @@ type UserDataExistenceStatus = {
 
 type UserDataKeys = keyof UserData;
 
-// https://github.com/realm/realm-js/tree/main/packages/realm-react#readme
-// https://blog.logrocket.com/realm-react-native/
-// https://www.mongodb.com/docs/realm/sdk/node/users/create-delete-users/
-
-// function checkIfUserExists(users, phoneNumber: string) {
-//   const user = users.filtered("email == efefurkankarakaya@outlook.com");
-//   console.log(user);
-// }
-
-// TODO: Move outside
-// TODO: Write a unit test
-
 // Components and basic functions are written as arrow functions
 const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenProps) => {
   const { useRealm, useObject, useQuery } = AppRealmContext; // TODO: Remove unused destructuring
@@ -151,7 +139,6 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
         isTextOK = validateEmailAddress(processedText);
         break;
       case "password":
-        // TODO: Should I consider hashing every change?
         // processedText = pureText;
         isTextOK = validatePassword(processedText);
         break;

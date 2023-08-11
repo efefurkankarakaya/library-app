@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { BackgroundColor, TextColor } from "../../types/colorPalette";
+import { BackgroundColor, TextColor } from "../../common/colorPalette";
 
 export default StyleSheet.create({
   button: {

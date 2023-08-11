@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { onFocusStyleProps } from "../../types/commonTypes";
-import { BackgroundColor, BorderColor, ShadowColor, TextColor } from "../../types/colorPalette";
+import { BackgroundColor, BorderColor, ShadowColor, TextColor } from "../../common/colorPalette";
 
 // https://stackoverflow.com/questions/49782275/react-native-why-does-stylesheet-create-return-object-with-numbers-and-not-styl
 const Style = (currentOnFocusStyle?: onFocusStyleProps) => {

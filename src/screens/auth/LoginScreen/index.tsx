@@ -59,7 +59,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
         if (result) {
           dispatch(logIn());
-          navigation.navigate("Home");
+          navigation.navigate("MainApp", { screen: "Home" });
         }
       })
       .catch((error) => logWithTime("Authentication failed: " + error.message));
@@ -93,6 +93,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       <Image style={Style.image} source={LibIcon} placeholder={blurhash} contentFit="cover" transition={1000} />
       {/* <CustomText customTextStyle={Style.title}>Logo</CustomText> */}
       {/* TODO: Set e-mail address here after registration */}
+      {/* TODO: Add Remember me */}
       <CustomTextInput
         label="E-mail"
         textInputProps={{

@@ -6,7 +6,7 @@ import { combineStyles } from "../../helpers/styleHelpers";
 import type { TStyleSheet, onFocusStyleProps } from "../../types/commonTypes";
 
 import Style from "./CustomTextInput.style";
-import { BorderColor, TextColor } from "../../types/colorPalette";
+import { BorderColor, TextColor } from "../../common/colorPalette";
 
 interface CustomTextInputProps {
   label?: string;

@@ -14,7 +14,7 @@ export function validatePhoneNumber(phoneNumber: string): boolean {
   Valid Inputs: (555)-555 55 55, (555) 555 55 55, (555) 555-5555
   */
   const phoneNumberRegex = /0 [+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[\s0-9]{4}[\s0-9]{3}[\s0-9]{3}$/;
-  return validateText(phoneNumber, phoneNumberRegex); // TODO: Use validateText()
+  return validateText(phoneNumber, phoneNumberRegex);
 }
 
 export function validateEmailAddress(email: string): boolean {
