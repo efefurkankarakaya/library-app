@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { Text } from "react-native";
 
 /* Style */
-import Style from "./CustomText.style";
+import Style from "./index.style";
 
 /* Types */
 import { TStyleSheet } from "../../types/commonTypes";

@@ -5,7 +5,7 @@ import { TextInputProps } from "react-native";
 import CustomTextInput from "../CustomTextInput";
 
 /* Style */
-import Style from "./ValidatorTextInput.style";
+import Style from "./index.style";
 
 /* Types */
 import { TStyleSheet, onFocusStyleProps } from "../../types/commonTypes";

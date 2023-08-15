@@ -15,7 +15,7 @@ import CustomButton from "../../../components/CustomButton";
 import ValidatorTextInput from "../../../components/ValidatorTextInput";
 
 /* Style */
-import Style from "./SignUpScreen.style";
+import Style from "./index.style";
 
 /* Types */
 import { RootStackParamList } from "../../../types/navigationTypes";

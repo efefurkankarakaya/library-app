@@ -6,7 +6,7 @@ import { SafeAreaView, TextProps, TouchableOpacity, TouchableOpacityProps } from
 import CustomText from "../CustomText";
 
 /* Style */
-import Style from "./CustomButton.style";
+import Style from "./index.style";
 
 /* Types */
 import { TStyleSheet } from "../../types/commonTypes";

@@ -23,7 +23,7 @@ import { AppRealmContext } from "../../../models";
 import User from "../../../models/User";
 
 /* Style */
-import Style from "./LoginScreen.style";
+import Style from "./index.style";
 import LibIcon from "../../../../assets/lib-clean.png";
 
 /* Types */

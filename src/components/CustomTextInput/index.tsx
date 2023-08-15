@@ -10,7 +10,7 @@ import CustomText from "../CustomText";
 import type { TStyleSheet, onFocusStyleProps } from "../../types/commonTypes";
 
 /* Style */
-import Style from "./CustomTextInput.style";
+import Style from "./index.style";
 import { BorderColor, TextColor } from "../../common/colorPalette";
 
 /* Others */
