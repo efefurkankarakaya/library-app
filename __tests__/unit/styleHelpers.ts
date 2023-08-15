@@ -15,7 +15,7 @@ const TestData = {
         backgroundColor: "black",
       },
     },
-    upcomingStyle: {
+    upcoming: {
       firstStyle: {
         marginLeft: 16,
         marginRight: 16,
@@ -42,10 +42,10 @@ test("[combineStyles()] Empty initial and style objects", () => {
 test("[combineStyles()] Combine 2 styles", () => {
   const expected = {
     ...TestData.input.initial.firstStyle,
-    ...TestData.input.upcomingStyle.firstStyle,
+    ...TestData.input.upcoming.firstStyle,
   };
 
-  const combined = combineStyles(TestData.input.initial.firstStyle, TestData.input.upcomingStyle.firstStyle);
+  const combined = combineStyles(TestData.input.initial.firstStyle, TestData.input.upcoming.firstStyle);
   expect(combined).toStrictEqual(expected);
 });
 
@@ -53,11 +53,11 @@ test("[combineStyles()] Combine an array of styles as initial and 1 style", () =
   const expected = {
     ...TestData.input.initial.firstStyle,
     ...TestData.input.initial.secondStyle,
-    ...TestData.input.upcomingStyle.firstStyle,
+    ...TestData.input.upcoming.firstStyle,
   };
 
   const initial = [TestData.input.initial.firstStyle, TestData.input.initial.secondStyle];
-  const combined = combineStyles(initial, TestData.input.upcomingStyle.firstStyle);
+  const combined = combineStyles(initial, TestData.input.upcoming.firstStyle);
   expect(combined).toStrictEqual(expected);
 });
 
@@ -65,11 +65,11 @@ test("[combineStyles()] Combine an array of styles as initial and 1 style (insid
   const expected = {
     ...TestData.input.initial.firstStyle,
     ...TestData.input.initial.secondStyle,
-    ...TestData.input.upcomingStyle.firstStyle,
+    ...TestData.input.upcoming.firstStyle,
   };
 
   const initial = [TestData.input.initial.firstStyle, TestData.input.initial.secondStyle];
-  const combined = combineStyles(initial, [TestData.input.upcomingStyle.firstStyle]);
+  const combined = combineStyles(initial, [TestData.input.upcoming.firstStyle]);
   expect(combined).toStrictEqual(expected);
 });
 
@@ -77,12 +77,12 @@ test("[combineStyles()] Combine an array of styles as initial and an array of up
   const expected = {
     ...TestData.input.initial.firstStyle,
     ...TestData.input.initial.secondStyle,
-    ...TestData.input.upcomingStyle.firstStyle,
-    ...TestData.input.upcomingStyle.secondStyle,
+    ...TestData.input.upcoming.firstStyle,
+    ...TestData.input.upcoming.secondStyle,
   };
 
   const initial = [TestData.input.initial.firstStyle, TestData.input.initial.secondStyle];
-  const style = [TestData.input.upcomingStyle.firstStyle, TestData.input.upcomingStyle.secondStyle];
+  const style = [TestData.input.upcoming.firstStyle, TestData.input.upcoming.secondStyle];
 
   const combined = combineStyles(initial, style);
   expect(combined).toStrictEqual(expected);
