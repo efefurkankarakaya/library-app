@@ -1,12 +1,20 @@
+/* Core */
 import { useState } from "react";
 import { NativeSyntheticEvent, Platform, SafeAreaView, TextInput, TextInputFocusEventData, TextProps, TextInputProps } from "react-native";
 
+/* Custom Components */
 import CustomText from "../CustomText";
-import { combineStyles } from "../../helpers/styleHelpers";
+
+/* Type */
+/* https://stackoverflow.com/questions/61412000/do-i-need-to-use-the-import-type-feature-of-typescript-3-8-if-all-of-my-import */
 import type { TStyleSheet, onFocusStyleProps } from "../../types/commonTypes";
 
+/* Style */
 import Style from "./CustomTextInput.style";
 import { BorderColor, TextColor } from "../../common/colorPalette";
+
+/* Others */
+import { combineStyles } from "../../helpers/styleHelpers";
 
 interface CustomTextInputProps {
   label?: string;

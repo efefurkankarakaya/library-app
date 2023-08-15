@@ -1,20 +1,36 @@
+/* Core */
+import { useEffect, useState } from "react";
 import { SafeAreaView, View } from "react-native";
-import { Image } from "expo-image";
-import LibIcon from "../../../../assets/lib-clean.png";
 
+/* Navigation */
+import { NavigationProp } from "@react-navigation/native";
+
+/* Expo */
+import { Image } from "expo-image";
+
+/* Custom Components */
 import CustomTextInput from "../../../components/CustomTextInput";
-import Style from "./LoginScreen.style";
 import CustomText from "../../../components/CustomText";
 import CustomButton from "../../../components/CustomButton";
-import { NavigationProp } from "@react-navigation/native";
-import { RootStackParamList } from "../../../types/navigationTypes";
+import ValidatorTextInput from "../../../components/ValidatorTextInput";
+
+/* Store */
 import { useAppDispatch } from "../../../store/hooks";
 import { logIn, logOut } from "../../../store/slices/userSlice";
+
+/* Database */
 import { AppRealmContext } from "../../../models";
 import User from "../../../models/User";
+
+/* Style */
+import Style from "./LoginScreen.style";
+import LibIcon from "../../../../assets/lib-clean.png";
+
+/* Types */
+import { RootStackParamList } from "../../../types/navigationTypes";
+
+/* Others */
 import { logWithTime } from "../../../utils/utils";
-import { useEffect, useState } from "react";
-import ValidatorTextInput from "../../../components/ValidatorTextInput";
 import { authenticate } from "../../../helpers/authHelpers";
 
 interface LoginData {
@@ -47,10 +63,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const users = useQuery(User);
 
   useEffect(() => {
-    dispatch(logOut());
+    // TODO: This can cause unpredictable problems related to login options like 'Remember Me' in the future.
+    dispatch(logOut()); // TODO: If user is authenticated, then user should never see login page until logged out.
   }, []);
 
-  const onPressLogin = () => {
+  const onPressLogin = (): void => {
     authenticate(users, loginData.email, loginData.password)
       .then((result) => {
         /* Normal flow */
@@ -59,6 +76,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
         if (result) {
           dispatch(logIn());
+          // @ts-ignore: https://reactnavigation.org/docs/nesting-navigators/#passing-params-to-a-screen-in-a-nested-navigator
           navigation.navigate("MainApp", { screen: "Home" });
         }
       })

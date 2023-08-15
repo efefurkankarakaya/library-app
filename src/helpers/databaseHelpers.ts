@@ -1,8 +1,14 @@
+/* Expo */
 import * as Crypto from "expo-crypto"; // TODO: Do you really need the all?
 
-import { UserData } from "../types/commonTypes";
-import { logWithTime } from "../utils/utils";
+/* Database */
 import User from "../models/User";
+
+/* Types */
+import { UserData } from "../types/commonTypes";
+
+/* Others */
+import { logWithTime } from "../utils/utils";
 
 export async function createUser(realm: Realm, userData: UserData): Promise<void> {
   /**

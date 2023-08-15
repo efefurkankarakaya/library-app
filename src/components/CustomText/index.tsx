@@ -1,8 +1,15 @@
-import { Text } from "react-native";
-import Style from "./CustomText.style";
-import { TStyleSheet } from "../../types/commonTypes";
-import { combineStyles } from "../../helpers/styleHelpers";
+/* Core */
 import { ReactNode } from "react";
+import { Text } from "react-native";
+
+/* Style */
+import Style from "./CustomText.style";
+
+/* Types */
+import { TStyleSheet } from "../../types/commonTypes";
+
+/* Others */
+import { combineStyles } from "../../helpers/styleHelpers";
 
 interface CustomTextProps {
   children?: ReactNode;

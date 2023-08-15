@@ -1,23 +1,29 @@
+/* Core */
 import { useEffect, useState } from "react";
 import { SafeAreaView, View } from "react-native";
 
-// Navigation
+/* Navigation */
 import { NavigationProp } from "@react-navigation/native";
-import { RootStackParamList } from "../../../types/navigationTypes";
 
-// Database
+/* Database */
 import { AppRealmContext } from "../../../models";
 import User from "../../../models/User";
 
-// Custom Components
+/* Custom Components */
 import CustomText from "../../../components/CustomText";
 import CustomButton from "../../../components/CustomButton";
-
-// Others
-import Style from "./SignUpScreen.style";
-import { logWithTime } from "../../../utils/utils";
-
 import ValidatorTextInput from "../../../components/ValidatorTextInput";
+
+/* Style */
+import Style from "./SignUpScreen.style";
+
+/* Types */
+import { RootStackParamList } from "../../../types/navigationTypes";
+import { UserData } from "../../../types/commonTypes";
+
+/* Others */
+import { logWithTime } from "../../../utils/utils";
+import { createUser } from "../../../helpers/databaseHelpers";
 import {
   confirmPassword,
   validateEmailAddress,
@@ -25,9 +31,6 @@ import {
   validatePassword,
   validatePhoneNumber,
 } from "../../../helpers/validationHelpers";
-
-import { UserData } from "../../../types/commonTypes";
-import { createUser } from "../../../helpers/databaseHelpers";
 
 /* TODO: Add confirmation page (Show 6 random digits and let user write this digit by digit */
 

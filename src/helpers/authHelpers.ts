@@ -1,6 +1,11 @@
-import { Results } from "realm";
+/* Expo */
 import * as Crypto from "expo-crypto";
+
+/* Database */
+import { Results } from "realm";
 import User from "../models/User";
+
+/* Others */
 import { validateEmailAddress } from "./validationHelpers";
 import { logWithTime } from "../utils/utils";
 

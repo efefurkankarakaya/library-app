@@ -1,8 +1,17 @@
+/* Core */
 import { TextInputProps } from "react-native";
-import { combineStyles } from "../../helpers/styleHelpers";
-import { TStyleSheet, onFocusStyleProps } from "../../types/commonTypes";
+
+/* Custom Components */
 import CustomTextInput from "../CustomTextInput";
+
+/* Style */
 import Style from "./ValidatorTextInput.style";
+
+/* Types */
+import { TStyleSheet, onFocusStyleProps } from "../../types/commonTypes";
+
+/* Others */
+import { combineStyles } from "../../helpers/styleHelpers";
 
 interface ValidatorTextInputProps {
   label?: string;

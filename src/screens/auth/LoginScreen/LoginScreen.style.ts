@@ -3,7 +3,7 @@ import { TextColor } from "../../../common/colorPalette";
 
 export default StyleSheet.create({
   container: {
-    marginTop: Platform.OS === "ios" ? "7.5%" : "15%",
+    marginTop: Platform.OS === "ios" ? "30%" : "15%",
     flex: 1,
     alignItems: "center",
   },

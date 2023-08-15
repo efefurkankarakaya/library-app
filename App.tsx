@@ -1,13 +1,14 @@
-// React & React Native
+/* Core */
 import { useCallback } from "react";
 import { View } from "react-native";
 
-// Navigation
+/* Navigation */
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { BottomTabBarProps, BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BottomTabParamList, RootStackParamList, RootStackScreenProps } from "./src/types/navigationTypes";
 
-// Expo Tools
+/* Expo */
 import { StatusBar } from "expo-status-bar";
 import { useFonts, Montserrat_400Regular, Montserrat_100Thin } from "@expo-google-fonts/montserrat";
 import * as SplashScreen from "expo-splash-screen";
@@ -18,23 +19,26 @@ import * as SplashScreen from "expo-splash-screen";
  e.g. using: https://www.npmjs.com/package/react-native-get-random-values.
 */
 
+/* Dependency */
 import "react-native-get-random-values"; // NOTE: Do not use with expo-crypto, causes the error below (in Realm functions).
 /**
  * [Error: Exception in HostFunction: unordered_map::at: key not found]
  */
 
-// Redux
+/* Database */
+import { AppRealmContext } from "./src/models";
+
+/* Store */
 import { Provider } from "react-redux";
 import { store } from "./src/store/store";
 
-// Screens
+/* Screens */
 import LoginScreen from "./src/screens/auth/LoginScreen";
 import HomeScreen from "./src/screens/home";
 import SignUpScreen from "./src/screens/auth/SignUpScreen";
 
+/* Style */
 import AppStyle from "./App.style";
-import { AppRealmContext } from "./src/models";
-import { BottomTabBarProps, BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 // https://reactnative.dev/docs/environment-setup?guide=quickstart&package-manager=npm
 // https://reactnative.dev/docs/typescript

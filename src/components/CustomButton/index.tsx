@@ -1,10 +1,17 @@
+/* Core */
 import React, { ReactNode } from "react";
 import { SafeAreaView, TextProps, TouchableOpacity, TouchableOpacityProps } from "react-native";
 
+/* Custom Components */
 import CustomText from "../CustomText";
 
+/* Style */
 import Style from "./CustomButton.style";
+
+/* Types */
 import { TStyleSheet } from "../../types/commonTypes";
+
+/* Others */
 import { combineStyles } from "../../helpers/styleHelpers";
 
 interface CustomButtonProps {
