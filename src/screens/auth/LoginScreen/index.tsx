@@ -77,7 +77,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         setIsSubmitted(true);
 
         /* If user authenticated */
-        if (result) {
+        if (result.isAuthenticated) {
           isSU && dispatch(grantPermission());
           dispatch(logIn());
           // @ts-ignore: https://reactnavigation.org/docs/nesting-navigators/#passing-params-to-a-screen-in-a-nested-navigator
@@ -86,7 +86,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       })
       .catch((error) =>
         /* Error flow, function or authentication process does not work as expected and throws error. */
-        logWithTime("Authentication failed: " + error.message)
+        logWithTime("Authentication process failed: " + error.message)
       );
   };
 
