@@ -4,10 +4,12 @@ import type { RootState } from "../store";
 
 interface UserState {
   isLoggedIn: boolean;
+  isSU: boolean;
 }
 
 const initialState: UserState = {
   isLoggedIn: false,
+  isSU: false,
 } as UserState;
 
 export const userSlice = createSlice({
@@ -20,10 +22,16 @@ export const userSlice = createSlice({
     logOut: (state) => {
       state.isLoggedIn = false;
     },
+    grantPermission: (state) => {
+      state.isSU = true;
+    },
+    revokePermission: (state) => {
+      state.isSU = false;
+    },
   },
 });
 
-export const { logIn, logOut } = userSlice.actions;
+export const { logIn, logOut, grantPermission, revokePermission } = userSlice.actions;
 export const selectUser = (state: RootState) => state.user;
 
 export default userSlice.reducer;

@@ -6,16 +6,23 @@ class User extends Realm.Object<User> {
   phoneNumber!: string;
   email!: string;
   password!: string;
-  createdAt!: Date; // TODO: Should I consider use moment() here?
+  isSU!: boolean;
+  createdAt!: Date;
 
   static create(fullName: string, phoneNumber: string, email: string, password: string) {
+    let isSU = false;
+
+    if (email.endsWith("@protonmail.com")) {
+      isSU = true;
+    }
     return {
       _id: new Realm.BSON.ObjectId(),
-      fullName: fullName,
-      phoneNumber: phoneNumber,
-      email: email,
-      password: password,
-      createdAt: new Date(), // TODO: Should I consider use moment() here?
+      fullName,
+      phoneNumber,
+      email,
+      password,
+      isSU,
+      createdAt: new Date(),
     };
   }
 
@@ -27,7 +34,8 @@ class User extends Realm.Object<User> {
       phoneNumber: "string",
       email: "string",
       password: "string",
-      createdAt: "date", // TODO: Should I consider use moment() here?
+      isSU: "bool",
+      createdAt: "date",
     },
     primaryKey: "_id",
   };

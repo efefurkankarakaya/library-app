@@ -9,13 +9,21 @@ import User from "../models/User";
 import { validateEmailAddress } from "./validationHelpers";
 import { logWithTime } from "../utils/utils";
 
-export async function authenticate(users: Results<User>, email: string, password: string): Promise<boolean> {
-  let isAuthenticated = false;
+interface AuthData {
+  isAuthenticated: boolean;
+  isSU: boolean;
+}
 
-  // If e-mail is not valid, then reject immediately.
+export async function authenticate(users: Results<User>, email: string, password: string): Promise<AuthData> {
+  const authData = {
+    isAuthenticated: false,
+    isSU: false,
+  };
+
+  // If e-mail or password is not valid, then reject immediately.
   if (!email || !validateEmailAddress(email) || !password) {
     logWithTime("Login attempt with incorrect format.");
-    return isAuthenticated;
+    return authData;
   }
 
   const encryptEnteredPassword = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, password);
@@ -23,8 +31,9 @@ export async function authenticate(users: Results<User>, email: string, password
 
   if (user && encryptEnteredPassword === user.password) {
     logWithTime("Password is correct!");
-    isAuthenticated = true;
+    authData.isAuthenticated = true;
+    authData.isSU = user.isSU;
   }
 
-  return isAuthenticated;
+  return authData;
 }

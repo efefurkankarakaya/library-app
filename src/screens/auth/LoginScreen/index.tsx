@@ -16,7 +16,7 @@ import ValidatorTextInput from "../../../components/ValidatorTextInput";
 
 /* Store */
 import { useAppDispatch } from "../../../store/hooks";
-import { logIn, logOut } from "../../../store/slices/userSlice";
+import { grantPermission, logIn, logOut, revokePermission } from "../../../store/slices/userSlice";
 
 /* Database */
 import { AppRealmContext } from "../../../models";
@@ -65,22 +65,29 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   useEffect(() => {
     // TODO: This can cause unpredictable problems related to login options like 'Remember Me' in the future.
     dispatch(logOut()); // TODO: If user is authenticated, then user should never see login page until logged out.
+    dispatch(revokePermission());
   }, []);
 
   const onPressLogin = (): void => {
     authenticate(users, loginData.email, loginData.password)
       .then((result) => {
-        /* Normal flow */
-        setIsAuthenticated(result);
+        /* Regular flow, function worked but authentication can fail in user side. */
+        const { isAuthenticated, isSU } = result;
+        setIsAuthenticated(isAuthenticated);
         setIsSubmitted(true);
 
+        /* If user authenticated */
         if (result) {
+          isSU && dispatch(grantPermission());
           dispatch(logIn());
           // @ts-ignore: https://reactnavigation.org/docs/nesting-navigators/#passing-params-to-a-screen-in-a-nested-navigator
           navigation.navigate("MainApp", { screen: "Home" });
         }
       })
-      .catch((error) => logWithTime("Authentication failed: " + error.message));
+      .catch((error) =>
+        /* Error flow, function or authentication process does not work as expected and throws error. */
+        logWithTime("Authentication failed: " + error.message)
+      );
   };
 
   const onPressSignUp = () => {
