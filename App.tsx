@@ -45,6 +45,8 @@ import AppStyle from "./App.style";
 // https://docs.expo.dev/workflow/customizing/
 // https://docs.expo.dev/guides/environment-variables/
 
+// TODO: Move configurations outside
+// TODO: Move navigation components to navigations/
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 

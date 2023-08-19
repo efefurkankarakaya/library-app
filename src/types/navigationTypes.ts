@@ -19,6 +19,8 @@ export type BottomTabParamList = {
   Profile: undefined;
 };
 
+export interface MainStackParamList extends RootStackParamList, BottomTabParamList {}
+
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;
 
 declare global {
