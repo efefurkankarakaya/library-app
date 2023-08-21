@@ -1,6 +1,6 @@
 /* Core */
 import { useEffect, useMemo, useState } from "react";
-import { FlatList, Text, SafeAreaView, ListRenderItem } from "react-native";
+import { FlatList, Text, SafeAreaView, View, Image } from "react-native";
 // import { SafeAreaView } from "react-native-safe-area-context";
 
 /* Navigation */
@@ -16,9 +16,14 @@ import Book from "../../models/Book";
 /* Store */
 import { useAppSelector } from "../../store/hooks";
 
+/* Style */
+import Style from "./index.style";
+
 /* Types */
 import { MainStackParamList } from "../../types/navigationTypes";
 import CustomTextInput from "../../components/CustomTextInput";
+
+import { useSwipe } from "../../helpers/gestureHelpers";
 
 interface HomeScreenProps {
   navigation: NavigationProp<MainStackParamList>; // TODO: Probably, this argument is going to be MainScreenParamList which is mixed of all the main screens.
@@ -29,6 +34,7 @@ interface FlatListItem {
   item: Book & Realm.Object;
 }
 
+// TODO: Handle search by ISBN and author too.
 function filterBooks(books: Realm.Results<Book & Realm.Object>, query: string) {
   const lowerCaseQuery = query.toLowerCase().trim();
   return books.filter((book) => book.bookName.toLowerCase().includes(lowerCaseQuery));
@@ -51,14 +57,21 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     // });
     /* */
     // realm.write(() => {
-    //   realm.create(
-    //     "Book",
-    //     Book.create("Brave New World", "<base64>", "A brave whole new world!", "123", ["Aldous Huxley"], ["Distopia"], false)
-    //   );
-    //   realm.create("Book", Book.create("Fahrenheit 451", "<base64>", "fahrenheit", "124", ["Ray Bradbury"], ["Distopia"], false));
+    // realm.create(
+    //   "Book",
+    //   Book.create("Brave New World", "<base64>", "A brave whole new world!", "123", ["Aldous Huxley"], ["Distopia"], false)
+    // );
+    // realm.create("Book", Book.create("Fahrenheit 451", "<base64>", "fahrenheit", "124", ["Ray Bradbury"], ["Distopia"], false));
+    // realm.create("Book", Book.create("Fahrenheit 451", bookImage, "fahrenheit", "124", ["Ray Bradbury"], ["Distopia"], false));
     // });
     // console.log(books);
   }, []);
+
+  // https://stackoverflow.com/questions/45854450/detect-swipe-left-in-react-native
+  // https://docs.expo.dev/versions/latest/sdk/gesture-handler/
+  // https://docs.swmansion.com/react-native-gesture-handler/docs/
+  // If user SU and swipe left is triggered, then start camera and save product,
+  // Product Edit / Details page (same page, but if user is su, it becomes editable)
 
   useEffect(() => {
     /* TODO: During the development, state can change and user login status turned to be false when hot reload runs but what if it happens in production? */
@@ -68,16 +81,32 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     }
   }, [user]);
 
+  const onSwipeLeft = () => {
+    console.log("Swipe Left");
+  };
+
+  const onSwipeRight = () => {
+    console.log("Swipe Right");
+  };
+
+  const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6);
+
   /* FlatList functions */
   const keyExtractor = (item: Book & Realm.Object) => item._id.toHexString();
 
   const renderItem = ({ index, item }: FlatListItem) => {
-    console.log(item);
-    return <Text>{item.bookName}</Text>;
+    // console.log(item);
+    // https://github.com/DylanVann/react-native-fast-image
+    return (
+      <View>
+        <Text>{item.bookName}</Text>
+        <Image source={{ uri: "data:image/png;base64," + item.bookImage }} />
+      </View>
+    );
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={Style.container} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       <CustomText>Home</CustomText>
       <CustomTextInput
         textInputProps={{
@@ -85,7 +114,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           onChangeText: (text: string) => setSearchQuery(text),
         }}
       />
-      <FlatList data={filteredBooks} renderItem={renderItem} keyExtractor={keyExtractor} />
+      <View>
+        <FlatList data={filteredBooks} renderItem={renderItem} keyExtractor={keyExtractor} />
+      </View>
     </SafeAreaView>
   );
 };
