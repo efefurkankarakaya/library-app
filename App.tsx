@@ -5,6 +5,7 @@ import { View } from "react-native";
 /* Navigation */
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/stack";
 import { BottomTabBarProps, BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BottomTabParamList, RootStackParamList, RootStackScreenProps } from "./src/types/navigationTypes";
 
@@ -39,6 +40,7 @@ import SignUpScreen from "./src/screens/auth/SignUpScreen";
 
 /* Style */
 import AppStyle from "./App.style";
+import CamScreen from "./src/screens/cam";
 
 // https://reactnative.dev/docs/environment-setup?guide=quickstart&package-manager=npm
 // https://reactnative.dev/docs/typescript
@@ -47,7 +49,7 @@ import AppStyle from "./App.style";
 
 // TODO: Move configurations outside
 // TODO: Move navigation components to navigations/
-const RootStack = createNativeStackNavigator<RootStackParamList>();
+const RootStack = createStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 // Common options for navigation display
@@ -129,8 +131,20 @@ const App: React.FC<JSX.Element> = (): JSX.Element | null => {
       <StatusBar />
       <NavigationContainer>
         <RootStack.Navigator initialRouteName="Authentication" screenOptions={RootStackNavigatorScreenOptions}>
+          {/* TODO: Prevent going back -> https://reactnavigation.org/docs/preventing-going-back/ */}
           <RootStack.Screen name="Authentication" component={AuthenticationStackNavigation} />
           <RootStack.Screen name="MainApp" component={MainAppBottomNavigation} />
+          {/* TODO: https://stackoverflow.com/questions/48018666/how-to-change-the-direction-of-the-animation-in-stacknavigator */}
+          {/* TODO: https://itnext.io/change-react-native-screen-animation-direction-with-react-navigation-8cec0f66f22 */}
+          <RootStack.Screen
+            name="CamScreen"
+            component={CamScreen}
+            // options={{ ...horizontalAnimation }}
+            options={{
+              gestureDirection: "horizontal-inverted",
+            }}
+            // screenOptions={horizontalAnimation}
+          />
         </RootStack.Navigator>
       </NavigationContainer>
     </View>

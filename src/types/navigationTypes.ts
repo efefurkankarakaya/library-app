@@ -8,6 +8,7 @@ export type RootStackParamList = {
   SignUp: undefined;
   Authentication: undefined;
   MainApp: undefined;
+  CamScreen: undefined; // TODO: Refactor
   // Profile: { userId: string };
   // Feed: { sort: "latest" | "top" } | undefined;
 };

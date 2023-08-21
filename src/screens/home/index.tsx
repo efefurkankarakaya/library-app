@@ -40,6 +40,7 @@ function filterBooks(books: Realm.Results<Book & Realm.Object>, query: string) {
   return books.filter((book) => book.bookName.toLowerCase().includes(lowerCaseQuery));
 }
 
+// TODO: https://stackoverflow.com/questions/52156083/scroll-through-the-view-when-keyboard-is-open-react-native-expo
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { useRealm, useObject, useQuery } = AppRealmContext; // TODO: Remove unused destructuring
   const realm = useRealm();
@@ -81,12 +82,15 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     }
   }, [user]);
 
-  const onSwipeLeft = () => {
-    console.log("Swipe Left");
+  const onSwipeRight = () => {
+    // Run Camera
+    navigation.navigate("CamScreen");
+    console.log("Swipe Right");
   };
 
-  const onSwipeRight = () => {
-    console.log("Swipe Right");
+  const onSwipeLeft = () => {
+    // Run Gallery
+    console.log("Swipe Left");
   };
 
   const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6);

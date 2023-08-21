@@ -35,6 +35,12 @@ allprojects {
             url(new File(['node', '--print', "require.resolve('jsc-android/package.json')"].execute(null, rootDir).text.trim(), '../dist'))
         }
 
+        maven {
+            // expo-camera
+            // https://stackoverflow.com/questions/73056266/android-studio-issue-could-not-find-com-google-androidcameraview1-0-0
+            url "$rootDir/../node_modules/expo-camera/android/maven"
+        }
+
         google()
         mavenCentral()
         maven { url 'https://www.jitpack.io' }
