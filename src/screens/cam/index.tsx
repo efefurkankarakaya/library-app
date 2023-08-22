@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useRef, type ReactNode } from "react";
 import { Dimensions, Text, TouchableWithoutFeedbackProps, View } from "react-native";
 import { Camera, CameraType } from "expo-camera";
 import Style from "./index.style";
@@ -7,7 +7,7 @@ import { logWithTime } from "../../utils/utils";
 import { CustomButton, CustomText } from "../../components";
 
 interface InformationTextProps {
-  children: any;
+  children: ReactNode;
 }
 
 interface CameraCloseButtonProps {
@@ -37,7 +37,7 @@ const CameraCloseButton = ({ onPress }: CameraCloseButtonProps) => {
           backgroundColor: "transparent",
         }}
         customTextStyle={{
-          color: TextColor.iOSGrey,
+          color: TextColor.iOSGrey /* It seems fine in Android too */,
           fontSize: 20,
         }}
         touchableOpacityProps={{ onPress: onPress }}
@@ -65,10 +65,18 @@ const CameraCloseButton = ({ onPress }: CameraCloseButtonProps) => {
   * The Kotlin plugin was loaded in the following projects: ':expo', ':expo-modules-core'
 */
 export default function CamScreen({ navigation }: CamScreen) {
+  const cameraRef = useRef(null);
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
   const onPressX = () => {
     navigation.goBack();
+  };
+
+  const onPressCapture = async () => {
+    if (cameraRef.current) {
+      const { uri } = await cameraRef.current.takePictureAsync();
+      console.log(uri);
+    }
   };
 
   if (!permission) {
@@ -109,7 +117,17 @@ export default function CamScreen({ navigation }: CamScreen) {
   return (
     <View style={Style.container}>
       <CameraCloseButton onPress={onPressX} />
-      <Camera type={CameraType.back}>
+      <CustomButton
+        touchableOpacityProps={{
+          onPress: onPressCapture,
+        }}
+        customButtonStyle={{
+          marginTop: 100,
+        }}
+      >
+        Shoot
+      </CustomButton>
+      <Camera type={CameraType.back} ref={cameraRef}>
         {/* <CustomButton
           customButtonStyle={{
             marginTop: 50,
