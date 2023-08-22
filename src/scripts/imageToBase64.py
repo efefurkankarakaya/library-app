@@ -4,19 +4,19 @@ import subprocess
 
 def imageToBase64(imagePath: str) -> bytes:
     with open(imagePath, "rb") as imageFile:
-        base64Encoded = base64.b64encode(imageFile.read())
+        base64Encoded: bytes = base64.b64encode(imageFile.read())
         return base64Encoded
 
 def convertBytesToString(data: bytes) -> str:
     decoded: str = data.decode(encoding="utf-8")
-    string: str = str(decoded)
-    return string
+    stringified: str = str(decoded)
+    return stringified
 
-def copyToClipboard(text):
-    operatingSystem = platform.system().lower()
+def copyToClipboard(text: str) -> int:
+    operatingSystem: str = platform.system().lower()
     
-    command = ""
-    prefix = 'echo ' + text.strip()
+    command: str = ""
+    prefix: str = 'echo ' + text.strip()
 
     if operatingSystem == 'darwin':
         command = prefix + '|pbcopy'
