@@ -1,8 +1,52 @@
-import { Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Text, TouchableWithoutFeedbackProps, View } from "react-native";
 import { Camera, CameraType } from "expo-camera";
-import CustomButton from "../../components/CustomButton";
 import Style from "./index.style";
 import { TextColor } from "../../common/colorPalette";
+import { logWithTime } from "../../utils/utils";
+import { CustomButton, CustomText } from "../../components";
+
+interface InformationTextProps {
+  children: any;
+}
+
+interface CameraCloseButtonProps {
+  onPress: TouchableWithoutFeedbackProps["onPress"];
+}
+
+interface CamScreen {
+  navigation: any; // TODO: Update the type according to the next navigation group
+}
+
+/* Local Components */
+const InformationText = ({ children }: InformationTextProps) => <CustomText customTextStyle={Style.informationText}>{children}</CustomText>;
+
+// TODO: Refactor style/css here.
+const CameraCloseButton = ({ onPress }: CameraCloseButtonProps) => {
+  return (
+    <View
+      style={{
+        /* https://stackoverflow.com/questions/36938742/touchablehighlight-not-clickable-if-position-absolute */
+        zIndex: 1 /* To be able to click on the button which is absolute positioned by its container. */,
+        position: "absolute",
+      }}
+    >
+      <CustomButton
+        customButtonStyle={{
+          marginTop: 50,
+          backgroundColor: "transparent",
+        }}
+        customTextStyle={{
+          color: TextColor.iOSGrey,
+          fontSize: 20,
+        }}
+        touchableOpacityProps={{ onPress: onPress }}
+      >
+        X
+      </CustomButton>
+    </View>
+  );
+};
 
 /**
   @note
@@ -20,21 +64,52 @@ import { TextColor } from "../../common/colorPalette";
   * See: https://docs.gradle.org/current/userguide/plugins.html#sec:subprojects_plugins_dsl
   * The Kotlin plugin was loaded in the following projects: ':expo', ':expo-modules-core'
 */
-export default function CamScreen({ navigation }) {
+export default function CamScreen({ navigation }: CamScreen) {
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
-  if (!permission) {
-    requestPermission();
-  }
-
-  const onPress = () => {
+  const onPressX = () => {
     navigation.goBack();
   };
+
+  if (!permission) {
+    logWithTime("Awaiting for Camera...");
+  }
+
+  if (!permission?.granted) {
+    logWithTime("Permission is not granted.");
+
+    return (
+      <View style={Style.container}>
+        <CameraCloseButton onPress={onPressX} />
+        <View style={Style.permissionContainer}>
+          <InformationText>Could not access to camera.</InformationText>
+          <View style={Style.row}>
+            <InformationText>Click</InformationText>
+            <InformationText> </InformationText>
+            <CustomButton
+              touchableOpacityProps={{ onPress: requestPermission }}
+              customButtonStyle={Style.grantPermissionButton}
+              customTextStyle={Style.grantPermissionText}
+            >
+              here
+            </CustomButton>
+            <InformationText> </InformationText>
+            <InformationText>to grant permission.</InformationText>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  if (permission) {
+    logWithTime("Permission is granted.");
+    console.log(permission);
+  }
 
   return (
     <View style={Style.container}>
       <Camera type={CameraType.back}>
-        <CustomButton
+        {/* <CustomButton
           customButtonStyle={{
             marginTop: 50,
             backgroundColor: "black",
@@ -46,9 +121,9 @@ export default function CamScreen({ navigation }) {
           touchableOpacityProps={{ onPress: onPress }}
         >
           X
-        </CustomButton>
+        </CustomButton> */}
+        <CameraCloseButton onPress={onPressX} />
       </Camera>
-      <Text>Camera</Text>
     </View>
   );
 }

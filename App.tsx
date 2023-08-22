@@ -139,11 +139,10 @@ const App: React.FC<JSX.Element> = (): JSX.Element | null => {
           <RootStack.Screen
             name="CamScreen"
             component={CamScreen}
-            // options={{ ...horizontalAnimation }}
+            // TODO: Gesture Direction doesn't work on Android.
             options={{
               gestureDirection: "horizontal-inverted",
             }}
-            // screenOptions={horizontalAnimation}
           />
         </RootStack.Navigator>
       </NavigationContainer>
