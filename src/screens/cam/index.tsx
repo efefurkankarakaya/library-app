@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Text, TouchableWithoutFeedbackProps, View } from "react-native";
+import { Dimensions, Text, TouchableWithoutFeedbackProps, View } from "react-native";
 import { Camera, CameraType } from "expo-camera";
 import Style from "./index.style";
 import { TextColor } from "../../common/colorPalette";
@@ -29,11 +29,11 @@ const CameraCloseButton = ({ onPress }: CameraCloseButtonProps) => {
         /* https://stackoverflow.com/questions/36938742/touchablehighlight-not-clickable-if-position-absolute */
         zIndex: 1 /* To be able to click on the button which is absolute positioned by its container. */,
         position: "absolute",
+        marginTop: 50,
       }}
     >
       <CustomButton
         customButtonStyle={{
-          marginTop: 50,
           backgroundColor: "transparent",
         }}
         customTextStyle={{
@@ -108,6 +108,7 @@ export default function CamScreen({ navigation }: CamScreen) {
 
   return (
     <View style={Style.container}>
+      <CameraCloseButton onPress={onPressX} />
       <Camera type={CameraType.back}>
         {/* <CustomButton
           customButtonStyle={{
@@ -122,7 +123,6 @@ export default function CamScreen({ navigation }: CamScreen) {
         >
           X
         </CustomButton> */}
-        <CameraCloseButton onPress={onPressX} />
       </Camera>
     </View>
   );
