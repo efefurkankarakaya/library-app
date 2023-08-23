@@ -207,8 +207,8 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
   return (
     <SafeAreaView style={Style.container}>
       <View style={Style.headerContainer}>
-        <CustomText customTextStyle={Style.header}>Create an account</CustomText>
-        <CustomText customTextStyle={Style.headerSubtext}>You are just one step away to the books!</CustomText>
+        <CustomText textStyle={Style.header}>Create an account</CustomText>
+        <CustomText textStyle={Style.headerSubtext}>You are just one step away to the books!</CustomText>
       </View>
 
       {/* Full Name */}
@@ -302,7 +302,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
         }}
       />
       {/* TODO: Need margin here */}
-      <CustomButton customButtonStyle={Style.signUpButton} touchableOpacityProps={{ onPress: onPressSignUp }}>
+      <CustomButton buttonStyle={Style.signUpButton} touchableOpacityProps={{ onPress: onPressSignUp }}>
         Sign Up
       </CustomButton>
     </SafeAreaView>

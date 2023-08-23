@@ -89,7 +89,7 @@ const CustomTextInput = ({
 
   return (
     <SafeAreaView style={combinedContainerStyle}>
-      <CustomText customTextStyle={combinedLabelStyle} {...textProps}>
+      <CustomText textStyle={combinedLabelStyle} {...textProps}>
         {label}
       </CustomText>
       <TextInput
@@ -105,7 +105,7 @@ const CustomTextInput = ({
         selectionColor={Platform.OS === "ios" ? TextColor.darkgrey : TextColor.grey}
         {...textInputProps}
       />
-      {activateSublabel && <CustomText customTextStyle={combinedSublabelStyle}>{showSublabel ? sublabel : " "}</CustomText>}
+      {activateSublabel && <CustomText textStyle={combinedSublabelStyle}>{showSublabel ? sublabel : " "}</CustomText>}
       {/* NOTE: To fix text-margin problem in iOS, keep there always a empty string. */}
     </SafeAreaView>
   );

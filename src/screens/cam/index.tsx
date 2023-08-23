@@ -4,7 +4,7 @@ import { Camera, CameraType } from "expo-camera";
 import Style from "./index.style";
 import { CameraButtonColor, TextColor } from "../../common/colorPalette";
 import { logWithTime } from "../../utils/utils";
-import { CustomButton, CustomText } from "../../components";
+import { TransparentButton, CustomText } from "../../components";
 import FlashlightOn from "../../../assets/flash_on.svg";
 import X from "../../../assets/x.svg";
 import Settings from "../../../assets/settings.svg";
@@ -31,6 +31,7 @@ interface CameraTopBarOnPress {
 }
 
 interface CameraTopBarProps {
+  isPermissionGranted: boolean | undefined;
   onPressFunctions: CameraTopBarOnPress;
 }
 
@@ -41,12 +42,12 @@ interface CamScreen {
 const iconSize = Dimensions.get("window").width * 0.09;
 
 /* Local Components */
-const InformationText = ({ children }: InformationTextProps) => <CustomText customTextStyle={Style.informationText}>{children}</CustomText>;
+const InformationText = ({ children }: InformationTextProps) => <CustomText textStyle={Style.informationText}>{children}</CustomText>;
 
 const CameraCloseButton = ({ onPress }: CameraCloseButtonProps) => {
   return (
-    <CustomButton
-      customButtonStyle={{
+    <TransparentButton
+      buttonStyle={{
         backgroundColor: "transparent",
         padding: 2,
         margin: 0,
@@ -60,14 +61,14 @@ const CameraCloseButton = ({ onPress }: CameraCloseButtonProps) => {
           fill: CameraButtonColor.grey /* TODO: Find a common camera subcomponent color*/,
         }}
       />
-    </CustomButton>
+    </TransparentButton>
   );
 };
 
 const CameraFlashlightButton = ({ onPress }: CameraFlashlightButtonProps) => {
   return (
-    <CustomButton
-      customButtonStyle={{
+    <TransparentButton
+      buttonStyle={{
         margin: 0,
         padding: 2,
         backgroundColor: "transparent",
@@ -81,14 +82,14 @@ const CameraFlashlightButton = ({ onPress }: CameraFlashlightButtonProps) => {
           fill: CameraButtonColor.grey,
         }}
       />
-    </CustomButton>
+    </TransparentButton>
   );
 };
 
 const CameraSettingsButton = ({ onPress }: CameraSettingsButtonProps) => {
   return (
-    <CustomButton
-      customButtonStyle={{
+    <TransparentButton
+      buttonStyle={{
         margin: 0,
         padding: 2,
         paddingRight: 4,
@@ -103,12 +104,12 @@ const CameraSettingsButton = ({ onPress }: CameraSettingsButtonProps) => {
           fill: CameraButtonColor.grey,
         }}
       />
-    </CustomButton>
+    </TransparentButton>
   );
 };
 
 // TODO: Refactor style/css here.
-const CameraTopBar = ({ onPressFunctions }: CameraTopBarProps) => {
+const CameraTopBar = ({ isPermissionGranted, onPressFunctions }: CameraTopBarProps) => {
   const { onPressX, onPressFlashlight, onPressSettings } = onPressFunctions;
   // TODO: Refactor here
   return (
@@ -129,7 +130,7 @@ const CameraTopBar = ({ onPressFunctions }: CameraTopBarProps) => {
       >
         {/* TODO: Make this component generi container */}
         <CameraCloseButton onPress={onPressX} />
-        <CameraFlashlightButton onPress={onPressFlashlight} />
+        {isPermissionGranted && <CameraFlashlightButton onPress={onPressFlashlight} />}
         <CameraSettingsButton onPress={onPressSettings} />
       </View>
     </View>
@@ -160,6 +161,10 @@ export default function CamScreen({ navigation }: CamScreen) {
     navigation.goBack();
   };
 
+  const onPressSettings = () => {
+    logWithTime("[onPressSettings]");
+  };
+
   const onPressCapture = async () => {
     if (cameraRef.current) {
       /* Property 'takePictureAsync' does not exist on type 'never'. */
@@ -178,19 +183,19 @@ export default function CamScreen({ navigation }: CamScreen) {
 
     return (
       <View style={Style.container}>
-        <CameraCloseButton onPress={onPressX} />
+        <CameraTopBar isPermissionGranted={permission?.granted} onPressFunctions={{ onPressX, onPressSettings }} />
         <View style={Style.permissionContainer}>
           <InformationText>Could not access to camera.</InformationText>
           <View style={Style.row}>
             <InformationText>Click</InformationText>
             <InformationText> </InformationText>
-            <CustomButton
+            <TransparentButton
               touchableOpacityProps={{ onPress: requestPermission }}
-              customButtonStyle={Style.grantPermissionButton}
-              customTextStyle={Style.grantPermissionText}
+              buttonStyle={Style.grantPermissionButton}
+              textStyle={Style.grantPermissionText}
             >
               here
-            </CustomButton>
+            </TransparentButton>
             <InformationText> </InformationText>
             <InformationText>to grant permission.</InformationText>
           </View>
@@ -206,7 +211,7 @@ export default function CamScreen({ navigation }: CamScreen) {
 
   return (
     <View style={Style.container}>
-      <CameraTopBar onPressFunctions={{ onPressX }} />
+      <CameraTopBar isPermissionGranted={permission?.granted} onPressFunctions={{ onPressX, onPressSettings }} />
       <View
         style={{
           position: "absolute",
@@ -219,39 +224,20 @@ export default function CamScreen({ navigation }: CamScreen) {
             alignItems: "center",
           }}
         >
-          <CustomButton
+          <TransparentButton
             touchableOpacityProps={{
               onPress: onPressCapture,
             }}
-            customButtonStyle={{
+            buttonStyle={{
               backgroundColor: CameraButtonColor.grey, // TODO: Find a better grey
               height: 65,
               width: 65,
               borderRadius: 100,
             }}
-          ></CustomButton>
-          <CustomButton
-            customButtonStyle={{
-              backgroundColor: "transparent",
-            }}
-          ></CustomButton>
+          ></TransparentButton>
         </View>
       </View>
-      <Camera type={CameraType.back} ref={cameraRef}>
-        {/* <CustomButton
-          customButtonStyle={{
-            marginTop: 50,
-            backgroundColor: "black",
-          }}
-          customTextStyle={{
-            color: TextColor.iOSGrey,
-            fontSize: 20,
-          }}
-          touchableOpacityProps={{ onPress: onPress }}
-        >
-          X
-        </CustomButton> */}
-      </Camera>
+      <Camera type={CameraType.back} ref={cameraRef}></Camera>
     </View>
   );
 }

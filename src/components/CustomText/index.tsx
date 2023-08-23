@@ -13,11 +13,11 @@ import { combineStyles } from "../../helpers/styleHelpers";
 
 interface CustomTextProps {
   children?: ReactNode;
-  customTextStyle?: TStyleSheet;
+  textStyle?: TStyleSheet;
 }
 
-const CustomText: React.FC<CustomTextProps> = ({ children, customTextStyle, ...restTextProps }: CustomTextProps) => {
-  const combinedTextStyle = combineStyles(Style.text, customTextStyle);
+const CustomText: React.FC<CustomTextProps> = ({ children, textStyle, ...restTextProps }: CustomTextProps) => {
+  const combinedTextStyle = combineStyles(Style.text, textStyle);
 
   return (
     <Text style={combinedTextStyle} {...restTextProps}>

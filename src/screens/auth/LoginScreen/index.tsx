@@ -116,7 +116,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={Style.container}>
       <Image style={Style.image} source={LibIcon} placeholder={blurhash} contentFit="cover" transition={1000} />
-      {/* <CustomText customTextStyle={Style.title}>Logo</CustomText> */}
+      {/* <CustomText textStyle={Style.title}>Logo</CustomText> */}
       {/* TODO: Set e-mail address here after registration */}
       {/* TODO: Add Remember me */}
       <CustomTextInput
@@ -142,15 +142,15 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         }}
         customContainerStyle={Style.password}
       />
-      <CustomButton touchableOpacityProps={{ onPress: onPressLogin }} customButtonStyle={Style.loginButton}>
+      <CustomButton touchableOpacityProps={{ onPress: onPressLogin }} buttonStyle={Style.loginButton}>
         Login
       </CustomButton>
       <CustomButton
         touchableOpacityProps={{
           onPress: onPressForgotPassword,
         }}
-        customButtonStyle={Style.forgotPasswordButton}
-        customTextStyle={Style.forgotPasswordText}
+        buttonStyle={Style.forgotPasswordButton}
+        textStyle={Style.forgotPasswordText}
       >
         Forgot password?
       </CustomButton>
@@ -159,11 +159,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           Still not have an account? <CustomText></CustomText>
         </CustomText>
 
-        <CustomButton
-          touchableOpacityProps={{ onPress: onPressSignUp }}
-          customButtonStyle={Style.signUpButton}
-          customTextStyle={Style.signUpText}
-        >
+        <CustomButton touchableOpacityProps={{ onPress: onPressSignUp }} buttonStyle={Style.signUpButton} textStyle={Style.signUpText}>
           Sign up
         </CustomButton>
         <CustomText> now.</CustomText>
@@ -172,7 +168,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       {/* AndroidManifest.xml -> android:windowSoftInputMode="adjustPan" */}
       {/* Another solution is wrapping all the component with KeyboardAvoidingView: https://reactnative.dev/docs/keyboardavoidingview */}
       <View style={Style.footer}>
-        <CustomText customTextStyle={Style.footerText}>Library Inc.</CustomText>
+        <CustomText textStyle={Style.footerText}>Library Inc.</CustomText>
       </View>
     </SafeAreaView>
   );
