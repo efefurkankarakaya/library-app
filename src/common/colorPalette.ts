@@ -18,6 +18,7 @@ export const TextColor = {
   darkgrey: "#414a4c", // TODO: Replace all occurrences with iOSGrey
   iOSGrey: "#414a4c",
   AndroidGrey: "#e2e2e2",
+  whiteGrey: "#d6d5cb",
   urlBlue: "#3366CC",
 };
 

@@ -9,6 +9,13 @@ import FlashlightOn from "../../../assets/flash_on.svg";
 import X from "../../../assets/x.svg";
 import Settings from "../../../assets/settings.svg";
 
+/* TODO: In some cases, screen might need to be considered here. */
+const iconSize: number = Dimensions.get("window").width * 0.09;
+const iconStyle: object = {
+  /* SVG styles are not supported natively in StyleSheets */
+  fill: CameraButtonColor.grey, // TODO: Find a better grey
+};
+
 // https://github.com/expo/examples
 // https://github.com/expo/examples/blob/master/with-camera/App.js
 
@@ -39,95 +46,46 @@ interface CamScreen {
   navigation: any; // TODO: Update the type according to the next navigation group
 }
 
-const iconSize = Dimensions.get("window").width * 0.09;
-
 /* Local Components */
-const InformationText = ({ children }: InformationTextProps) => <CustomText textStyle={Style.informationText}>{children}</CustomText>;
+const InformationText: React.FC<InformationTextProps> = ({ children }: InformationTextProps) => {
+  return <CustomText textStyle={Style.informationText}>{children}</CustomText>;
+};
 
-const CameraCloseButton = ({ onPress }: CameraCloseButtonProps) => {
+const CameraCloseButton: React.FC<CameraCloseButtonProps> = ({ onPress }: CameraCloseButtonProps) => {
   return (
-    <TransparentButton
-      buttonStyle={{
-        backgroundColor: "transparent",
-        padding: 2,
-        margin: 0,
-      }}
-      touchableOpacityProps={{ onPress }}
-    >
-      <X
-        width={iconSize}
-        height={iconSize}
-        style={{
-          fill: CameraButtonColor.grey /* TODO: Find a common camera subcomponent color*/,
-        }}
-      />
+    <TransparentButton buttonStyle={Style.cameraButtonGeneric} touchableOpacityProps={{ onPress }}>
+      <X width={iconSize} height={iconSize} style={iconStyle} />
     </TransparentButton>
   );
 };
 
-const CameraFlashlightButton = ({ onPress }: CameraFlashlightButtonProps) => {
+const CameraFlashlightButton: React.FC<CameraFlashlightButtonProps> = ({ onPress }: CameraFlashlightButtonProps) => {
   return (
-    <TransparentButton
-      buttonStyle={{
-        margin: 0,
-        padding: 2,
-        backgroundColor: "transparent",
-      }}
-      touchableOpacityProps={{ onPress }}
-    >
-      <FlashlightOn
-        width={iconSize}
-        height={iconSize}
-        style={{
-          fill: CameraButtonColor.grey,
-        }}
-      />
+    <TransparentButton buttonStyle={Style.cameraButtonGeneric} touchableOpacityProps={{ onPress }}>
+      <FlashlightOn width={iconSize} height={iconSize} style={iconStyle} />
     </TransparentButton>
   );
 };
 
-const CameraSettingsButton = ({ onPress }: CameraSettingsButtonProps) => {
+const CameraSettingsButton: React.FC<CameraSettingsButtonProps> = ({ onPress }: CameraSettingsButtonProps) => {
   return (
     <TransparentButton
       buttonStyle={{
-        margin: 0,
-        padding: 2,
-        paddingRight: 4,
-        backgroundColor: "transparent",
+        ...Style.cameraButtonGeneric,
+        ...Style.cameraButtonRightEnd,
       }}
       touchableOpacityProps={{ onPress }}
     >
-      <Settings
-        width={iconSize}
-        height={iconSize}
-        style={{
-          fill: CameraButtonColor.grey,
-        }}
-      />
+      <Settings width={iconSize} height={iconSize} style={iconStyle} />
     </TransparentButton>
   );
 };
 
-// TODO: Refactor style/css here.
-const CameraTopBar = ({ isPermissionGranted, onPressFunctions }: CameraTopBarProps) => {
+const CameraTopBar: React.FC<CameraTopBarProps> = ({ isPermissionGranted, onPressFunctions }: CameraTopBarProps) => {
   const { onPressX, onPressFlashlight, onPressSettings } = onPressFunctions;
-  // TODO: Refactor here
   return (
-    <View
-      style={{
-        /* https://stackoverflow.com/questions/36938742/touchablehighlight-not-clickable-if-position-absolute */
-        zIndex: 1 /* To be able to click on the button which is absolute positioned by its container. */,
-        position: "absolute",
-        marginTop: 50,
-        width: "100%",
-      }}
-    >
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
+    <View style={Style.cameraTopBarContainer}>
+      <View style={Style.cameraTopBarInnerContainer}>
         <CameraCloseButton onPress={onPressX} />
         {isPermissionGranted && <CameraFlashlightButton onPress={onPressFlashlight} />}
         <CameraSettingsButton onPress={onPressSettings} />
@@ -158,6 +116,10 @@ export default function CamScreen({ navigation }: CamScreen) {
 
   const onPressX = () => {
     navigation.goBack();
+  };
+
+  const onPressFlashlight = () => {
+    logWithTime("[onPressFlashlight]");
   };
 
   const onPressSettings = () => {
@@ -204,33 +166,19 @@ export default function CamScreen({ navigation }: CamScreen) {
 
   return (
     <View style={Style.container}>
-      <CameraTopBar isPermissionGranted={permission?.granted} onPressFunctions={{ onPressX, onPressSettings }} />
-      <View
-        style={{
-          position: "absolute",
-          bottom: 70,
-          width: "100%",
-        }}
-      >
-        <View
-          style={{
-            alignItems: "center",
-          }}
-        >
-          <TransparentButton
-            touchableOpacityProps={{
-              onPress: onPressCapture,
-            }}
-            buttonStyle={{
-              backgroundColor: CameraButtonColor.grey, // TODO: Find a better grey
-              height: 65,
-              width: 65,
-              borderRadius: 100,
-            }}
-          ></TransparentButton>
+      <Camera style={Style.camera} type={CameraType.back} ref={cameraRef}>
+        <CameraTopBar isPermissionGranted={permission?.granted} onPressFunctions={{ onPressX, onPressSettings }} />
+        <View style={Style.cameraBottomBarContainer}>
+          <View style={Style.cameraBottomBarInnerContainer}>
+            <TransparentButton
+              touchableOpacityProps={{
+                onPress: onPressCapture,
+              }}
+              buttonStyle={Style.cameraCaptureButton}
+            ></TransparentButton>
+          </View>
         </View>
-      </View>
-      <Camera type={CameraType.back} ref={cameraRef}></Camera>
+      </Camera>
     </View>
   );
 }
