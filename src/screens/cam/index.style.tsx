@@ -20,16 +20,6 @@ export default StyleSheet.create({
   informationText: {
     color: "#D6D5CB",
   },
-  grantPermissionButton: {
-    // TODO: This can be common component: TextButton
-    padding: 0,
-    margin: 0,
-    border: "none",
-    backgroundColor: "transparent",
-  },
-  grantPermissionText: {
-    color: TextColor.urlBlue,
-    margin: 0,
-    padding: 0,
-  },
+  grantPermissionButton: {},
+  grantPermissionText: {},
 });

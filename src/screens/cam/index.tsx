@@ -4,7 +4,7 @@ import { Camera, CameraType } from "expo-camera";
 import Style from "./index.style";
 import { CameraButtonColor, TextColor } from "../../common/colorPalette";
 import { logWithTime } from "../../utils/utils";
-import { TransparentButton, CustomText } from "../../components";
+import { TransparentButton, CustomText, TextButton } from "../../components";
 import FlashlightOn from "../../../assets/flash_on.svg";
 import X from "../../../assets/x.svg";
 import Settings from "../../../assets/settings.svg";
@@ -128,7 +128,6 @@ const CameraTopBar = ({ isPermissionGranted, onPressFunctions }: CameraTopBarPro
           justifyContent: "space-between",
         }}
       >
-        {/* TODO: Make this component generi container */}
         <CameraCloseButton onPress={onPressX} />
         {isPermissionGranted && <CameraFlashlightButton onPress={onPressFlashlight} />}
         <CameraSettingsButton onPress={onPressSettings} />
@@ -189,13 +188,7 @@ export default function CamScreen({ navigation }: CamScreen) {
           <View style={Style.row}>
             <InformationText>Click</InformationText>
             <InformationText> </InformationText>
-            <TransparentButton
-              touchableOpacityProps={{ onPress: requestPermission }}
-              buttonStyle={Style.grantPermissionButton}
-              textStyle={Style.grantPermissionText}
-            >
-              here
-            </TransparentButton>
+            <TextButton touchableOpacityProps={{ onPress: requestPermission }}>here</TextButton>
             <InformationText> </InformationText>
             <InformationText>to grant permission.</InformationText>
           </View>

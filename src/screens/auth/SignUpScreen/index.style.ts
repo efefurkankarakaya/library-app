@@ -4,7 +4,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    marginTop: Platform.OS === "ios" ? "7.5%" : "15%",
+    marginTop: Platform.OS === "ios" ? "30%" : "15%",
   },
   headerContainer: {
     marginLeft: 15,

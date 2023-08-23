@@ -24,28 +24,14 @@ export default StyleSheet.create({
     marginBottom: 10,
   },
   forgotPasswordButton: {
-    padding: 0,
-    border: "none",
-    backgroundColor: "transparent",
     marginBottom: 10,
   },
-  forgotPasswordText: {
-    color: TextColor.urlBlue,
-  },
+  forgotPasswordText: {},
   signUpContainer: {
     flexDirection: "row",
   },
-  signUpButton: {
-    padding: 0,
-    margin: 0,
-    border: "none",
-    backgroundColor: "transparent",
-  },
-  signUpText: {
-    color: TextColor.urlBlue,
-    margin: 0,
-    padding: 0,
-  },
+  signUpButton: {},
+  signUpText: {},
   footer: {
     position: "absolute",
     bottom: 20,

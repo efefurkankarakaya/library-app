@@ -32,6 +32,7 @@ import { RootStackParamList } from "../../../types/navigationTypes";
 /* Others */
 import { logWithTime } from "../../../utils/utils";
 import { authenticate } from "../../../helpers/authHelpers";
+import { TextButton } from "../../../components";
 
 interface LoginData {
   email: string;
@@ -145,7 +146,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       <CustomButton touchableOpacityProps={{ onPress: onPressLogin }} buttonStyle={Style.loginButton}>
         Login
       </CustomButton>
-      <CustomButton
+      <TextButton
         touchableOpacityProps={{
           onPress: onPressForgotPassword,
         }}
@@ -153,15 +154,15 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         textStyle={Style.forgotPasswordText}
       >
         Forgot password?
-      </CustomButton>
+      </TextButton>
       <View style={Style.signUpContainer}>
         <CustomText>
           Still not have an account? <CustomText></CustomText>
         </CustomText>
 
-        <CustomButton touchableOpacityProps={{ onPress: onPressSignUp }} buttonStyle={Style.signUpButton} textStyle={Style.signUpText}>
+        <TextButton touchableOpacityProps={{ onPress: onPressSignUp }} buttonStyle={Style.signUpButton} textStyle={Style.signUpText}>
           Sign up
-        </CustomButton>
+        </TextButton>
         <CustomText> now.</CustomText>
       </View>
       {/* https://stackoverflow.com/questions/39344140/react-native-how-to-control-what-keyboard-pushes-up */}
