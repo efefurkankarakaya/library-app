@@ -1,4 +1,4 @@
-import { Dimensions, Platform, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { CameraButtonColor, TextColor } from "../../common/colorPalette";
 
 const { width, height } = Dimensions.get("screen");

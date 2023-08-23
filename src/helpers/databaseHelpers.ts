@@ -1,5 +1,5 @@
 /* Expo */
-import * as Crypto from "expo-crypto"; // TODO: Do you really need the all?
+import * as Crypto from "expo-crypto"; // TODO: Imports functions only
 
 /* Database */
 import User from "../models/User";

@@ -1,5 +1,4 @@
 import { Platform, StyleSheet } from "react-native";
-import { TextColor } from "../../../common/colorPalette";
 
 export default StyleSheet.create({
   container: {

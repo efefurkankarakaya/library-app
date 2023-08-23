@@ -3,16 +3,13 @@ import { useEffect, useState } from "react";
 import { SafeAreaView, View } from "react-native";
 
 /* Navigation */
-import { NavigationProp } from "@react-navigation/native";
+import type { NavigationProp } from "@react-navigation/native";
 
 /* Expo */
 import { Image } from "expo-image";
 
 /* Custom Components */
-import CustomTextInput from "../../../components/CustomTextInput";
-import CustomText from "../../../components/CustomText";
-import CustomButton from "../../../components/CustomButton";
-import ValidatorTextInput from "../../../components/ValidatorTextInput";
+import { CustomTextInput, CustomText, CustomButton, ValidatorTextInput, TextButton } from "../../../components";
 
 /* Store */
 import { useAppDispatch } from "../../../store/hooks";
@@ -32,7 +29,6 @@ import { RootStackParamList } from "../../../types/navigationTypes";
 /* Others */
 import { logWithTime } from "../../../utils/utils";
 import { authenticate } from "../../../helpers/authHelpers";
-import { TextButton } from "../../../components";
 
 interface LoginData {
   email: string;

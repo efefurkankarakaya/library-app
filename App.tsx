@@ -4,14 +4,13 @@ import { View } from "react-native";
 
 /* Navigation */
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/stack";
-import { BottomTabBarProps, BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { BottomTabParamList, RootStackParamList, RootStackScreenProps } from "./src/types/navigationTypes";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { BottomTabParamList, RootStackParamList } from "./src/types/navigationTypes";
 
 /* Expo */
 import { StatusBar } from "expo-status-bar";
-import { useFonts, Montserrat_400Regular, Montserrat_100Thin } from "@expo-google-fonts/montserrat";
+import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
 import * as SplashScreen from "expo-splash-screen";
 
 /**
@@ -34,13 +33,10 @@ import { Provider } from "react-redux";
 import { store } from "./src/store/store";
 
 /* Screens */
-import LoginScreen from "./src/screens/auth/LoginScreen";
-import HomeScreen from "./src/screens/home";
-import SignUpScreen from "./src/screens/auth/SignUpScreen";
+import { LoginScreen, SignUpScreen, HomeScreen, CamScreen } from "./src/screens";
 
 /* Style */
 import AppStyle from "./App.style";
-import CamScreen from "./src/screens/cam";
 
 // https://reactnative.dev/docs/environment-setup?guide=quickstart&package-manager=npm
 // https://reactnative.dev/docs/typescript

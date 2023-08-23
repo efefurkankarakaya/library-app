@@ -1,13 +1,12 @@
 /* Core */
 import { useEffect, useMemo, useState } from "react";
 import { FlatList, Text, SafeAreaView, View, Image } from "react-native";
-// import { SafeAreaView } from "react-native-safe-area-context";
 
 /* Navigation */
 import { NavigationProp } from "@react-navigation/native";
 
 /* Custom Components */
-import CustomText from "../../components/CustomText";
+import { CustomText, CustomTextInput } from "../../components";
 
 /* Database */
 import { AppRealmContext } from "../../models";
@@ -21,8 +20,8 @@ import Style from "./index.style";
 
 /* Types */
 import { MainStackParamList } from "../../types/navigationTypes";
-import CustomTextInput from "../../components/CustomTextInput";
 
+/* Others */
 import { useSwipe } from "../../helpers/gestureHelpers";
 
 interface HomeScreenProps {

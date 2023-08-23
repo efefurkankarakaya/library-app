@@ -4,9 +4,11 @@ import CustomButton from "../CustomButton";
 /* Style */
 import Style from "./index.style";
 
+/* Types */
+import { CustomButtonProps } from "../../types/componentProps";
+
 /* Others */
 import { combineStyles } from "../../helpers/styleHelpers";
-import { CustomButtonProps } from "../../types/componentProps";
 
 interface TransparentButtonProps extends CustomButtonProps {}
 

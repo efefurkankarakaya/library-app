@@ -3,16 +3,14 @@ import { useEffect, useState } from "react";
 import { SafeAreaView, View } from "react-native";
 
 /* Navigation */
-import { NavigationProp } from "@react-navigation/native";
+import type { NavigationProp } from "@react-navigation/native";
 
 /* Database */
 import { AppRealmContext } from "../../../models";
 import User from "../../../models/User";
 
 /* Custom Components */
-import CustomText from "../../../components/CustomText";
-import CustomButton from "../../../components/CustomButton";
-import ValidatorTextInput from "../../../components/ValidatorTextInput";
+import { CustomText, CustomButton, ValidatorTextInput } from "../../../components";
 
 /* Style */
 import Style from "./index.style";

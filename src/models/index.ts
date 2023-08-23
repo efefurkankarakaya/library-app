@@ -4,7 +4,7 @@ import Book from "./Book";
 
 export const AppRealmContext = createRealmContext({
   path: "database.realm",
-  deleteRealmIfMigrationNeeded: true, // TODO: Will be removed this line after creating the schema
+  deleteRealmIfMigrationNeeded: true, // TODO: Remove this after all the schemas are ready.
   /**
    * Migration steps (if needed future again)
    * https://www.mongodb.com/docs/legacy/realm/javascript/latest/#migrations

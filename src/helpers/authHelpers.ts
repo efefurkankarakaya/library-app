@@ -1,5 +1,5 @@
 /* Expo */
-import * as Crypto from "expo-crypto";
+import * as Crypto from "expo-crypto"; // TODO: Import functions only
 
 /* Database */
 import { Results } from "realm";

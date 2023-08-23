@@ -1,15 +1,12 @@
 /* Core */
-import React, { ReactNode } from "react";
-import { SafeAreaView, TextProps, TouchableOpacity, TouchableOpacityProps } from "react-native";
+import React from "react";
+import { TouchableOpacity } from "react-native";
 
 /* Custom Components */
 import CustomText from "../CustomText";
 
 /* Style */
 import Style from "./index.style";
-
-/* Types */
-import { TStyleSheet } from "../../types/commonTypes";
 
 /* Others */
 import { combineStyles } from "../../helpers/styleHelpers";

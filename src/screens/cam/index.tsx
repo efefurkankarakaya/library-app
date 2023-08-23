@@ -1,13 +1,22 @@
+/* Core */
 import { useRef, type ReactNode } from "react";
-import { Dimensions, Image, Text, TouchableWithoutFeedbackProps, View } from "react-native";
+import { Dimensions, TouchableWithoutFeedbackProps, View } from "react-native";
+
+/* Expo */
 import { Camera, CameraType } from "expo-camera";
-import Style from "./index.style";
-import { CameraButtonColor, TextColor } from "../../common/colorPalette";
-import { logWithTime } from "../../utils/utils";
+
+/* Custom Components */
 import { TransparentButton, CustomText, TextButton } from "../../components";
+
+/* Style */
+import Style from "./index.style";
+import { CameraButtonColor } from "../../common/colorPalette";
 import FlashlightOn from "../../../assets/flash_on.svg";
 import X from "../../../assets/x.svg";
 import Settings from "../../../assets/settings.svg";
+
+/* Others */
+import { logWithTime } from "../../utils/utils";
 
 /* TODO: In some cases, screen might need to be considered here. */
 const iconSize: number = Dimensions.get("window").width * 0.09;
