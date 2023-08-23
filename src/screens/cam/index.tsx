@@ -1,10 +1,16 @@
 import { useRef, type ReactNode } from "react";
-import { Dimensions, Text, TouchableWithoutFeedbackProps, View } from "react-native";
+import { Dimensions, Image, Text, TouchableWithoutFeedbackProps, View } from "react-native";
 import { Camera, CameraType } from "expo-camera";
 import Style from "./index.style";
 import { TextColor } from "../../common/colorPalette";
 import { logWithTime } from "../../utils/utils";
 import { CustomButton, CustomText } from "../../components";
+import FlashLightOn from "../../../assets/flash_on.svg";
+import X from "../../../assets/x.svg";
+import Settings from "../../../assets/settings.svg";
+
+// https://github.com/expo/examples
+// https://github.com/expo/examples/blob/master/with-camera/App.js
 
 interface InformationTextProps {
   children: ReactNode;
@@ -18,11 +24,14 @@ interface CamScreen {
   navigation: any; // TODO: Update the type according to the next navigation group
 }
 
+const iconSize = Dimensions.get("window").width * 0.09;
+
 /* Local Components */
 const InformationText = ({ children }: InformationTextProps) => <CustomText customTextStyle={Style.informationText}>{children}</CustomText>;
 
 // TODO: Refactor style/css here.
 const CameraCloseButton = ({ onPress }: CameraCloseButtonProps) => {
+  // TODO: Refactor here
   return (
     <View
       style={{
@@ -30,20 +39,66 @@ const CameraCloseButton = ({ onPress }: CameraCloseButtonProps) => {
         zIndex: 1 /* To be able to click on the button which is absolute positioned by its container. */,
         position: "absolute",
         marginTop: 50,
+        width: "100%",
       }}
     >
-      <CustomButton
-        customButtonStyle={{
-          backgroundColor: "transparent",
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
         }}
-        customTextStyle={{
-          color: TextColor.iOSGrey /* It seems fine in Android too */,
-          fontSize: 20,
-        }}
-        touchableOpacityProps={{ onPress: onPress }}
       >
-        X
-      </CustomButton>
+        {/* TODO: Make this component generi container */}
+        <CustomButton
+          customButtonStyle={{
+            backgroundColor: "transparent",
+            padding: 2,
+            margin: 0,
+          }}
+          touchableOpacityProps={{ onPress: onPress }}
+        >
+          <X
+            width={iconSize}
+            height={iconSize}
+            style={{
+              fill: "lightgray" /* TODO: Find a common camera subcomponent color*/,
+            }}
+          />
+        </CustomButton>
+        <CustomButton
+          customButtonStyle={{
+            margin: 0,
+            padding: 2,
+            backgroundColor: "transparent",
+          }}
+          // touchableOpacityProps={{ onPress: onPress }}
+        >
+          <FlashLightOn
+            width={iconSize}
+            height={iconSize}
+            style={{
+              fill: "lightgray",
+            }}
+          />
+        </CustomButton>
+        <CustomButton
+          customButtonStyle={{
+            margin: 0,
+            padding: 2,
+            paddingRight: 4,
+            backgroundColor: "transparent",
+          }}
+          // touchableOpacityProps={{ onPress: onPress }}
+        >
+          <Settings
+            width={iconSize}
+            height={iconSize}
+            style={{
+              fill: "lightgray",
+            }}
+          />
+        </CustomButton>
+      </View>
     </View>
   );
 };
@@ -74,8 +129,10 @@ export default function CamScreen({ navigation }: CamScreen) {
 
   const onPressCapture = async () => {
     if (cameraRef.current) {
-      const { uri } = await cameraRef.current.takePictureAsync();
-      console.log(uri);
+      /* Property 'takePictureAsync' does not exist on type 'never'. */
+      /* @ts-ignore */
+      const { uri, base64 } = await cameraRef.current.takePictureAsync({ base64: true });
+      console.log(uri, base64);
     }
   };
 
@@ -117,16 +174,36 @@ export default function CamScreen({ navigation }: CamScreen) {
   return (
     <View style={Style.container}>
       <CameraCloseButton onPress={onPressX} />
-      <CustomButton
-        touchableOpacityProps={{
-          onPress: onPressCapture,
-        }}
-        customButtonStyle={{
-          marginTop: 100,
+      <View
+        style={{
+          position: "absolute",
+          bottom: 70,
+          width: "100%",
         }}
       >
-        Shoot
-      </CustomButton>
+        <View
+          style={{
+            alignItems: "center",
+          }}
+        >
+          <CustomButton
+            touchableOpacityProps={{
+              onPress: onPressCapture,
+            }}
+            customButtonStyle={{
+              backgroundColor: "lightgray", // TODO: Find a better grey
+              height: 65,
+              width: 65,
+              borderRadius: 100,
+            }}
+          ></CustomButton>
+          <CustomButton
+            customButtonStyle={{
+              backgroundColor: "transparent",
+            }}
+          ></CustomButton>
+        </View>
+      </View>
       <Camera type={CameraType.back} ref={cameraRef}>
         {/* <CustomButton
           customButtonStyle={{
