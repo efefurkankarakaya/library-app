@@ -1,9 +1,9 @@
 /* Core */
-import { useRef, type ReactNode } from "react";
+import { useRef, type ReactNode, useState } from "react";
 import { Dimensions, TouchableWithoutFeedbackProps, View } from "react-native";
 
 /* Expo */
-import { Camera, CameraType } from "expo-camera";
+import { Camera, CameraType, FlashMode } from "expo-camera";
 
 /* Custom Components */
 import { TransparentButton, CustomText, TextButton } from "../../components";
@@ -12,6 +12,7 @@ import { TransparentButton, CustomText, TextButton } from "../../components";
 import Style from "./index.style";
 import { CameraButtonColor } from "../../common/colorPalette";
 import FlashlightOn from "../../../assets/flash_on.svg";
+import FlashlightOff from "../../../assets/flash_off.svg";
 import X from "../../../assets/x.svg";
 import Settings from "../../../assets/settings.svg";
 
@@ -37,8 +38,12 @@ interface CameraScreenButtonProps {
 }
 
 interface CameraCloseButtonProps extends CameraScreenButtonProps {}
+
 interface CameraSettingsButtonProps extends CameraScreenButtonProps {}
-interface CameraFlashlightButtonProps extends CameraScreenButtonProps {}
+
+interface CameraFlashlightButtonProps extends CameraScreenButtonProps {
+  flashMode: string;
+}
 
 interface CameraTopBarOnPress {
   onPressX?: TouchableWithoutFeedbackProps["onPress"];
@@ -48,6 +53,7 @@ interface CameraTopBarOnPress {
 
 interface CameraTopBarProps {
   isPermissionGranted: boolean | undefined;
+  flashMode: string;
   onPressFunctions: CameraTopBarOnPress;
 }
 
@@ -68,10 +74,17 @@ const CameraCloseButton: React.FC<CameraCloseButtonProps> = ({ onPress }: Camera
   );
 };
 
-const CameraFlashlightButton: React.FC<CameraFlashlightButtonProps> = ({ onPress }: CameraFlashlightButtonProps) => {
+const CameraFlashlightButton: React.FC<CameraFlashlightButtonProps> = ({ flashMode, onPress }: CameraFlashlightButtonProps) => {
+  const activeIcon = (_iconSize: number, _iconStyle: object) => {
+    if (flashMode === "on") {
+      return <FlashlightOff width={_iconSize} height={_iconSize} style={_iconStyle} />;
+    }
+    return <FlashlightOn width={_iconSize} height={_iconSize} style={_iconStyle} />;
+  };
+
   return (
     <TransparentButton buttonStyle={Style.cameraButtonGeneric} touchableOpacityProps={{ onPress }}>
-      <FlashlightOn width={iconSize} height={iconSize} style={iconStyle} />
+      {activeIcon(iconSize, iconStyle)}
     </TransparentButton>
   );
 };
@@ -90,13 +103,13 @@ const CameraSettingsButton: React.FC<CameraSettingsButtonProps> = ({ onPress }: 
   );
 };
 
-const CameraTopBar: React.FC<CameraTopBarProps> = ({ isPermissionGranted, onPressFunctions }: CameraTopBarProps) => {
+const CameraTopBar: React.FC<CameraTopBarProps> = ({ isPermissionGranted, flashMode, onPressFunctions }: CameraTopBarProps) => {
   const { onPressX, onPressFlashlight, onPressSettings } = onPressFunctions;
   return (
     <View style={Style.cameraTopBarContainer}>
       <View style={Style.cameraTopBarInnerContainer}>
         <CameraCloseButton onPress={onPressX} />
-        {isPermissionGranted && <CameraFlashlightButton onPress={onPressFlashlight} />}
+        {isPermissionGranted && <CameraFlashlightButton flashMode={flashMode} onPress={onPressFlashlight} />}
         <CameraSettingsButton onPress={onPressSettings} />
       </View>
     </View>
@@ -122,13 +135,20 @@ const CameraTopBar: React.FC<CameraTopBarProps> = ({ isPermissionGranted, onPres
 export default function CamScreen({ navigation }: CamScreen) {
   const cameraRef = useRef(null);
   const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [flashMode, setFlashMode] = useState<FlashMode>(FlashMode.off);
 
   const onPressX = () => {
     navigation.goBack();
   };
 
-  const onPressFlashlight = () => {
-    logWithTime("[onPressFlashlight]");
+  const onPressFlashlight = (): void => {
+    logWithTime("[onPressFlashlight]", flashMode);
+
+    if (flashMode === FlashMode.off) {
+      setFlashMode(FlashMode.on);
+    } else {
+      setFlashMode(FlashMode.off);
+    }
   };
 
   const onPressSettings = () => {
@@ -153,7 +173,11 @@ export default function CamScreen({ navigation }: CamScreen) {
 
     return (
       <View style={Style.container}>
-        <CameraTopBar isPermissionGranted={permission?.granted} onPressFunctions={{ onPressX, onPressSettings }} />
+        <CameraTopBar
+          isPermissionGranted={permission?.granted}
+          flashMode={FlashMode.off}
+          onPressFunctions={{ onPressX, onPressSettings }}
+        />
         <View style={Style.permissionContainer}>
           <InformationText>Could not access to camera.</InformationText>
           <View style={Style.row}>
@@ -175,8 +199,12 @@ export default function CamScreen({ navigation }: CamScreen) {
 
   return (
     <View style={Style.container}>
-      <Camera style={Style.camera} type={CameraType.back} ref={cameraRef}>
-        <CameraTopBar isPermissionGranted={permission?.granted} onPressFunctions={{ onPressX, onPressSettings }} />
+      <Camera style={Style.camera} type={CameraType.back} ref={cameraRef} flashMode={flashMode}>
+        <CameraTopBar
+          isPermissionGranted={permission?.granted}
+          flashMode={flashMode}
+          onPressFunctions={{ onPressX, onPressFlashlight, onPressSettings }}
+        />
         <View style={Style.cameraBottomBarContainer}>
           <View style={Style.cameraBottomBarInnerContainer}>
             <TransparentButton

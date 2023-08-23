@@ -102,6 +102,7 @@ const MainAppBottomNavigation = (): JSX.Element => {
 
 SplashScreen.preventAutoHideAsync();
 
+// TODO: https://reactnavigation.org/docs/themes/
 // TODO: https://stackoverflow.com/questions/63159757/change-the-default-light-grey-background-color
 // TODO: https://reactnavigation.org/docs/stack-navigator/#animation-related-options
 
