@@ -2,10 +2,10 @@ import { useRef, type ReactNode } from "react";
 import { Dimensions, Image, Text, TouchableWithoutFeedbackProps, View } from "react-native";
 import { Camera, CameraType } from "expo-camera";
 import Style from "./index.style";
-import { TextColor } from "../../common/colorPalette";
+import { CameraButtonColor, TextColor } from "../../common/colorPalette";
 import { logWithTime } from "../../utils/utils";
 import { CustomButton, CustomText } from "../../components";
-import FlashLightOn from "../../../assets/flash_on.svg";
+import FlashlightOn from "../../../assets/flash_on.svg";
 import X from "../../../assets/x.svg";
 import Settings from "../../../assets/settings.svg";
 
@@ -16,8 +16,22 @@ interface InformationTextProps {
   children: ReactNode;
 }
 
-interface CameraCloseButtonProps {
+interface CameraScreenButtonProps {
   onPress: TouchableWithoutFeedbackProps["onPress"];
+}
+
+interface CameraCloseButtonProps extends CameraScreenButtonProps {}
+interface CameraSettingsButtonProps extends CameraScreenButtonProps {}
+interface CameraFlashlightButtonProps extends CameraScreenButtonProps {}
+
+interface CameraTopBarOnPress {
+  onPressX?: TouchableWithoutFeedbackProps["onPress"];
+  onPressFlashlight?: TouchableWithoutFeedbackProps["onPress"];
+  onPressSettings?: TouchableWithoutFeedbackProps["onPress"];
+}
+
+interface CameraTopBarProps {
+  onPressFunctions: CameraTopBarOnPress;
 }
 
 interface CamScreen {
@@ -29,8 +43,73 @@ const iconSize = Dimensions.get("window").width * 0.09;
 /* Local Components */
 const InformationText = ({ children }: InformationTextProps) => <CustomText customTextStyle={Style.informationText}>{children}</CustomText>;
 
-// TODO: Refactor style/css here.
 const CameraCloseButton = ({ onPress }: CameraCloseButtonProps) => {
+  return (
+    <CustomButton
+      customButtonStyle={{
+        backgroundColor: "transparent",
+        padding: 2,
+        margin: 0,
+      }}
+      touchableOpacityProps={{ onPress }}
+    >
+      <X
+        width={iconSize}
+        height={iconSize}
+        style={{
+          fill: CameraButtonColor.grey /* TODO: Find a common camera subcomponent color*/,
+        }}
+      />
+    </CustomButton>
+  );
+};
+
+const CameraFlashlightButton = ({ onPress }: CameraFlashlightButtonProps) => {
+  return (
+    <CustomButton
+      customButtonStyle={{
+        margin: 0,
+        padding: 2,
+        backgroundColor: "transparent",
+      }}
+      touchableOpacityProps={{ onPress }}
+    >
+      <FlashlightOn
+        width={iconSize}
+        height={iconSize}
+        style={{
+          fill: CameraButtonColor.grey,
+        }}
+      />
+    </CustomButton>
+  );
+};
+
+const CameraSettingsButton = ({ onPress }: CameraSettingsButtonProps) => {
+  return (
+    <CustomButton
+      customButtonStyle={{
+        margin: 0,
+        padding: 2,
+        paddingRight: 4,
+        backgroundColor: "transparent",
+      }}
+      touchableOpacityProps={{ onPress }}
+    >
+      <Settings
+        width={iconSize}
+        height={iconSize}
+        style={{
+          fill: CameraButtonColor.grey,
+        }}
+      />
+    </CustomButton>
+  );
+};
+
+// TODO: Refactor style/css here.
+const CameraTopBar = ({ onPressFunctions }: CameraTopBarProps) => {
+  const { onPressX, onPressFlashlight, onPressSettings } = onPressFunctions;
   // TODO: Refactor here
   return (
     <View
@@ -49,55 +128,9 @@ const CameraCloseButton = ({ onPress }: CameraCloseButtonProps) => {
         }}
       >
         {/* TODO: Make this component generi container */}
-        <CustomButton
-          customButtonStyle={{
-            backgroundColor: "transparent",
-            padding: 2,
-            margin: 0,
-          }}
-          touchableOpacityProps={{ onPress: onPress }}
-        >
-          <X
-            width={iconSize}
-            height={iconSize}
-            style={{
-              fill: "lightgray" /* TODO: Find a common camera subcomponent color*/,
-            }}
-          />
-        </CustomButton>
-        <CustomButton
-          customButtonStyle={{
-            margin: 0,
-            padding: 2,
-            backgroundColor: "transparent",
-          }}
-          // touchableOpacityProps={{ onPress: onPress }}
-        >
-          <FlashLightOn
-            width={iconSize}
-            height={iconSize}
-            style={{
-              fill: "lightgray",
-            }}
-          />
-        </CustomButton>
-        <CustomButton
-          customButtonStyle={{
-            margin: 0,
-            padding: 2,
-            paddingRight: 4,
-            backgroundColor: "transparent",
-          }}
-          // touchableOpacityProps={{ onPress: onPress }}
-        >
-          <Settings
-            width={iconSize}
-            height={iconSize}
-            style={{
-              fill: "lightgray",
-            }}
-          />
-        </CustomButton>
+        <CameraCloseButton onPress={onPressX} />
+        <CameraFlashlightButton onPress={onPressFlashlight} />
+        <CameraSettingsButton onPress={onPressSettings} />
       </View>
     </View>
   );
@@ -173,7 +206,7 @@ export default function CamScreen({ navigation }: CamScreen) {
 
   return (
     <View style={Style.container}>
-      <CameraCloseButton onPress={onPressX} />
+      <CameraTopBar onPressFunctions={{ onPressX }} />
       <View
         style={{
           position: "absolute",
@@ -191,7 +224,7 @@ export default function CamScreen({ navigation }: CamScreen) {
               onPress: onPressCapture,
             }}
             customButtonStyle={{
-              backgroundColor: "lightgray", // TODO: Find a better grey
+              backgroundColor: CameraButtonColor.grey, // TODO: Find a better grey
               height: 65,
               width: 65,
               borderRadius: 100,

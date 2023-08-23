@@ -20,3 +20,7 @@ export const TextColor = {
   AndroidGrey: "#e2e2e2",
   urlBlue: "#3366CC",
 };
+
+export const CameraButtonColor = {
+  grey: "lightgray",
+};
