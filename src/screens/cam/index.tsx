@@ -4,6 +4,7 @@ import { Dimensions, TouchableWithoutFeedbackProps, View } from "react-native";
 
 /* Expo */
 import { Camera, CameraType, FlashMode } from "expo-camera";
+import * as ImagePicker from "expo-image-picker";
 
 /* Custom Components */
 import { TransparentButton, CustomText, TextButton } from "../../components";
@@ -15,6 +16,7 @@ import FlashlightOn from "../../../assets/flash_on.svg";
 import FlashlightOff from "../../../assets/flash_off.svg";
 import X from "../../../assets/x.svg";
 import Settings from "../../../assets/settings.svg";
+import Gallery from "../../../assets/gallery2.svg";
 
 /* Others */
 import { logWithTime } from "../../utils/utils";
@@ -29,6 +31,7 @@ const iconStyle: object = {
 // https://github.com/expo/examples
 // https://github.com/expo/examples/blob/master/with-camera/App.js
 
+/* ================ File Private Component Props ================ */
 interface InformationTextProps {
   children: ReactNode;
 }
@@ -57,11 +60,12 @@ interface CameraTopBarProps {
   onPressFunctions: CameraTopBarOnPress;
 }
 
-interface CamScreen {
+interface CamScreenProps {
   navigation: any; // TODO: Update the type according to the next navigation group
 }
+/* ================ End ================ */
 
-/* Local Components */
+/* ================ File Private Components ================ */
 const InformationText: React.FC<InformationTextProps> = ({ children }: InformationTextProps) => {
   return <CustomText textStyle={Style.informationText}>{children}</CustomText>;
 };
@@ -115,6 +119,7 @@ const CameraTopBar: React.FC<CameraTopBarProps> = ({ isPermissionGranted, flashM
     </View>
   );
 };
+/* ================ End ================ */
 
 /**
   @note
@@ -132,10 +137,11 @@ const CameraTopBar: React.FC<CameraTopBarProps> = ({ isPermissionGranted, flashM
   * See: https://docs.gradle.org/current/userguide/plugins.html#sec:subprojects_plugins_dsl
   * The Kotlin plugin was loaded in the following projects: ':expo', ':expo-modules-core'
 */
-export default function CamScreen({ navigation }: CamScreen) {
+export default function CamScreen({ navigation }: CamScreenProps) {
   const cameraRef = useRef(null);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [flashMode, setFlashMode] = useState<FlashMode>(FlashMode.off);
+  const [currentImage, setCurrentImage] = useState<ImagePicker.ImagePickerAsset["base64"]>(null);
 
   const onPressX = () => {
     navigation.goBack();
@@ -164,6 +170,24 @@ export default function CamScreen({ navigation }: CamScreen) {
     }
   };
 
+  const onPressGallery = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      base64: true,
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      // aspect: [9, 16], // Related to allowsEditing setting and works only on Android.
+      selectionLimit: 1,
+      quality: 1,
+    });
+
+    // console.log(result);
+
+    if (!result.canceled) {
+      // console.log(result.assets[0].base64);
+      setCurrentImage(result.assets[0].base64);
+    }
+  };
+
   if (!permission) {
     logWithTime("Awaiting for Camera...");
   }
@@ -171,6 +195,7 @@ export default function CamScreen({ navigation }: CamScreen) {
   if (!permission?.granted) {
     logWithTime("Permission is not granted.");
 
+    // TODO: Refactor here, merge with the main component.
     return (
       <View style={Style.container}>
         <CameraTopBar
@@ -207,12 +232,22 @@ export default function CamScreen({ navigation }: CamScreen) {
         />
         <View style={Style.cameraBottomBarContainer}>
           <View style={Style.cameraBottomBarInnerContainer}>
+            <View style={Style.cameraGalleryButtonContainer}>
+              <TransparentButton
+                touchableOpacityProps={{
+                  onPress: onPressGallery,
+                }}
+              >
+                <Gallery style={iconStyle} width={iconSize} height={iconSize} />
+              </TransparentButton>
+            </View>
             <TransparentButton
               touchableOpacityProps={{
                 onPress: onPressCapture,
               }}
               buttonStyle={Style.cameraCaptureButton}
             ></TransparentButton>
+            <Gallery width={iconSize} height={iconSize} />
           </View>
         </View>
       </Camera>

@@ -74,5 +74,7 @@
     <false/>
     <key>NSCameraUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to access your camera.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>"Allow $(PRODUCT_NAME) to access your photos"</string>
   </dict>
 </plist>

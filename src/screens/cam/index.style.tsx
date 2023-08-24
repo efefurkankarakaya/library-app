@@ -49,12 +49,21 @@ export default StyleSheet.create({
     width: "100%",
   },
   cameraBottomBarInnerContainer: {
-    alignItems: "center",
+    // backgroundColor: "white",
+    // alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  cameraGalleryButtonContainer: {
+    alignSelf: "center",
+    top: 50,
+    left: 22.5,
   },
   cameraCaptureButton: {
     backgroundColor: CameraButtonColor.grey, // TODO: Find a better grey
     height: 65,
     width: 65,
     borderRadius: 100,
+    marginBottom: 25,
   },
 });
