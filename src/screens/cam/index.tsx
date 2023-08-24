@@ -1,5 +1,5 @@
 /* Core */
-import { useRef, type ReactNode, useState } from "react";
+import { useRef, type ReactNode, useState, useEffect } from "react";
 import { Dimensions, TouchableWithoutFeedbackProps, View } from "react-native";
 
 /* Expo */
@@ -31,6 +31,9 @@ const iconStyle: object = {
 // https://github.com/expo/examples
 // https://github.com/expo/examples/blob/master/with-camera/App.js
 
+/* ================ File Private Types ================ */
+type TRequestPermission = () => Promise<ImagePicker.PermissionResponse>;
+
 /* ================ File Private Component Props ================ */
 interface InformationTextProps {
   children: ReactNode;
@@ -55,9 +58,13 @@ interface CameraTopBarOnPress {
 }
 
 interface CameraTopBarProps {
-  isPermissionGranted: boolean | undefined;
+  isPermissionGranted: boolean;
   flashMode: string;
   onPressFunctions: CameraTopBarOnPress;
+}
+
+interface PermissionContainerProps {
+  requestPermission: TRequestPermission;
 }
 
 interface CamScreenProps {
@@ -119,6 +126,21 @@ const CameraTopBar: React.FC<CameraTopBarProps> = ({ isPermissionGranted, flashM
     </View>
   );
 };
+
+const PermissionContainer: React.FC<PermissionContainerProps> = ({ requestPermission }: PermissionContainerProps) => {
+  return (
+    <View style={Style.permissionContainer}>
+      <InformationText>Could not access to camera.</InformationText>
+      <View style={Style.row}>
+        <InformationText>Click</InformationText>
+        <InformationText> </InformationText>
+        <TextButton touchableOpacityProps={{ onPress: requestPermission }}>here</TextButton>
+        <InformationText> </InformationText>
+        <InformationText>to grant permission.</InformationText>
+      </View>
+    </View>
+  );
+};
 /* ================ End ================ */
 
 /**
@@ -142,6 +164,13 @@ export default function CamScreen({ navigation }: CamScreenProps) {
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [flashMode, setFlashMode] = useState<FlashMode>(FlashMode.off);
   const [currentImage, setCurrentImage] = useState<ImagePicker.ImagePickerAsset["base64"]>(null);
+  const [isPermissionGranted, setIsPermissionGranted] = useState<boolean>(false);
+
+  useEffect(() => {
+    /* To handle the situation only basic as 'granted or not' 
+    to prevent unpredictable errors that other falsy values (null | undefined) can cause. */
+    setIsPermissionGranted(!!permission?.granted);
+  }, [permission]);
 
   const onPressX = () => {
     navigation.goBack();
@@ -192,31 +221,6 @@ export default function CamScreen({ navigation }: CamScreenProps) {
     logWithTime("Awaiting for Camera...");
   }
 
-  if (!permission?.granted) {
-    logWithTime("Permission is not granted.");
-
-    // TODO: Refactor here, merge with the main component.
-    return (
-      <View style={Style.container}>
-        <CameraTopBar
-          isPermissionGranted={permission?.granted}
-          flashMode={FlashMode.off}
-          onPressFunctions={{ onPressX, onPressSettings }}
-        />
-        <View style={Style.permissionContainer}>
-          <InformationText>Could not access to camera.</InformationText>
-          <View style={Style.row}>
-            <InformationText>Click</InformationText>
-            <InformationText> </InformationText>
-            <TextButton touchableOpacityProps={{ onPress: requestPermission }}>here</TextButton>
-            <InformationText> </InformationText>
-            <InformationText>to grant permission.</InformationText>
-          </View>
-        </View>
-      </View>
-    );
-  }
-
   if (permission) {
     logWithTime("Permission is granted.");
     console.log(permission);
@@ -226,10 +230,11 @@ export default function CamScreen({ navigation }: CamScreenProps) {
     <View style={Style.container}>
       <Camera style={Style.camera} type={CameraType.back} ref={cameraRef} flashMode={flashMode}>
         <CameraTopBar
-          isPermissionGranted={permission?.granted}
+          isPermissionGranted={isPermissionGranted}
           flashMode={flashMode}
           onPressFunctions={{ onPressX, onPressFlashlight, onPressSettings }}
         />
+        {!isPermissionGranted && <PermissionContainer requestPermission={requestPermission} />}
         <View style={Style.cameraBottomBarContainer}>
           <View style={Style.cameraBottomBarInnerContainer}>
             <View style={Style.cameraGalleryButtonContainer}>
@@ -243,9 +248,13 @@ export default function CamScreen({ navigation }: CamScreenProps) {
             </View>
             <TransparentButton
               touchableOpacityProps={{
+                disabled: !isPermissionGranted,
                 onPress: onPressCapture,
               }}
-              buttonStyle={Style.cameraCaptureButton}
+              buttonStyle={{
+                ...Style.cameraCaptureButton,
+                opacity: isPermissionGranted ? 1 : 0.6,
+              }} /* TODO: Think a better way to handle this situation */
             ></TransparentButton>
             <Gallery width={iconSize} height={iconSize} />
           </View>
