@@ -1,5 +1,10 @@
 const moment = require("moment-timezone");
 
+export function addPrefixToBase64(base64Text: string) {
+  const prefix = "data:image/png;base64,";
+  return prefix + base64Text;
+}
+
 export function isEmptyObject(value: {}): boolean {
   return isObject(value) && Object.keys(value).length === 0;
 }

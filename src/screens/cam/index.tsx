@@ -1,6 +1,6 @@
 /* Core */
 import { useRef, type ReactNode, useState, useEffect } from "react";
-import { Dimensions, TouchableWithoutFeedbackProps, View } from "react-native";
+import { Dimensions, Image, TouchableWithoutFeedbackProps, View } from "react-native";
 
 /* Expo */
 import { Camera, CameraType, FlashMode } from "expo-camera";
@@ -17,9 +17,10 @@ import FlashlightOff from "../../../assets/flash_off.svg";
 import X from "../../../assets/x.svg";
 import Settings from "../../../assets/settings.svg";
 import Gallery from "../../../assets/gallery2.svg";
+import Send from "../../../assets/send.svg";
 
 /* Others */
-import { logWithTime } from "../../utils/utils";
+import { addPrefixToBase64, logWithTime } from "../../utils/utils";
 
 /* TODO: In some cases, screen might need to be considered here. */
 const iconSize: number = Dimensions.get("window").width * 0.09;
@@ -61,6 +62,7 @@ interface CameraTopBarOnPress {
 
 interface CameraTopBarProps {
   isPermissionGranted: boolean;
+  isImageDisplayOn: boolean;
   flashMode: string;
   onPressFunctions: CameraTopBarOnPress;
 }
@@ -116,13 +118,18 @@ const CameraSettingsButton: React.FC<CameraSettingsButtonProps> = ({ onPress }: 
   );
 };
 
-const CameraTopBar: React.FC<CameraTopBarProps> = ({ isPermissionGranted, flashMode, onPressFunctions }: CameraTopBarProps) => {
+const CameraTopBar: React.FC<CameraTopBarProps> = ({
+  isPermissionGranted,
+  isImageDisplayOn,
+  flashMode,
+  onPressFunctions,
+}: CameraTopBarProps) => {
   const { onPressX, onPressFlashlight, onPressSettings } = onPressFunctions;
   return (
     <View style={Style.cameraTopBarContainer}>
       <View style={Style.cameraTopBarInnerContainer}>
         <CameraCloseButton onPress={onPressX} />
-        {isPermissionGranted && <CameraFlashlightButton flashMode={flashMode} onPress={onPressFlashlight} />}
+        {isPermissionGranted && !isImageDisplayOn && <CameraFlashlightButton flashMode={flashMode} onPress={onPressFlashlight} />}
         <CameraSettingsButton onPress={onPressSettings} />
       </View>
     </View>
@@ -167,6 +174,7 @@ export default function CamScreen({ navigation }: CamScreenProps) {
   const [flashMode, setFlashMode] = useState<FlashMode>(FlashMode.off);
   const [currentImage, setCurrentImage] = useState<ImagePicker.ImagePickerAsset["base64"]>(null);
   const [isPermissionGranted, setIsPermissionGranted] = useState<boolean>(false);
+  const [isImageDisplayOn, setIsImageDisplayOn] = useState<boolean>(false);
 
   useEffect(() => {
     /* To handle the situation only basic as 'granted or not' 
@@ -189,8 +197,25 @@ export default function CamScreen({ navigation }: CamScreenProps) {
   //   }
   // }, [currentImage]);
 
+  const updateImage = (base64Text: ImagePicker.ImagePickerAsset["base64"]): void => {
+    let updatedBase64Text = null;
+
+    if (base64Text) {
+      updatedBase64Text = addPrefixToBase64(base64Text);
+    }
+
+    setCurrentImage(updatedBase64Text);
+    setIsImageDisplayOn(!!updatedBase64Text);
+  };
+
+  /* ================ onPress Events ================ */
   const onPressX = () => {
-    navigation.goBack();
+    if (currentImage) {
+      // If on the screen, there's an image; instead of closing the camera screen, unmount image.
+      updateImage(null);
+    } else {
+      navigation.goBack();
+    }
   };
 
   const onPressFlashlight = (): void => {
@@ -203,11 +228,11 @@ export default function CamScreen({ navigation }: CamScreenProps) {
     }
   };
 
-  const onPressSettings = () => {
+  const onPressSettings = (): void => {
     logWithTime("[onPressSettings]");
   };
 
-  const onPressCapture = async () => {
+  const onPressCapture = async (): Promise<void> => {
     if (cameraRef.current) {
       /* Property 'takePictureAsync' does not exist on type 'never'. */
       /* @ts-ignore */
@@ -216,7 +241,7 @@ export default function CamScreen({ navigation }: CamScreenProps) {
     }
   };
 
-  const onPressGallery = async () => {
+  const onPressGallery = async (): Promise<void> => {
     let result = await ImagePicker.launchImageLibraryAsync({
       base64: true,
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -230,9 +255,14 @@ export default function CamScreen({ navigation }: CamScreenProps) {
 
     if (!result.canceled) {
       // console.log(result.assets[0].base64);
-      setCurrentImage(result.assets[0].base64);
+      updateImage(result.assets[0].base64);
     }
   };
+
+  const onPressSend = (): void => {
+    logWithTime("[onPressSend]");
+  };
+  /* ================ End ================ */
 
   if (!permission) {
     logWithTime("Awaiting for Camera...");
@@ -246,14 +276,26 @@ export default function CamScreen({ navigation }: CamScreenProps) {
   return (
     <View style={Style.container}>
       <Camera style={Style.camera} type={CameraType.back} ref={cameraRef} flashMode={flashMode}>
+        {currentImage && (
+          <Image
+            style={{
+              height: "100%",
+            }}
+            source={{
+              uri: currentImage,
+            }}
+          />
+        )}
         <CameraTopBar
           isPermissionGranted={isPermissionGranted}
+          isImageDisplayOn={isImageDisplayOn}
           flashMode={flashMode}
           onPressFunctions={{ onPressX, onPressFlashlight, onPressSettings }}
         />
         {!isPermissionGranted && <PermissionContainer requestPermission={requestPermission} />}
         <View style={Style.cameraBottomBarContainer}>
           <View style={Style.cameraBottomBarInnerContainer}>
+            {/* Gallery Button */}
             <View style={Style.cameraGalleryButtonContainer}>
               <TransparentButton
                 touchableOpacityProps={{
@@ -263,17 +305,29 @@ export default function CamScreen({ navigation }: CamScreenProps) {
                 <Gallery style={iconStyle} width={iconSize} height={iconSize} />
               </TransparentButton>
             </View>
+            {/* Record Button */}
             <TransparentButton
               touchableOpacityProps={{
-                disabled: !isPermissionGranted,
+                disabled: !isPermissionGranted || isImageDisplayOn,
                 onPress: onPressCapture,
               }}
               buttonStyle={{
                 ...Style.cameraCaptureButton,
-                opacity: isPermissionGranted ? 1 : 0.6,
-              }} /* TODO: Think a better way to handle this situation */
+                opacity: isPermissionGranted ? 1 : 0.6 /* TODO: Think a better way to handle this situation */,
+                backgroundColor: isImageDisplayOn ? "transparent" : Style.cameraCaptureButton.backgroundColor,
+              }}
             ></TransparentButton>
-            <Gallery width={iconSize} height={iconSize} />
+            {/* Send Button */}
+            <View style={{ alignSelf: "center", top: 50, right: 20.5 }}>
+              <TransparentButton
+                touchableOpacityProps={{
+                  disabled: !currentImage,
+                  onPress: onPressSend,
+                }}
+              >
+                <Send style={currentImage && iconStyle} width={iconSize} height={iconSize} />
+              </TransparentButton>
+            </View>
           </View>
         </View>
       </Camera>
