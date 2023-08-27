@@ -31,6 +31,8 @@ const iconStyle: object = {
 // https://github.com/expo/examples
 // https://github.com/expo/examples/blob/master/with-camera/App.js
 
+// TODO: In android build, gallery icon seemed half and margins are failed; instead of margin, use dimensions.
+
 /* ================ File Private Types ================ */
 type TRequestPermission = () => Promise<ImagePicker.PermissionResponse>;
 
@@ -171,6 +173,21 @@ export default function CamScreen({ navigation }: CamScreenProps) {
     to prevent unpredictable errors that other falsy values (null | undefined) can cause. */
     setIsPermissionGranted(!!permission?.granted);
   }, [permission]);
+
+  // TODO: Only run on real devices, since simulator is not supported by expo-camera
+  // https://docs.expo.dev/versions/latest/sdk/device/
+  // https://stackoverflow.com/questions/34727912/react-native-how-can-i-detect-if-my-code-is-running-in-the-simulator
+  // useEffect(() => {
+  //   if (currentImage) {
+  //     cameraRef.current.pausePreview();
+  //   } else {
+  //     /*
+  //       Error: Calling the 'resumePreview' function has failed
+  //       Caused by: This operation is not supported on the simulator
+  //     */
+  //     cameraRef.current.resumePreview();
+  //   }
+  // }, [currentImage]);
 
   const onPressX = () => {
     navigation.goBack();

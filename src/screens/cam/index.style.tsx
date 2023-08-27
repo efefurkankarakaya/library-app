@@ -1,17 +1,20 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, Platform, StyleSheet } from "react-native";
 import { CameraButtonColor, TextColor } from "../../common/colorPalette";
 
-const { width, height } = Dimensions.get("screen");
+const { width, height } = Dimensions.get("screen"); // TODO: common.ts -> screenWidth, screenHeight, windowWidth, windowHeight
+
+const isIOS = Platform.OS === "ios"; // TODO: common.ts
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000",
+    backgroundColor: "black",
   },
   camera: {
-    // backgroundColor: "white",
+    backgroundColor: "grey",
     width,
     height,
+    // height: "100%",
   },
   row: {
     flexDirection: "row",
@@ -44,17 +47,20 @@ export default StyleSheet.create({
     justifyContent: "space-between",
   },
   cameraBottomBarContainer: {
+    // backgroundColor: "white",
     position: "absolute",
-    bottom: 70,
+    bottom: isIOS ? 70 : 40,
     width: "100%",
+    height: isIOS ? "auto" : "14%" /* Android somehow manage absolute containers in flex container different than expected. */,
   },
   cameraBottomBarInnerContainer: {
-    // backgroundColor: "white",
+    // backgroundColor: "grey",
     // alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
   },
   cameraGalleryButtonContainer: {
+    // backgroundColor: "orange",
     alignSelf: "center",
     top: 50,
     left: 22.5,

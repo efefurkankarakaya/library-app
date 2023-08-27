@@ -43,6 +43,8 @@ import AppStyle from "./App.style";
 // https://docs.expo.dev/workflow/customizing/
 // https://docs.expo.dev/guides/environment-variables/
 
+// TODO: In android build, when keyboard opens, page does not slide
+
 // TODO: Move configurations outside
 // TODO: Move navigation components to navigations/
 const RootStack = createStackNavigator<RootStackParamList>();
