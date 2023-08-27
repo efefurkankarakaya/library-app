@@ -236,8 +236,9 @@ export default function CamScreen({ navigation }: CamScreenProps) {
     if (cameraRef.current) {
       /* Property 'takePictureAsync' does not exist on type 'never'. */
       /* @ts-ignore */
-      const { uri, base64 } = await cameraRef.current.takePictureAsync({ base64: true });
-      console.log(uri, base64);
+      const { base64 } = await cameraRef.current.takePictureAsync({ base64: true });
+
+      updateImage(base64);
     }
   };
 
