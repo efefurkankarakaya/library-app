@@ -11,7 +11,7 @@ export default StyleSheet.create({
     backgroundColor: "black",
   },
   camera: {
-    backgroundColor: "grey",
+    backgroundColor: "black",
     width,
     height,
     // height: "100%",

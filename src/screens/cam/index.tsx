@@ -1,8 +1,9 @@
 /* Core */
 import { useRef, type ReactNode, useState, useEffect } from "react";
-import { Dimensions, Image, TouchableWithoutFeedbackProps, View } from "react-native";
+import { Dimensions, TouchableWithoutFeedbackProps, View } from "react-native";
 
 /* Expo */
+import { Image } from "expo-image";
 import { Camera, CameraType, FlashMode } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 
