@@ -33,7 +33,7 @@ import { Provider } from "react-redux";
 import { store } from "./src/store/store";
 
 /* Screens */
-import { LoginScreen, SignUpScreen, HomeScreen, CamScreen } from "./src/screens";
+import { LoginScreen, SignUpScreen, HomeScreen, CamScreen, DetailsScreen, ActivitiesScreen, ProfileScreen } from "./src/screens";
 
 /* Style */
 import AppStyle from "./App.style";
@@ -46,10 +46,11 @@ import AppStyle from "./App.style";
 // TODO: In android build, when keyboard opens, page does not slide
 
 // TODO: Move configurations outside
-// TODO: Move navigation components to navigations/
+// TODO: Move navigation components to navigations/ or App.navigation.ts
 const RootStack = createStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
+/* ================ Screen Options ================ */
 // Common options for navigation display
 const DefaultNavigatorScreenOptions = {
   title: "",
@@ -75,17 +76,24 @@ const StackScreenLoginOptions = {
 
 const BottomTabNavigatorScreenOptions = {
   // TODO: Use icons for bottom navigation instead of their titles.
+  // ...DefaultNavigatorScreenOptions,
   // title: "",
-  headerShown: false,
+  // headerShown: false,
   headerTransparent: true,
 };
 
+const MainAppNavigatorScreenOptions = {
+  ...DefaultNavigatorScreenOptions,
+};
+/* ================ End ================ */
+
+/* ================ Navigations ================ */
 const AuthenticationStackNavigation = (): JSX.Element => {
   // "Best practises when nesting" -> https://reactnavigation.org/docs/nesting-navigators/
   return (
-    <RootStack.Navigator initialRouteName="Login" screenOptions={StackNavigatorScreenOptions}>
-      <RootStack.Screen name="Login" component={LoginScreen} options={StackScreenLoginOptions} />
-      <RootStack.Screen name="SignUp" component={SignUpScreen} />
+    <RootStack.Navigator initialRouteName="LoginScreen" screenOptions={StackNavigatorScreenOptions}>
+      <RootStack.Screen name="LoginScreen" component={LoginScreen} options={StackScreenLoginOptions} />
+      <RootStack.Screen name="SignUpScreen" component={SignUpScreen} />
       {/* <RootStack.Screen name="ForgotPassword" component={SignUpScreen} options={StackScreenOptions} /> */}
     </RootStack.Navigator>
   );
@@ -93,15 +101,38 @@ const AuthenticationStackNavigation = (): JSX.Element => {
 
 const MainAppBottomNavigation = (): JSX.Element => {
   return (
-    <BottomTab.Navigator initialRouteName="Home" screenOptions={BottomTabNavigatorScreenOptions}>
-      <BottomTab.Screen name="Home" component={HomeScreen} />
-      <BottomTab.Screen name="Search" component={HomeScreen} />
-      <BottomTab.Screen name="Activities" component={HomeScreen} />
-      <BottomTab.Screen name="Profile" component={HomeScreen} />
+    <BottomTab.Navigator initialRouteName="HomeScreen" screenOptions={BottomTabNavigatorScreenOptions}>
+      <BottomTab.Screen name="HomeScreen" component={HomeScreen} />
+      <BottomTab.Screen name="SearchScreen" component={HomeScreen} />
+      <BottomTab.Screen name="ActivitiesScreen" component={ActivitiesScreen} />
+      <BottomTab.Screen name="ProfileScreen" component={ProfileScreen} />
     </BottomTab.Navigator>
   );
 };
 
+const MainAppNavigation = (): JSX.Element => {
+  return (
+    <RootStack.Navigator initialRouteName="MainAppBottomNavigation" screenOptions={MainAppNavigatorScreenOptions}>
+      <RootStack.Screen name="MainAppBottomNavigation" component={MainAppBottomNavigation} />
+      {/* TODO: https://stackoverflow.com/questions/48018666/how-to-change-the-direction-of-the-animation-in-stacknavigator */}
+      {/* TODO: https://itnext.io/change-react-native-screen-animation-direction-with-react-navigation-8cec0f66f22 */}
+      <RootStack.Screen
+        name="CamScreen"
+        component={CamScreen}
+        // TODO: Gesture Direction doesn't work on Android.
+        options={{
+          gestureDirection: "horizontal-inverted",
+        }}
+      />
+      <RootStack.Screen name="DetailsScreen" component={DetailsScreen} />
+    </RootStack.Navigator>
+  );
+};
+/* ================ End ================ */
+
+// TODO: Add an splash screen (with setTimeout or interval to replicate an real app scenario.)
+// https://blog.logrocket.com/building-splash-screens-react-native/
+// https://www.npmjs.com/package/react-native-splash-screen
 SplashScreen.preventAutoHideAsync();
 
 // TODO: https://reactnavigation.org/docs/themes/
@@ -132,17 +163,7 @@ const App: React.FC<JSX.Element> = (): JSX.Element | null => {
         <RootStack.Navigator initialRouteName="Authentication" screenOptions={RootStackNavigatorScreenOptions}>
           {/* TODO: Prevent going back -> https://reactnavigation.org/docs/preventing-going-back/ */}
           <RootStack.Screen name="Authentication" component={AuthenticationStackNavigation} />
-          <RootStack.Screen name="MainApp" component={MainAppBottomNavigation} />
-          {/* TODO: https://stackoverflow.com/questions/48018666/how-to-change-the-direction-of-the-animation-in-stacknavigator */}
-          {/* TODO: https://itnext.io/change-react-native-screen-animation-direction-with-react-navigation-8cec0f66f22 */}
-          <RootStack.Screen
-            name="CamScreen"
-            component={CamScreen}
-            // TODO: Gesture Direction doesn't work on Android.
-            options={{
-              gestureDirection: "horizontal-inverted",
-            }}
-          />
+          <RootStack.Screen name="MainApp" component={MainAppNavigation} />
         </RootStack.Navigator>
       </NavigationContainer>
     </View>

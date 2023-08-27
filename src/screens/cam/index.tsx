@@ -13,6 +13,7 @@ import { TransparentButton, CustomText, TextButton } from "../../components";
 /* Style */
 import Style from "./index.style";
 import { CameraButtonColor } from "../../common/colorPalette";
+// TODO: Refactor icon imports
 import FlashlightOn from "../../../assets/flash_on.svg";
 import FlashlightOff from "../../../assets/flash_off.svg";
 import X from "../../../assets/x.svg";
@@ -176,6 +177,7 @@ export default function CamScreen({ navigation }: CamScreenProps) {
   const [currentImage, setCurrentImage] = useState<ImagePicker.ImagePickerAsset["base64"]>(null);
   const [isPermissionGranted, setIsPermissionGranted] = useState<boolean>(false);
   const [isImageDisplayOn, setIsImageDisplayOn] = useState<boolean>(false);
+  // const [isCameraReady, setIsCameraReady] = useState<boolean>(false);
 
   useEffect(() => {
     /* To handle the situation only basic as 'granted or not' 
@@ -210,6 +212,12 @@ export default function CamScreen({ navigation }: CamScreenProps) {
   };
 
   /* ================ onPress Events ================ */
+  // const onCameraReady = () => {
+  //   TODO: Does not work with emulator but required for real devices.
+  //   logWithTime("Camera is set.");
+  //   setIsCameraReady(true);
+  // };
+
   const onPressX = () => {
     if (currentImage) {
       // If on the screen, there's an image; instead of closing the camera screen, unmount image.
@@ -277,7 +285,13 @@ export default function CamScreen({ navigation }: CamScreenProps) {
 
   return (
     <View style={Style.container}>
-      <Camera style={Style.camera} type={CameraType.back} ref={cameraRef} flashMode={flashMode}>
+      <Camera
+        style={Style.camera}
+        type={CameraType.back}
+        ref={cameraRef}
+        flashMode={flashMode}
+        // onCameraReady={onCameraReady}
+      >
         {currentImage && (
           <Image
             style={{

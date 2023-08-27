@@ -4,20 +4,21 @@ import type { StackScreenProps } from "@react-navigation/stack";
 
 export type RootStackParamList = {
   // To reduce performance impacts, instead of creating a new NativeStackNavigator, using the current one for the root component and the auth screens.
-  Login: undefined;
-  SignUp: undefined;
+  LoginScreen: undefined;
+  SignUpScreen: undefined;
   Authentication: undefined;
   MainApp: undefined;
+  MainAppBottomNavigation: undefined;
   CamScreen: undefined; // TODO: Refactor
+  DetailsScreen: undefined;
   // Profile: { userId: string };
-  // Feed: { sort: "latest" | "top" } | undefined;
 };
 
 export type BottomTabParamList = {
-  Home: undefined;
-  Search: undefined;
-  Activities: undefined;
-  Profile: undefined;
+  HomeScreen: undefined;
+  SearchScreen: undefined; // TODO: My Books
+  ActivitiesScreen: undefined;
+  ProfileScreen: undefined;
 };
 
 export interface MainStackParamList extends RootStackParamList, BottomTabParamList {}

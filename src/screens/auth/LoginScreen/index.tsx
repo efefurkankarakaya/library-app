@@ -78,7 +78,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           isSU && dispatch(grantPermission());
           dispatch(logIn());
           // @ts-ignore: https://reactnavigation.org/docs/nesting-navigators/#passing-params-to-a-screen-in-a-nested-navigator
-          navigation.navigate("MainApp", { screen: "Home" });
+          navigation.navigate("MainApp", { screen: "MainAppBottomNavigation" });
         }
       })
       .catch((error) =>
@@ -88,7 +88,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   };
 
   const onPressSignUp = () => {
-    navigation.navigate("SignUp");
+    navigation.navigate("SignUpScreen");
   };
 
   const onPressForgotPassword = () => {
