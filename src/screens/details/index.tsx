@@ -1,8 +1,16 @@
 import React from "react";
 import { ScrollView } from "react-native";
 import { CustomText } from "../../components";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
-function DetailsScreen() {
+interface DetailsScreenProps {
+  navigation: any;
+}
+
+function DetailsScreen({ navigation }: DetailsScreenProps) {
+  const activeBook = useAppSelector((state) => state.book);
+  console.log(activeBook);
+
   /* 
     If user is authenticated, then user can create and edit books.
     If there's no active book, then screen page should be ready to create.

@@ -10,6 +10,9 @@ import * as ImagePicker from "expo-image-picker";
 /* Custom Components */
 import { TransparentButton, CustomText, TextButton } from "../../components";
 
+/* Store */
+import { useAppDispatch } from "../../store/hooks";
+
 /* Style */
 import Style from "./index.style";
 import { CameraButtonColor } from "../../common/colorPalette";
@@ -23,6 +26,7 @@ import Send from "../../../assets/send.svg";
 
 /* Others */
 import { addPrefixToBase64, logWithTime } from "../../utils/utils";
+import { updateImageInStore } from "../../store/slices/bookSlice";
 
 /* TODO: In some cases, screen might need to be considered here. */
 const iconSize: number = Dimensions.get("window").width * 0.09;
@@ -179,6 +183,8 @@ export default function CamScreen({ navigation }: CamScreenProps) {
   const [isImageDisplayOn, setIsImageDisplayOn] = useState<boolean>(false);
   // const [isCameraReady, setIsCameraReady] = useState<boolean>(false);
 
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     /* To handle the situation only basic as 'granted or not' 
     to prevent unpredictable errors that other falsy values (null | undefined) can cause. */
@@ -208,6 +214,7 @@ export default function CamScreen({ navigation }: CamScreenProps) {
     }
 
     setCurrentImage(updatedBase64Text);
+    dispatch(updateImageInStore(updatedBase64Text));
     setIsImageDisplayOn(!!updatedBase64Text);
   };
 
@@ -252,7 +259,7 @@ export default function CamScreen({ navigation }: CamScreenProps) {
   };
 
   const onPressGallery = async (): Promise<void> => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       base64: true,
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -260,8 +267,6 @@ export default function CamScreen({ navigation }: CamScreenProps) {
       selectionLimit: 1,
       quality: 1,
     });
-
-    // console.log(result);
 
     if (!result.canceled) {
       // console.log(result.assets[0].base64);
@@ -271,6 +276,7 @@ export default function CamScreen({ navigation }: CamScreenProps) {
 
   const onPressSend = (): void => {
     logWithTime("[onPressSend]");
+    navigation.navigate("MainApp", { screen: "DetailsScreen" });
   };
   /* ================ End ================ */
 

@@ -85,6 +85,10 @@ const BottomTabNavigatorScreenOptions = {
 const MainAppNavigatorScreenOptions = {
   ...DefaultNavigatorScreenOptions,
 };
+
+const DetailsScreenOptions = {
+  headerShown: true,
+};
 /* ================ End ================ */
 
 /* ================ Navigations ================ */
@@ -124,7 +128,7 @@ const MainAppNavigation = (): JSX.Element => {
           gestureDirection: "horizontal-inverted",
         }}
       />
-      <RootStack.Screen name="DetailsScreen" component={DetailsScreen} />
+      <RootStack.Screen name="DetailsScreen" component={DetailsScreen} options={DetailsScreenOptions} />
     </RootStack.Navigator>
   );
 };
