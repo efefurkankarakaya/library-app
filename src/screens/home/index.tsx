@@ -1,6 +1,9 @@
 /* Core */
 import { useEffect, useMemo, useState } from "react";
-import { FlatList, Text, SafeAreaView, View, Image } from "react-native";
+import { FlatList, Text, SafeAreaView, View } from "react-native";
+
+/* Expo */
+import { Image } from "expo-image";
 
 /* Navigation */
 import { NavigationProp } from "@react-navigation/native";
@@ -98,14 +101,22 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const keyExtractor = (item: Book & Realm.Object) => item._id.toHexString();
 
   const renderItem = ({ index, item }: FlatListItem) => {
-    // console.log(item);
+    // console.log(item.bookImage);
     // https://github.com/DylanVann/react-native-fast-image
-    return (
-      <View>
-        <Text>{item.bookName}</Text>
-        <Image source={{ uri: "data:image/png;base64," + item.bookImage }} />
-      </View>
-    );
+    if (item.bookImage) {
+      return (
+        <View>
+          <Image
+            source={{ uri: item.bookImage }}
+            style={{
+              height: 100,
+              width: 100,
+            }}
+          />
+          <Text>{item.bookName}</Text>
+        </View>
+      );
+    }
   };
 
   return (

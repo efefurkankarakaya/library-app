@@ -1,4 +1,5 @@
 import { Realm } from "@realm/react";
+import { ImagePickerAsset } from "expo-image-picker";
 
 class Book extends Realm.Object<Book> {
   _id!: Realm.BSON.ObjectId;
@@ -14,7 +15,7 @@ class Book extends Realm.Object<Book> {
   /* TODO: Consider using constructor instead of static function */
   static create = (
     bookName: string,
-    bookImage: string,
+    bookImage: ImagePickerAsset["base64"],
     bookDescription: string | null,
     isbn: string,
     authors: string[],

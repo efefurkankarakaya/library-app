@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Dimensions, KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { CustomButton, CustomText, CustomTextInput, TextButton, ValidatorTextInput } from "../../components";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -8,6 +8,8 @@ import { useNavigation } from "@react-navigation/native";
 import ArrowForwardIOS from "../../../assets/arrow_forward_ios.svg";
 import { logJSON, logWithTime } from "../../utils/utils";
 import { isTextEmpty } from "../../helpers/validationHelpers";
+import { AppRealmContext } from "../../models";
+import Book from "../../models/Book";
 
 /* 
     If user is authenticated, then user can create and edit books.
@@ -24,7 +26,7 @@ interface BookData {
   bookDescription: string;
   isbn: string;
   authors: string;
-  genre: string;
+  genres: string;
   // isHardcover: boolean;
 }
 
@@ -39,6 +41,9 @@ interface DetailsScreenProps {
 }
 
 function DetailsScreen({ navigation }: DetailsScreenProps) {
+  const { useRealm, useObject, useQuery } = AppRealmContext;
+  const realm = useRealm();
+
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   const [bookData, setBookData] = useState<BookData>({
@@ -46,28 +51,26 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
     bookDescription: "",
     isbn: "",
     authors: "",
-    genre: "",
+    genres: "",
     // isHardcover: false,
   });
+  const bookDataRef = useRef<BookData>(); // To get latest state in onSave function.
+  bookDataRef.current = bookData;
 
   const [bookDataValidationStatus, setBookDataValidationStatus] = useState<BookDataValidationStatus>({
     bookName: false /* Mandatory */,
     bookDescription: true /* Optional */,
     isbn: false /* Mandatory */,
     authors: false /* Mandatory */,
-    genre: false /* Mandatory */,
+    genres: false /* Mandatory */,
   });
 
   const [isBookDataValid, setIsBookDataValid] = useState<boolean>(false);
+  const isBookDataValidRef = useRef<boolean>(false);
+  isBookDataValidRef.current = isBookDataValid;
 
   const activeBook = useAppSelector((state) => state.book);
   const navigationHook = useNavigation();
-
-  const onSave = () => {
-    logWithTime("Clicked on save.");
-    setIsSubmitted(true);
-    // navigationHook.navigate("Home")
-  };
 
   useEffect(() => {
     navigationHook.setOptions({
@@ -97,6 +100,32 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
     const isValidationFailed = Object.values(bookDataValidationStatus).includes(false);
     setIsBookDataValid(!isValidationFailed);
   });
+
+  const onSave = () => {
+    logWithTime("Clicked on save.");
+    setIsSubmitted(true);
+
+    if (!isBookDataValidRef.current) {
+      logWithTime("Data is not valid.");
+      return;
+    }
+
+    const { bookName = "", bookDescription = "", isbn = "", authors, genres } = bookDataRef.current || {};
+    const arrayOfAuthors = authors?.split(",").map((author) => author.trim()) || [];
+    const arrayOfGenres = genres?.split(",").map((genre) => genre.trim()) || [];
+    console.log(arrayOfAuthors);
+    console.log(arrayOfGenres);
+    console.log(bookName);
+
+    const book = Book.create(bookName, activeBook.base64, bookDescription, isbn, arrayOfAuthors, arrayOfGenres, false);
+
+    realm.write(() => {
+      realm.create("Book", book);
+      logWithTime("Succcessfully created: ", book.bookName);
+    });
+
+    navigation.navigate("MainApp", { screen: "MainAppBottomNavigation" });
+  };
 
   /* On Change Main Handler */
   const onChangeText = (text: string, textKey: BookDataKeys) => {
@@ -181,9 +210,9 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
           showSublabel={isSubmitted}
           sublabel={isBookDataValid ? "" : "Basic book information should be provided."}
           textInputProps={{
-            placeholder: "Genre",
-            onChangeText: (text: string) => onChangeText(text, "genre"),
-            value: bookData.genre,
+            placeholder: "Genre(s)",
+            onChangeText: (text: string) => onChangeText(text, "genres"),
+            value: bookData.genres,
           }}
         />
         {/* Selectbox isHardcover? */}
