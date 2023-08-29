@@ -3,19 +3,18 @@ import { Realm } from "@realm/react";
 class Book extends Realm.Object<Book> {
   _id!: Realm.BSON.ObjectId;
   bookName!: string;
-  bookImage?: string;
+  bookImage!: string;
   bookDescription?: string;
   isbn!: string;
   authors!: string[]; // Or Realm.List<string> ---> https://www.mongodb.com/docs/realm/sdk/react-native/model-data/define-a-realm-object-model/
   genres!: string[];
   isHardcover!: boolean;
-  isLie!: boolean;
   createdAt!: Date;
 
   /* TODO: Consider using constructor instead of static function */
   static create = (
     bookName: string,
-    bookImage: string | null,
+    bookImage: string,
     bookDescription: string | null,
     isbn: string,
     authors: string[],

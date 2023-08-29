@@ -5,11 +5,11 @@ import type { ImagePickerAsset } from "expo-image-picker";
 type TBase64 = ImagePickerAsset["base64"];
 
 interface BookState {
-  bookImage: TBase64;
+  base64: TBase64;
 }
 
 const initialState: BookState = {
-  bookImage: null, // TODO: Should be string only.
+  base64: null, // TODO: Should be string only.
 } as BookState;
 
 export const bookSlice = createSlice({
@@ -17,7 +17,7 @@ export const bookSlice = createSlice({
   initialState,
   reducers: {
     updateImageInStore: (state, action: PayloadAction<TBase64>) => {
-      state.bookImage = action.payload;
+      state.base64 = action.payload;
     },
   },
 });

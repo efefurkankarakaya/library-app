@@ -37,6 +37,7 @@ import { LoginScreen, SignUpScreen, HomeScreen, CamScreen, DetailsScreen, Activi
 
 /* Style */
 import AppStyle from "./App.style";
+import { TextColor } from "./src/common/colorPalette";
 
 // https://reactnative.dev/docs/environment-setup?guide=quickstart&package-manager=npm
 // https://reactnative.dev/docs/typescript
@@ -56,6 +57,10 @@ const DefaultNavigatorScreenOptions = {
   title: "",
   headerTransparent: true,
   headerShown: false,
+  headerTintColor: TextColor.urlBlue,
+  // headerTitleStyle: {
+  //   fontFamily: "Montserrat_400Regular",
+  // },
 };
 
 // Used in the root stack navigator
