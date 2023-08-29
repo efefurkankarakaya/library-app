@@ -1,5 +1,9 @@
 import { validateText } from "../utils/utils";
 
+export function isTextEmpty(text: string): boolean {
+  return text === "";
+}
+
 export function validateName(name: string): boolean {
   const nameRegex = /[a-zA-ZçğıöşüÇĞİÖŞÜ ]{2,}/g;
   return validateText(name, nameRegex);
