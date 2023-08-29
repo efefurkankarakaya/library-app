@@ -198,7 +198,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
 
     createUser(realm, userData);
 
-    navigation.navigate("Login");
+    navigation.navigate("LoginScreen");
   };
 
   /* ****************************************** JSX ****************************************** */
