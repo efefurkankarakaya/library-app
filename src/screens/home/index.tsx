@@ -102,6 +102,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   /* FlatList functions */
   const keyExtractor = (item: Book & Realm.Object) => item._id.toHexString();
 
+  // TODO: Move this component as file-private component
   const renderItem = ({ index, item }: FlatListItem) => {
     // https://github.com/DylanVann/react-native-fast-image
     const { _id, bookName, bookImage, bookDescription, isbn, authors, genres, isHardcover } = item;
@@ -117,38 +118,52 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     };
 
     return (
-      <TransparentButton
-        buttonStyle={{
-          // flexDirection: "column",
-          // backgroundColor: "blue",
-          margin: 10,
-        }}
-        touchableOpacityProps={{
-          onPress: () => onPressBook(data),
-        }}
+      <View
+        style={
+          {
+            // borderRadius: 20,
+          }
+        }
       >
-        <View>
-          <Image
-            source={{ uri: item.bookImage }}
+        <TransparentButton
+          buttonStyle={{
+            margin: 20,
+          }}
+          touchableOpacityProps={{
+            onPress: () => onPressBook(data),
+          }}
+        >
+          <View
             style={{
-              height: 250,
-              width: 150,
-              backgroundColor: "blue",
+              alignItems: "center",
             }}
-          />
-          <Text>{item.bookName}</Text>
-        </View>
-      </TransparentButton>
+          >
+            <Image
+              source={{ uri: item.bookImage }}
+              style={{
+                height: 250,
+                width: 150,
+                backgroundColor: "blue",
+              }}
+            />
+            <Text>{item.bookName}</Text>
+          </View>
+        </TransparentButton>
+      </View>
     );
   };
 
+  // TODO: Create a card component for books
   return (
     <SafeAreaView style={Style.container} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-      <CustomText>Home</CustomText>
       <CustomTextInput
+        customTextInputStyle={{
+          width: "100%",
+        }}
         textInputProps={{
           value: searchQuery,
           onChangeText: (text: string) => setSearchQuery(text),
+          placeholder: "Book, Author, ISBN...",
         }}
       />
       <View
@@ -157,7 +172,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           alignItems: "center",
         }}
       >
-        <FlatList style={{}} data={filteredBooks} renderItem={renderItem} keyExtractor={keyExtractor} horizontal={true} />
+        <FlatList style={{}} data={filteredBooks} renderItem={renderItem} keyExtractor={keyExtractor} horizontal={false} numColumns={2} />
       </View>
     </SafeAreaView>
   );

@@ -81,10 +81,10 @@ const StackScreenLoginOptions = {
 
 const BottomTabNavigatorScreenOptions = {
   // TODO: Use icons for bottom navigation instead of their titles.
-  // ...DefaultNavigatorScreenOptions,
+  ...DefaultNavigatorScreenOptions,
   // title: "",
   // headerShown: false,
-  headerTransparent: true,
+  // headerTransparent: true,
 };
 
 const MainAppNavigatorScreenOptions = {

@@ -39,8 +39,6 @@ const iconStyle: object = {
 // https://github.com/expo/examples
 // https://github.com/expo/examples/blob/master/with-camera/App.js
 
-// TODO: In android build, gallery icon seemed half and margins are failed; instead of margin, use dimensions.
-
 /* ================ File Private Types ================ */
 type TRequestPermission = () => Promise<ImagePicker.PermissionResponse>;
 
@@ -289,6 +287,8 @@ export default function CamScreen({ navigation }: CamScreenProps) {
     logWithTime("[onPressSend]");
     navigation.navigate("MainApp", { screen: "DetailsScreen" });
   };
+
+  // TODO: onSwipeLeft, navigation.goBack()
   /* ================ End ================ */
 
   if (!permission) {
