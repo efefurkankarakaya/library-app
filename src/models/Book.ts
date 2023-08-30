@@ -7,8 +7,8 @@ class Book extends Realm.Object<Book> {
   bookImage!: string;
   bookDescription?: string;
   isbn!: string;
-  authors!: string[]; // Or Realm.List<string> ---> https://www.mongodb.com/docs/realm/sdk/react-native/model-data/define-a-realm-object-model/
-  genres!: string[];
+  authors!: string; // Or Realm.List<string> ---> https://www.mongodb.com/docs/realm/sdk/react-native/model-data/define-a-realm-object-model/
+  genres!: string;
   isHardcover!: boolean;
   createdAt!: Date;
 
@@ -18,8 +18,8 @@ class Book extends Realm.Object<Book> {
     bookImage: ImagePickerAsset["base64"],
     bookDescription: string | null,
     isbn: string,
-    authors: string[],
-    genres: string[],
+    authors: string,
+    genres: string,
     isHardcover: boolean
   ) => {
     return {
@@ -43,8 +43,8 @@ class Book extends Realm.Object<Book> {
       bookImage: "string?",
       bookDescription: "string?",
       isbn: "string",
-      authors: "string[]",
-      genres: "string[]",
+      authors: "string",
+      genres: "string",
       createdAt: "date",
       isHardcover: "bool",
     },

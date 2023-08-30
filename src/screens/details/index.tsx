@@ -10,6 +10,8 @@ import { logJSON, logWithTime } from "../../utils/utils";
 import { isTextEmpty } from "../../helpers/validationHelpers";
 import { AppRealmContext } from "../../models";
 import Book from "../../models/Book";
+import { BookData } from "../../types/commonTypes";
+// TODO: Refactor imports
 
 /* 
     If user is authenticated, then user can create and edit books.
@@ -20,15 +22,6 @@ import Book from "../../models/Book";
 
 /* Screen values won't be changed, can be cached. */
 const screenWidth = Dimensions.get("screen").width;
-
-interface BookData {
-  bookName: string;
-  bookDescription: string;
-  isbn: string;
-  authors: string;
-  genres: string;
-  // isHardcover: boolean;
-}
 
 type BookDataValidationStatus = {
   [key in keyof BookData]: boolean;
@@ -43,6 +36,11 @@ interface DetailsScreenProps {
 function DetailsScreen({ navigation }: DetailsScreenProps) {
   const { useRealm, useObject, useQuery } = AppRealmContext;
   const realm = useRealm();
+
+  const activeBook = useAppSelector((state) => state.book);
+  const navigationHook = useNavigation();
+
+  const bookToBeUpdated = useObject(Book, activeBook.data._id);
 
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
@@ -69,9 +67,6 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
   const isBookDataValidRef = useRef<boolean>(false);
   isBookDataValidRef.current = isBookDataValid;
 
-  const activeBook = useAppSelector((state) => state.book);
-  const navigationHook = useNavigation();
-
   useEffect(() => {
     navigationHook.setOptions({
       headerRight: () => (
@@ -93,7 +88,22 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
   // TODO: Remove
   useEffect(() => {
     logJSON("[useEffect]", bookData);
-  }, [bookData]);
+    const { bookName, bookDescription, isbn, authors, genres } = activeBook.data;
+    setBookData({
+      bookName,
+      bookDescription,
+      isbn,
+      authors,
+      genres,
+    });
+    setBookDataValidationStatus({
+      bookName: !!bookName,
+      bookDescription: true,
+      isbn: !!isbn,
+      authors: !!authors,
+      genres: !!genres,
+    });
+  }, [activeBook]);
 
   useEffect(() => {
     logJSON("[useEffect]", bookDataValidationStatus); // TODO: Remove
@@ -110,19 +120,29 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
       return;
     }
 
-    const { bookName = "", bookDescription = "", isbn = "", authors, genres } = bookDataRef.current || {};
-    const arrayOfAuthors = authors?.split(",").map((author) => author.trim()) || [];
-    const arrayOfGenres = genres?.split(",").map((genre) => genre.trim()) || [];
-    console.log(arrayOfAuthors);
-    console.log(arrayOfGenres);
-    console.log(bookName);
+    const { bookName = "", bookDescription = "", isbn = "", authors = "", genres = "" } = bookDataRef.current || {};
+    // const arrayOfAuthors = authors?.split(",").map((author) => author.trim()) || []; // TODO: Remove
+    // const arrayOfGenres = genres?.split(",").map((genre) => genre.trim()) || [];
 
-    const book = Book.create(bookName, activeBook.base64, bookDescription, isbn, arrayOfAuthors, arrayOfGenres, false);
+    if (activeBook.data._id) {
+      // TODO: Requires try/catch
+      realm.write(() => {
+        // TODO: Refactor here
+        bookToBeUpdated.bookName = bookName;
+        bookToBeUpdated.bookDescription = bookDescription;
+        bookToBeUpdated.isbn = isbn;
+        bookToBeUpdated.authors = authors;
+        bookToBeUpdated.genres = genres;
+      });
 
-    realm.write(() => {
-      realm.create("Book", book);
-      logWithTime("Succcessfully created: ", book.bookName);
-    });
+      logWithTime("Succcessfully updated: ", bookToBeUpdated.bookName);
+    } else {
+      const bookToBeCreated = Book.create(bookName, activeBook.base64, bookDescription, isbn, authors, genres, false);
+      realm.write(() => {
+        realm.create("Book", bookToBeCreated);
+        logWithTime("Succcessfully created: ", bookToBeCreated.bookName);
+      });
+    }
 
     navigation.navigate("MainApp", { screen: "MainAppBottomNavigation" });
   };
@@ -158,7 +178,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
     >
       {/* <CustomText>Details Page</CustomText> */}
       <Image
-        source={{ uri: activeBook.base64 }}
+        source={{ uri: activeBook.data.bookImage }}
         style={{
           height: "35%",
           // overflow: "visible", // TODO: Find another way to slide input container over image

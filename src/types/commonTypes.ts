@@ -17,3 +17,12 @@ export interface UserData {
   password: string;
   confirmPassword: string;
 }
+
+export interface BookData {
+  bookName: string;
+  bookDescription?: string;
+  isbn: string;
+  authors: string;
+  genres: string;
+  // isHardcover: boolean;
+}

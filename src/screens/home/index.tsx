@@ -9,14 +9,14 @@ import { Image } from "expo-image";
 import { NavigationProp } from "@react-navigation/native";
 
 /* Custom Components */
-import { CustomText, CustomTextInput } from "../../components";
+import { CustomButton, CustomText, CustomTextInput, TransparentButton } from "../../components";
 
 /* Database */
 import { AppRealmContext } from "../../models";
 import Book from "../../models/Book";
 
 /* Store */
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
 /* Style */
 import Style from "./index.style";
@@ -26,6 +26,7 @@ import { MainStackParamList } from "../../types/navigationTypes";
 
 /* Others */
 import { useSwipe } from "../../helpers/gestureHelpers";
+import { updateBookInStore, updateImageInStore } from "../../store/slices/bookSlice";
 
 interface HomeScreenProps {
   navigation: NavigationProp<MainStackParamList>; // TODO: Probably, this argument is going to be MainScreenParamList which is mixed of all the main screens.
@@ -47,6 +48,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { useRealm, useObject, useQuery } = AppRealmContext; // TODO: Remove unused destructuring
   const realm = useRealm();
   const books = useQuery(Book);
+
+  const dispatch = useAppDispatch();
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const filteredBooks = useMemo(() => filterBooks(books, searchQuery), [books, searchQuery]);
@@ -85,9 +88,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   }, [user]);
 
   const onSwipeRight = () => {
-    // Run Camera
-    navigation.navigate("CamScreen");
-    console.log("Swipe Right");
+    if (user.isSU) {
+      // Run Camera
+      navigation.navigate("CamScreen");
+      console.log("Swipe Right");
+    }
   };
 
   const onSwipeLeft = () => {
@@ -97,26 +102,53 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
   const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6);
 
+  const onPressBook = (bookData: any) => {
+    // TODO: Add type
+    dispatch(updateBookInStore(bookData));
+    navigation.navigate("DetailsScreen");
+  };
+
   /* FlatList functions */
   const keyExtractor = (item: Book & Realm.Object) => item._id.toHexString();
 
   const renderItem = ({ index, item }: FlatListItem) => {
-    // console.log(item.bookImage);
     // https://github.com/DylanVann/react-native-fast-image
-    if (item.bookImage) {
-      return (
+    const { _id, bookName, bookImage, bookDescription, isbn, authors, genres, isHardcover } = item;
+    const data = {
+      _id,
+      bookName,
+      bookImage,
+      bookDescription,
+      isbn,
+      authors,
+      genres,
+      isHardcover,
+    };
+
+    return (
+      <TransparentButton
+        buttonStyle={{
+          // flexDirection: "column",
+          // backgroundColor: "blue",
+          margin: 10,
+        }}
+        touchableOpacityProps={{
+          onPress: () => onPressBook(data),
+        }}
+      >
         <View>
           <Image
             source={{ uri: item.bookImage }}
             style={{
-              height: 100,
-              width: 100,
+              height: 250,
+              width: 150,
+              backgroundColor: "blue",
             }}
           />
           <Text>{item.bookName}</Text>
         </View>
-      );
-    }
+      </TransparentButton>
+    );
   };
 
   return (
@@ -128,8 +160,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           onChangeText: (text: string) => setSearchQuery(text),
         }}
       />
-      <View>
-        <FlatList data={filteredBooks} renderItem={renderItem} keyExtractor={keyExtractor} />
+      <View
+        style={{
+          margin: 10,
+          alignItems: "center",
+        }}
+      >
+        <FlatList style={{}} data={filteredBooks} renderItem={renderItem} keyExtractor={keyExtractor} horizontal={true} />
       </View>
     </SafeAreaView>
   );
