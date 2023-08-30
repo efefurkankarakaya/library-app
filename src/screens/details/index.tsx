@@ -14,10 +14,7 @@ import { BookData } from "../../types/commonTypes";
 // TODO: Refactor imports
 
 /* 
-    If user is authenticated, then user can create and edit books.
-    If there's no active book, then screen page should be ready to create.
-    If there's active book, then screen page should be ready to edit / update.
-
+    TODO: If user is authenticated, then user can create and edit books.
   */
 
 /* Screen values won't be changed, can be cached. */
@@ -29,19 +26,45 @@ type BookDataValidationStatus = {
 
 type BookDataKeys = keyof BookData;
 
+/* ================ Component Props ================ */
+interface SaveButtonProps {
+  onPress: any;
+}
+
 interface DetailsScreenProps {
   navigation: any;
 }
+/* ================ End ================ */
+
+/* ================ File Private Components ================ */
+const SaveButton: React.FC<SaveButtonProps> = ({ onPress }: SaveButtonProps) => {
+  return (
+    <TextButton
+      textStyle={{
+        fontSize: screenWidth * 0.045,
+        marginRight: screenWidth * 0.045,
+      }}
+      touchableOpacityProps={{
+        onPress,
+      }}
+    >
+      Save
+    </TextButton>
+  );
+};
+/* ================ End ================ */
 
 function DetailsScreen({ navigation }: DetailsScreenProps) {
-  const { useRealm, useObject, useQuery } = AppRealmContext;
-  const realm = useRealm();
-
+  /* ================ Custom Hooks ================ */
+  const { useRealm, useObject } = AppRealmContext;
   const activeBook = useAppSelector((state) => state.book);
   const navigationHook = useNavigation();
 
+  const realm = useRealm();
   const bookToBeUpdated = useObject(Book, activeBook.data._id);
+  /* ================ End ================ */
 
+  /* ================ States ================ */
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   const [bookData, setBookData] = useState<BookData>({
@@ -66,29 +89,19 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
   const [isBookDataValid, setIsBookDataValid] = useState<boolean>(false);
   const isBookDataValidRef = useRef<boolean>(false);
   isBookDataValidRef.current = isBookDataValid;
+  /* ================ End ================ */
 
+  /* ================ Effects ================ */
   useEffect(() => {
+    /* TODO: Add Change Image Button in headerCenter */
     navigationHook.setOptions({
-      headerRight: () => (
-        <TextButton
-          textStyle={{
-            fontSize: screenWidth * 0.045,
-            marginRight: screenWidth * 0.045,
-          }}
-          touchableOpacityProps={{
-            onPress: onSave,
-          }}
-        >
-          Save
-        </TextButton>
-      ),
+      headerRight: () => <SaveButton onPress={onSave} />,
     });
   }, []);
 
-  // TODO: Remove
   useEffect(() => {
-    logJSON("[useEffect]", bookData);
     const { bookName, bookDescription, isbn, authors, genres } = activeBook.data;
+
     setBookData({
       bookName,
       bookDescription,
@@ -96,6 +109,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
       authors,
       genres,
     });
+
     setBookDataValidationStatus({
       bookName: !!bookName,
       bookDescription: true,
@@ -106,11 +120,12 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
   }, [activeBook]);
 
   useEffect(() => {
-    logJSON("[useEffect]", bookDataValidationStatus); // TODO: Remove
     const isValidationFailed = Object.values(bookDataValidationStatus).includes(false);
     setIsBookDataValid(!isValidationFailed);
   });
+  /* ================ End ================ */
 
+  /* ================ Event Handlers ================ */
   const onSave = () => {
     logWithTime("Clicked on save.");
     setIsSubmitted(true);
@@ -164,6 +179,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
     setBookData(data);
   };
 
+  /* ================ Screen (Main Component) ================ */
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
