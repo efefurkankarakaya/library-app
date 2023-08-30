@@ -11,14 +11,12 @@ import { isTextEmpty } from "../../helpers/validationHelpers";
 import { AppRealmContext } from "../../models";
 import Book from "../../models/Book";
 import { BookData } from "../../types/commonTypes";
+import Style from "./index.style";
 // TODO: Refactor imports
 
 /* 
     TODO: If user is authenticated, then user can create and edit books.
   */
-
-/* Screen values won't be changed, can be cached. */
-const screenWidth = Dimensions.get("screen").width;
 
 type BookDataValidationStatus = {
   [key in keyof BookData]: boolean;
@@ -40,10 +38,7 @@ interface DetailsScreenProps {
 const SaveButton: React.FC<SaveButtonProps> = ({ onPress }: SaveButtonProps) => {
   return (
     <TextButton
-      textStyle={{
-        fontSize: screenWidth * 0.045,
-        marginRight: screenWidth * 0.045,
-      }}
+      textStyle={Style.saveButtonText}
       touchableOpacityProps={{
         onPress,
       }}
@@ -183,29 +178,12 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{
-        flex: 1,
-      }}
-      contentContainerStyle={
-        {
-          // flex: 1,
-        }
-      }
+      style={Style.container}
+      contentContainerStyle={Style.contentContainer}
     >
       {/* <CustomText>Details Page</CustomText> */}
-      <Image
-        source={{ uri: activeBook.data.bookImage }}
-        style={{
-          height: "35%",
-          // overflow: "visible", // TODO: Find another way to slide input container over image
-          resizeMode: "stretch",
-        }}
-      />
-      <View
-        style={{
-          alignItems: "center",
-        }}
-      >
+      <Image source={{ uri: activeBook.data.bookImage }} style={Style.image} />
+      <View style={Style.inputContainer}>
         <CustomTextInput
           textInputProps={{
             placeholder: "Name",
@@ -221,9 +199,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
             onChangeText: (text: string) => onChangeText(text, "bookDescription"),
             value: bookData.bookDescription,
           }}
-          customTextInputStyle={{
-            height: Dimensions.get("window").height * 0.09,
-          }}
+          customTextInputStyle={Style.description}
         />
         <CustomTextInput
           textInputProps={{
