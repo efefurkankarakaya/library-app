@@ -12,6 +12,8 @@ import { AppRealmContext } from "../../models";
 import Book from "../../models/Book";
 import { BookData } from "../../types/commonTypes";
 import Style from "./index.style";
+import { createBook, updateBook } from "../../helpers/databaseHelpers";
+import { temporaryDataID } from "../../common/static";
 // TODO: Refactor imports
 
 /* 
@@ -64,6 +66,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
 
   const [bookData, setBookData] = useState<BookData>({
     bookName: "",
+    bookImage: "" /* Not in use, just for fulfilling the type for now. */,
     bookDescription: "",
     isbn: "",
     authors: "",
@@ -75,6 +78,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
 
   const [bookDataValidationStatus, setBookDataValidationStatus] = useState<BookDataValidationStatus>({
     bookName: false /* Mandatory */,
+    bookImage: true /* Image can't be removed, no need to validate */,
     bookDescription: true /* Optional */,
     isbn: false /* Mandatory */,
     authors: false /* Mandatory */,
@@ -95,10 +99,11 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
   }, []);
 
   useEffect(() => {
-    const { bookName, bookDescription, isbn, authors, genres } = activeBook.data;
+    const { bookName, bookImage, bookDescription, isbn, authors, genres } = activeBook.data;
 
     setBookData({
       bookName,
+      bookImage,
       bookDescription,
       isbn,
       authors,
@@ -107,6 +112,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
 
     setBookDataValidationStatus({
       bookName: !!bookName,
+      bookImage: true,
       bookDescription: true,
       isbn: !!isbn,
       authors: !!authors,
@@ -130,28 +136,14 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
       return;
     }
 
-    const { bookName = "", bookDescription = "", isbn = "", authors = "", genres = "" } = bookDataRef.current || {};
+    // const { bookName = "", bookDescription = "", isbn = "", authors = "", genres = "" } = bookDataRef.current || {};
     // const arrayOfAuthors = authors?.split(",").map((author) => author.trim()) || []; // TODO: Remove
     // const arrayOfGenres = genres?.split(",").map((genre) => genre.trim()) || [];
 
-    if (activeBook.data._id) {
-      // TODO: Requires try/catch
-      realm.write(() => {
-        // TODO: Refactor here
-        bookToBeUpdated.bookName = bookName;
-        bookToBeUpdated.bookDescription = bookDescription;
-        bookToBeUpdated.isbn = isbn;
-        bookToBeUpdated.authors = authors;
-        bookToBeUpdated.genres = genres;
-      });
-
-      logWithTime("Succcessfully updated: ", bookToBeUpdated.bookName);
+    if (activeBook.data._id !== temporaryDataID) {
+      updateBook(realm, bookDataRef.current, bookToBeUpdated);
     } else {
-      const bookToBeCreated = Book.create(bookName, activeBook.base64, bookDescription, isbn, authors, genres, false);
-      realm.write(() => {
-        realm.create("Book", bookToBeCreated);
-        logWithTime("Succcessfully created: ", bookToBeCreated.bookName);
-      });
+      createBook(realm, bookDataRef.current);
     }
 
     navigation.navigate("MainApp", { screen: "MainAppBottomNavigation" });
@@ -182,6 +174,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
       contentContainerStyle={Style.contentContainer}
     >
       {/* <CustomText>Details Page</CustomText> */}
+      {/* @ts-ignore: URI can be string, null or undefined. */}
       <Image source={{ uri: activeBook.data.bookImage }} style={Style.image} />
       <View style={Style.inputContainer}>
         <CustomTextInput

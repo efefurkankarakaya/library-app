@@ -27,6 +27,7 @@ import { MainStackParamList } from "../../types/navigationTypes";
 /* Others */
 import { useSwipe } from "../../helpers/gestureHelpers";
 import { updateBookInStore, updateImageInStore } from "../../store/slices/bookSlice";
+import { logWithTime } from "../../utils/utils";
 
 interface HomeScreenProps {
   navigation: NavigationProp<MainStackParamList>; // TODO: Probably, this argument is going to be MainScreenParamList which is mixed of all the main screens.
@@ -57,21 +58,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const user = useAppSelector(({ user }) => user);
   console.log(user);
 
-  useEffect(() => {
-    // realm.write(() => {
-    //   realm.delete(books);
-    // });
-    /* */
-    // realm.write(() => {
-    // realm.create(
-    //   "Book",
-    //   Book.create("Brave New World", "<base64>", "A brave whole new world!", "123", ["Aldous Huxley"], ["Distopia"], false)
-    // );
-    // realm.create("Book", Book.create("Fahrenheit 451", "<base64>", "fahrenheit", "124", ["Ray Bradbury"], ["Distopia"], false));
-    // realm.create("Book", Book.create("Fahrenheit 451", bookImage, "fahrenheit", "124", ["Ray Bradbury"], ["Distopia"], false));
-    // });
-    // console.log(books);
-  }, []);
+  // useEffect(() => {
+  //   realm.write(() => {
+  //     realm.delete(books);
+  //   });
+  // }, []);
 
   // https://stackoverflow.com/questions/45854450/detect-swipe-left-in-react-native
   // https://docs.expo.dev/versions/latest/sdk/gesture-handler/
@@ -91,13 +82,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     if (user.isSU) {
       // Run Camera
       navigation.navigate("CamScreen");
-      console.log("Swipe Right");
+      logWithTime("[Swipe Right]");
     }
   };
 
   const onSwipeLeft = () => {
-    // Run Gallery
-    console.log("Swipe Left");
+    // TODO: Maybe navigation between pages (bottom-navigation) with swipes?
+    logWithTime("[Swipe Left]");
   };
 
   const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6);

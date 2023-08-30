@@ -5,10 +5,49 @@ import * as Crypto from "expo-crypto"; // TODO: Imports functions only
 import User from "../models/User";
 
 /* Types */
-import { UserData } from "../types/commonTypes";
+import { BookData, UserData } from "../types/commonTypes";
 
 /* Others */
 import { logWithTime } from "../utils/utils";
+import Book from "../models/Book";
+
+export function updateBook(realm: Realm, data: BookData | undefined, bookToBeUpdated: (Book & Realm.Object<Book, never>) | null) {
+  try {
+    const { bookName, bookDescription, isbn, authors, genres } = data || {};
+
+    realm.write(() => {
+      /* @ts-ignore */
+      bookToBeUpdated.bookName = bookName;
+      /* @ts-ignore */
+      bookToBeUpdated.bookDescription = bookDescription;
+      /* @ts-ignore */
+      bookToBeUpdated.isbn = isbn;
+      /* @ts-ignore */
+      bookToBeUpdated.authors = authors;
+      /* @ts-ignore */
+      bookToBeUpdated.genres = genres;
+    });
+
+    logWithTime("Succcessfully updated: ", bookToBeUpdated?.bookName);
+  } catch (error) {
+    logWithTime("[Realm | updateBook]");
+    logWithTime(error);
+  }
+}
+
+export function createBook(realm: Realm, data: BookData | undefined) {
+  try {
+    const { bookName = "", bookImage = "", bookDescription = "", isbn = "", authors = "", genres = "" } = data || {};
+    const bookToBeCreated = Book.create(bookName, bookImage, bookDescription, isbn, authors, genres, false);
+    realm.write(() => {
+      realm.create("Book", bookToBeCreated);
+      logWithTime("Succcessfully created: ", bookToBeCreated.bookName);
+    });
+  } catch (error) {
+    logWithTime("[Realm | createBook]");
+    logWithTime(error);
+  }
+}
 
 export async function createUser(realm: Realm, userData: UserData): Promise<void> {
   /**

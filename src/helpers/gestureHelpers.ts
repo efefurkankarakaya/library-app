@@ -7,7 +7,6 @@ export function useSwipe(onSwipeLeft?: any, onSwipeRight?: any, rangeOffset = 4)
 
   function onTouchStart(e: GestureResponderEvent) {
     firstTouch = e.nativeEvent.pageX;
-    console.log(firstTouch);
   }
 
   function onTouchEnd(e: GestureResponderEvent) {

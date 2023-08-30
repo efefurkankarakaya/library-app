@@ -1,5 +1,7 @@
+import { ImagePickerAsset } from "expo-image-picker";
 import { ShadowStyleIOS, StyleProp } from "react-native";
 
+export type TBase64 = ImagePickerAsset["base64"];
 export type TStyleSheet = StyleProp<object>;
 
 /* Text Input */
@@ -20,6 +22,7 @@ export interface UserData {
 
 export interface BookData {
   bookName: string;
+  bookImage: TBase64;
   bookDescription?: string;
   isbn: string;
   authors: string;

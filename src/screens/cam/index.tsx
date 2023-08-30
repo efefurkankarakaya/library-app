@@ -26,7 +26,8 @@ import Send from "../../../assets/send.svg";
 
 /* Others */
 import { addPrefixToBase64, logWithTime } from "../../utils/utils";
-import { updateImageInStore } from "../../store/slices/bookSlice";
+import { updateBookInStore } from "../../store/slices/bookSlice";
+import { temporaryDataID } from "../../common/static";
 
 /* TODO: In some cases, screen might need to be considered here. */
 const iconSize: number = Dimensions.get("window").width * 0.09;
@@ -213,8 +214,19 @@ export default function CamScreen({ navigation }: CamScreenProps) {
       updatedBase64Text = addPrefixToBase64(base64Text);
     }
 
+    const data = {
+      _id: temporaryDataID,
+      bookName: "",
+      bookImage: updatedBase64Text,
+      bookDescription: "",
+      isbn: "",
+      authors: "",
+      genres: "",
+    };
+
     setCurrentImage(updatedBase64Text);
-    dispatch(updateImageInStore(updatedBase64Text));
+    // dispatch(updateImageInStore(updatedBase64Text));
+    dispatch(updateBookInStore(data));
     setIsImageDisplayOn(!!updatedBase64Text);
   };
 
@@ -269,7 +281,6 @@ export default function CamScreen({ navigation }: CamScreenProps) {
     });
 
     if (!result.canceled) {
-      // console.log(result.assets[0].base64);
       updateImage(result.assets[0].base64);
     }
   };
@@ -286,7 +297,7 @@ export default function CamScreen({ navigation }: CamScreenProps) {
 
   if (permission) {
     logWithTime("Permission is granted.");
-    console.log(permission);
+    logWithTime(permission);
   }
 
   return (
