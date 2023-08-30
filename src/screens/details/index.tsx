@@ -54,7 +54,7 @@ const SaveButton: React.FC<SaveButtonProps> = ({ onPress }: SaveButtonProps) => 
 function DetailsScreen({ navigation }: DetailsScreenProps) {
   /* ================ Custom Hooks ================ */
   const { useRealm, useObject } = AppRealmContext;
-  const activeBook = useAppSelector((state) => state.book);
+  const { user: activeUser, book: activeBook } = useAppSelector((state) => state);
   const navigationHook = useNavigation();
 
   const realm = useRealm();
@@ -94,7 +94,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
   useEffect(() => {
     /* TODO: Add Change Image Button in headerCenter */
     navigationHook.setOptions({
-      headerRight: () => <SaveButton onPress={onSave} />,
+      headerRight: () => activeUser.isSU && <SaveButton onPress={onSave} />,
     });
   }, []);
 
@@ -167,6 +167,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
   };
 
   /* ================ Screen (Main Component) ================ */
+  // TODO: Use text component for non-su
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -182,6 +183,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
             placeholder: "Name",
             onChangeText: (text: string) => onChangeText(text, "bookName"),
             value: bookData.bookName,
+            editable: activeUser.isSU,
           }}
         />
         <CustomTextInput
@@ -191,6 +193,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
             numberOfLines: 4,
             onChangeText: (text: string) => onChangeText(text, "bookDescription"),
             value: bookData.bookDescription,
+            editable: activeUser.isSU,
           }}
           customTextInputStyle={Style.description}
         />
@@ -200,6 +203,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
             onChangeText: (text: string) => onChangeText(text, "isbn"),
             value: bookData.isbn,
             keyboardType: "number-pad",
+            editable: activeUser.isSU,
           }}
         />
         <CustomTextInput
@@ -207,6 +211,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
             placeholder: "Author(s)",
             onChangeText: (text: string) => onChangeText(text, "authors"),
             value: bookData.authors,
+            editable: activeUser.isSU,
           }}
         />
         <ValidatorTextInput
@@ -218,6 +223,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
             placeholder: "Genre(s)",
             onChangeText: (text: string) => onChangeText(text, "genres"),
             value: bookData.genres,
+            editable: activeUser.isSU,
           }}
         />
         {/* Selectbox isHardcover? */}
