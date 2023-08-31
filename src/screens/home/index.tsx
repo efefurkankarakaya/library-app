@@ -1,6 +1,6 @@
 /* Core */
 import { useEffect, useMemo, useState } from "react";
-import { FlatList, Text, SafeAreaView, View } from "react-native";
+import { FlatList, Text, SafeAreaView, View, Dimensions } from "react-native";
 
 /* Expo */
 import { Image } from "expo-image";
@@ -38,7 +38,6 @@ interface FlatListItem {
   item: Book & Realm.Object;
 }
 
-// TODO: Handle search by ISBN and author too.
 function filterBooks(books: Realm.Results<Book & Realm.Object>, query: string) {
   const lowerCaseQuery = query.toLowerCase().trim();
   return books.filter((book) => {
@@ -124,36 +123,21 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     };
 
     return (
-      <View
-        style={
-          {
-            // borderRadius: 20,
-          }
-        }
-      >
+      <View style={Style.itemContainer}>
         <TransparentButton
-          buttonStyle={{
-            margin: 20,
-          }}
+          buttonStyle={Style.itemButton}
           touchableOpacityProps={{
             onPress: () => onPressBook(data),
           }}
         >
-          <View
-            style={{
-              alignItems: "center",
-            }}
-          >
-            <Image
-              source={{ uri: item.bookImage }}
-              style={{
-                height: 250,
-                width: 150,
-                backgroundColor: "blue",
-              }}
-            />
-            <Text>{item.bookName}</Text>
-            <Text>{item.authors}</Text>
+          <View style={Style.itemButtonInnerContainer}>
+            <View style={Style.itemImageContainer}>
+              <Image source={{ uri: item.bookImage }} style={Style.itemImage} />
+            </View>
+            <View style={Style.itemDetailsContainer}>
+              <CustomText textStyle={Style.itemTitle}>{item.bookName}</CustomText>
+              <CustomText textStyle={Style.itemSubtitle}>{item.authors}</CustomText>
+            </View>
           </View>
         </TransparentButton>
       </View>
@@ -164,22 +148,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={Style.container} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       <CustomTextInput
-        customTextInputStyle={{
-          width: "100%",
-        }}
         textInputProps={{
           value: searchQuery,
           onChangeText: (text: string) => setSearchQuery(text),
           placeholder: "Book, Author, ISBN...",
         }}
       />
-      <View
-        style={{
-          margin: 10,
-          alignItems: "center",
-        }}
-      >
-        <FlatList style={{}} data={filteredBooks} renderItem={renderItem} keyExtractor={keyExtractor} horizontal={false} numColumns={2} />
+      <View style={{}}>
+        <FlatList data={filteredBooks} renderItem={renderItem} keyExtractor={keyExtractor} horizontal={false} numColumns={1} />
       </View>
     </SafeAreaView>
   );

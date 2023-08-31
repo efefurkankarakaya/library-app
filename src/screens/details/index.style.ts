@@ -11,7 +11,7 @@ export default StyleSheet.create({
   image: {
     height: "35%",
     // overflow: "visible", // TODO: Find another way to slide input container over image
-    resizeMode: "stretch",
+    resizeMode: "stretch", // TODO: [expo-image]: Prop "resizeMode" is deprecated, use "contentFit" instead
   },
   inputContainer: {
     alignItems: "center",
