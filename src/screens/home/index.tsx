@@ -84,6 +84,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     }
   }, [user]);
 
+  useEffect(() => {
+    console.log("[Home] Change detected.");
+  }, [books]);
+
   const onSwipeRight = () => {
     if (user.isSU) {
       // Run Camera

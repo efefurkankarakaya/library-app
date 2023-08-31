@@ -1,6 +1,6 @@
 const moment = require("moment-timezone");
 
-export function addPrefixToBase64(base64Text: string) {
+export function addPrefixToBase64(base64Text: string): string {
   const prefix = "data:image/png;base64,";
   return prefix + base64Text;
 }

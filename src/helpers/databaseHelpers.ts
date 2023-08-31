@@ -13,11 +13,13 @@ import Book from "../models/Book";
 
 export function updateBook(realm: Realm, data: BookData | undefined, bookToBeUpdated: (Book & Realm.Object<Book, never>) | null) {
   try {
-    const { bookName, bookDescription, isbn, authors, genres } = data || {};
+    const { bookName, bookImage, bookDescription, isbn, authors, genres } = data || {};
 
     realm.write(() => {
       /* @ts-ignore */
       bookToBeUpdated.bookName = bookName;
+      /* @ts-ignore */
+      bookToBeUpdated.bookImage = bookImage;
       /* @ts-ignore */
       bookToBeUpdated.bookDescription = bookDescription;
       /* @ts-ignore */

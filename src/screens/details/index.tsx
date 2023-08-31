@@ -6,7 +6,7 @@ import { Image } from "expo-image";
 import { TextColor } from "../../common/colorPalette";
 import { useNavigation } from "@react-navigation/native";
 import ArrowForwardIOS from "../../../assets/arrow_forward_ios.svg";
-import { logJSON, logWithTime } from "../../utils/utils";
+import { addPrefixToBase64, logJSON, logWithTime } from "../../utils/utils";
 import { isTextEmpty } from "../../helpers/validationHelpers";
 import { AppRealmContext } from "../../models";
 import Book from "../../models/Book";
@@ -14,6 +14,8 @@ import { BookData } from "../../types/commonTypes";
 import Style from "./index.style";
 import { createBook, updateBook } from "../../helpers/databaseHelpers";
 import { temporaryDataID } from "../../common/static";
+import * as ImagePicker from "expo-image-picker";
+import { updateImageInStore } from "../../store/slices/bookSlice";
 // TODO: Refactor imports
 
 /* 
@@ -55,6 +57,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
   /* ================ Custom Hooks ================ */
   const { useRealm, useObject } = AppRealmContext;
   const { user: activeUser, book: activeBook } = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
   const navigationHook = useNavigation();
 
   const realm = useRealm();
@@ -95,6 +98,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
     /* TODO: Add Change Image Button in headerCenter */
     navigationHook.setOptions({
       headerRight: () => activeUser.isSU && <SaveButton onPress={onSave} />,
+      headerTitle: () => activeUser.isSU && <TextButton textProps={{ onPress: onChangeImage }}>Change</TextButton>,
     });
   }, []);
 
@@ -118,15 +122,32 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
       authors: !!authors,
       genres: !!genres,
     });
+
+    logWithTime("[Details] Change detected.");
   }, [activeBook]);
 
   useEffect(() => {
     const isValidationFailed = Object.values(bookDataValidationStatus).includes(false);
     setIsBookDataValid(!isValidationFailed);
-  });
+  }); // TODO: Check this validation
   /* ================ End ================ */
 
   /* ================ Event Handlers ================ */
+  const onChangeImage = async (): Promise<void> => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      base64: true,
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      selectionLimit: 1,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const updatedBase64 = addPrefixToBase64(result.assets[0].base64); // TODO: Fix
+      dispatch(updateImageInStore(updatedBase64));
+    }
+  };
+
   const onSave = () => {
     logWithTime("Clicked on save.");
     setIsSubmitted(true);
