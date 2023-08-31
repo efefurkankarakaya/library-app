@@ -6,6 +6,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     marginLeft: 10 /* TODO: This can cause a problem for search bar */,
+    marginRight: 10,
   },
   itemContainer: {
     marginBottom: 10,

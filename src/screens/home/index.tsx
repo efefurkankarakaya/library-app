@@ -44,7 +44,8 @@ function filterBooks(books: Realm.Results<Book & Realm.Object>, query: string) {
     return (
       book.bookName.toLowerCase().includes(lowerCaseQuery) ||
       book.authors.toLowerCase().includes(lowerCaseQuery) ||
-      book.isbn.toLowerCase().includes(lowerCaseQuery)
+      book.isbn.toLowerCase().includes(lowerCaseQuery) ||
+      book.genres.toLowerCase().includes(lowerCaseQuery)
     );
   });
 }
@@ -137,6 +138,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             <View style={Style.itemDetailsContainer}>
               <CustomText textStyle={Style.itemTitle}>{item.bookName}</CustomText>
               <CustomText textStyle={Style.itemSubtitle}>{item.authors}</CustomText>
+              <CustomText textStyle={Style.itemSubtitle}>{item.genres}</CustomText>
             </View>
           </View>
         </TransparentButton>
@@ -147,11 +149,18 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   // TODO: Create a card component for books
   return (
     <SafeAreaView style={Style.container} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+      {/* TODO: Add search icon to search bar
+      TODO: Maybe smaller text input?
+      */}
       <CustomTextInput
+        customContainerStyle={{
+          width: "100%",
+          marginBottom: 20,
+        }}
         textInputProps={{
           value: searchQuery,
           onChangeText: (text: string) => setSearchQuery(text),
-          placeholder: "Book, Author, ISBN...",
+          placeholder: "Search for book, author, ISBN or genre",
         }}
       />
       <View style={{}}>
