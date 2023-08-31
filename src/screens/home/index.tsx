@@ -41,7 +41,13 @@ interface FlatListItem {
 // TODO: Handle search by ISBN and author too.
 function filterBooks(books: Realm.Results<Book & Realm.Object>, query: string) {
   const lowerCaseQuery = query.toLowerCase().trim();
-  return books.filter((book) => book.bookName.toLowerCase().includes(lowerCaseQuery));
+  return books.filter((book) => {
+    return (
+      book.bookName.toLowerCase().includes(lowerCaseQuery) ||
+      book.authors.toLowerCase().includes(lowerCaseQuery) ||
+      book.isbn.toLowerCase().includes(lowerCaseQuery)
+    );
+  });
 }
 
 // TODO: https://stackoverflow.com/questions/52156083/scroll-through-the-view-when-keyboard-is-open-react-native-expo
@@ -147,6 +153,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
               }}
             />
             <Text>{item.bookName}</Text>
+            <Text>{item.authors}</Text>
           </View>
         </TransparentButton>
       </View>
