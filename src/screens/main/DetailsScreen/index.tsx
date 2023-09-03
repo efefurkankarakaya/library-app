@@ -142,8 +142,9 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
 
   useEffect(() => {
     const isValidationFailed = Object.values(bookDataValidationStatus).includes(false);
+
     setIsBookDataValid(!isValidationFailed);
-  }); // TODO: Check this validation, there's no dependency yet.
+  }, [bookDataValidationStatus]);
   /* ================ End ================ */
 
   /* ================ Event Handlers ================ */
