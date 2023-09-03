@@ -23,6 +23,7 @@ import { SettingsIcon, XIcon, SendIcon, FlashOnIcon, FlashOffIcon, GalleryIcon }
 import { addPrefixToBase64, logJSON, logWithTime } from "../../../utils/utils";
 import { resetBook, updateImageInStore } from "../../../store/slices/bookSlice";
 import { TBase64 } from "../../../types/commonTypes";
+import { imageLibraryOptions } from "../../../common/options";
 
 /* TODO: In some cases, screen might need to be considered here. */
 const iconSize: number = Dimensions.get("window").width * 0.09;
@@ -263,14 +264,7 @@ export default function CamScreen({ navigation }: CamScreenProps) {
   };
 
   const onPressGallery = async (): Promise<void> => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      base64: true,
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      // aspect: [9, 16], // Related to allowsEditing setting and works only on Android.
-      selectionLimit: 1,
-      quality: 1,
-    });
+    const result = await ImagePicker.launchImageLibraryAsync(imageLibraryOptions);
 
     if (!result.canceled) {
       updateImage(result.assets[0].base64);

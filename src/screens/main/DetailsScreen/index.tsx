@@ -31,6 +31,7 @@ import { BookData, BookDataComplete } from "../../../types/commonTypes";
 import { addPrefixToBase64, logWithTime } from "../../../utils/utils";
 import { isTextEmpty } from "../../../helpers/validationHelpers";
 import { temporaryDataID } from "../../../common/static";
+import { imageLibraryOptions } from "../../../common/options";
 
 type BookDataValidationStatus = {
   [key in keyof BookData]: boolean;
@@ -157,13 +158,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
 
   /* ================ Event Handlers ================ */
   const onChangeImage = async (): Promise<void> => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      base64: true,
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      selectionLimit: 1,
-      quality: 1,
-    });
+    const result = await ImagePicker.launchImageLibraryAsync(imageLibraryOptions);
 
     if (!result.canceled) {
       const updatedBase64 = addPrefixToBase64(result.assets[0].base64);
