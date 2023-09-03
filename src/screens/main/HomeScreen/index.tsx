@@ -91,7 +91,7 @@ const BookItem: React.FC<BookItemProps> = ({ onPressBook, bookData }) => {
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { useRealm, useQuery } = AppRealmContext; // TODO: Remove unused destructuring
   // const realm = useRealm();
-  const books = useQuery(Book);
+  const books = useQuery(Book).sorted("createdAt", true); /* Newest top */
 
   const dispatch = useAppDispatch();
 
