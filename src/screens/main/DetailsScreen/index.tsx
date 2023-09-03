@@ -25,7 +25,7 @@ import { updateImageInStore } from "../../../store/slices/bookSlice";
 import Style from "./index.style";
 
 /* Types */
-import { BookData } from "../../../types/commonTypes";
+import { BookData, BookDataComplete } from "../../../types/commonTypes";
 
 /* Others */
 import { addPrefixToBase64, logWithTime } from "../../../utils/utils";
@@ -64,6 +64,9 @@ const SaveButton: React.FC<SaveButtonProps> = ({ onPress }: SaveButtonProps) => 
 /* ================ End ================ */
 
 /* ================ Main Component ================ */
+/**
+  In emulator, swipe left motion can cause click on book and mount Details Screen with Camera Screen. Beware of that.
+ */
 function DetailsScreen({ navigation }: DetailsScreenProps) {
   /* ================ Custom Hooks ================ */
   const { useRealm, useObject } = AppRealmContext;
@@ -108,10 +111,15 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
 
   /* ================ Effects ================ */
   useEffect(() => {
+    logWithTime("[Details] Mounted");
     navigationHook.setOptions({
       headerRight: () => activeUser.isSU && <SaveButton onPress={onSave} />,
       headerTitle: () => activeUser.isSU && <TextButton textProps={{ onPress: onChangeImage }}>Change</TextButton>,
     });
+
+    return () => {
+      logWithTime("[Details] Unmounted.");
+    };
   }, []);
 
   useEffect(() => {

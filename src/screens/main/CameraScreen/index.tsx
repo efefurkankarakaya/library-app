@@ -20,10 +20,9 @@ import { CameraButtonColor } from "../../../common/colorPalette";
 import { SettingsIcon, XIcon, SendIcon, FlashOnIcon, FlashOffIcon, GalleryIcon } from "../../../../assets";
 
 /* Others */
-import { addPrefixToBase64, logWithTime } from "../../../utils/utils";
-import { updateBookInStore } from "../../../store/slices/bookSlice";
-import { temporaryDataID } from "../../../common/static";
-import { BookDataComplete, TBase64 } from "../../../types/commonTypes";
+import { addPrefixToBase64, logJSON, logWithTime } from "../../../utils/utils";
+import { resetBook, updateImageInStore } from "../../../store/slices/bookSlice";
+import { TBase64 } from "../../../types/commonTypes";
 
 /* TODO: In some cases, screen might need to be considered here. */
 const iconSize: number = Dimensions.get("window").width * 0.09;
@@ -182,6 +181,15 @@ export default function CamScreen({ navigation }: CamScreenProps) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    logWithTime("[CameraScreen] Mounted.");
+    dispatch(resetBook());
+
+    return () => {
+      logWithTime("[CameraScreen] Unmounted.");
+    };
+  }, []);
+
+  useEffect(() => {
     /* To handle the situation only basic as 'granted or not' 
     to prevent unpredictable errors that other falsy values (null | undefined) can cause. */
     setIsPermissionGranted(!!permission?.granted);
@@ -209,21 +217,8 @@ export default function CamScreen({ navigation }: CamScreenProps) {
       updatedBase64Text = addPrefixToBase64(base64Text);
     }
 
-    // TODO: Debug here, why did I do this instead of updating image in store?
-    const data: BookDataComplete = {
-      _id: temporaryDataID,
-      bookName: "",
-      bookImage: updatedBase64Text,
-      bookDescription: "",
-      isbn: "",
-      authors: "",
-      genres: "",
-      isHardcover: false,
-    };
-
     setCurrentImage(updatedBase64Text);
-    // dispatch(updateImageInStore(updatedBase64Text));
-    dispatch(updateBookInStore(data));
+    dispatch(updateImageInStore(updatedBase64Text));
     setIsImageDisplayOn(!!updatedBase64Text);
   };
 
@@ -296,7 +291,7 @@ export default function CamScreen({ navigation }: CamScreenProps) {
 
   if (permission) {
     logWithTime("Permission is granted.");
-    logWithTime(permission);
+    // logJSON("Permission", permission);
   }
 
   return (

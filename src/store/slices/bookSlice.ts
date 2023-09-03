@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction, Store } from "@reduxjs/toolkit";
 import { BookDataComplete, TBase64 } from "../../types/commonTypes";
+import { temporaryDataID } from "../../common/static";
+import { logWithTime } from "../../utils/utils";
 
 // TODO: Refactor here
 interface BookState {
@@ -23,9 +25,22 @@ export const bookSlice = createSlice({
     updateBookInStore: (state, action: PayloadAction<BookDataComplete>) => {
       state.data = action.payload;
     },
+    resetBook: (state) => {
+      logWithTime("[Book | Reset]");
+      state.data = {
+        _id: temporaryDataID,
+        bookName: "",
+        bookImage: "",
+        bookDescription: "",
+        isbn: "",
+        authors: "",
+        genres: "",
+        isHardcover: false,
+      };
+    },
   },
 });
 
-export const { updateImageInStore, updateBookInStore } = bookSlice.actions;
+export const { updateImageInStore, updateBookInStore, resetBook } = bookSlice.actions;
 
 export default bookSlice.reducer;

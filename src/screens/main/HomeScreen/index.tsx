@@ -26,12 +26,11 @@ import { MainStackParamList } from "../../../types/navigationTypes";
 
 /* Others */
 import { useSwipe } from "../../../helpers/gestureHelpers";
-import { updateBookInStore } from "../../../store/slices/bookSlice";
+import { resetBook, updateBookInStore } from "../../../store/slices/bookSlice";
 import { logWithTime } from "../../../utils/utils";
 import { BookDataComplete } from "../../../types/commonTypes";
 
-type TOnPressBook = (bookData: BookDataComplete) => void;
-
+/* ================ File Private Functions ================ */
 function filterBooks(books: Realm.Results<Book & Realm.Object>, query: string) {
   const lowerCaseQuery = query.toLowerCase().trim();
   return books.filter((book) => {
@@ -43,11 +42,16 @@ function filterBooks(books: Realm.Results<Book & Realm.Object>, query: string) {
     );
   });
 }
+/* ================ End ================ */
+
+/* ================ Types & Definitions ================ */
+type TOnPressBook = (bookData: BookDataComplete) => void;
 
 interface FlatListItem {
   index: number;
   item: Book & Realm.Object;
 }
+/* ================ End ================ */
 
 /* ================ Component Props ================ */
 interface HomeScreenProps {
@@ -106,6 +110,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   //     realm.delete(books);
   //   });
   // }, []);
+
+  useEffect(() => {
+    /* Remove active book */
+    dispatch(resetBook());
+  }, []);
 
   // https://stackoverflow.com/questions/45854450/detect-swipe-left-in-react-native
   // https://docs.expo.dev/versions/latest/sdk/gesture-handler/
