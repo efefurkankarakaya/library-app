@@ -21,7 +21,7 @@ import User from "../../../models/User";
 
 /* Style */
 import Style from "./index.style";
-import LibIcon from "../../../../assets/lib-clean.png";
+import { LibLogo } from "../../../../assets";
 
 /* Types */
 import { RootStackParamList } from "../../../types/navigationTypes";
@@ -112,7 +112,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={Style.container}>
-      <Image style={Style.image} source={LibIcon} placeholder={blurhash} contentFit="cover" transition={1000} />
+      <Image style={Style.image} source={LibLogo} placeholder={blurhash} contentFit="cover" transition={1000} />
       {/* <CustomText textStyle={Style.title}>Logo</CustomText> */}
       {/* TODO: Set e-mail address here after registration */}
       {/* TODO: Add Remember me */}

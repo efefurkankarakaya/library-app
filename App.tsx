@@ -38,9 +38,7 @@ import { LoginScreen, SignUpScreen, HomeScreen, CamScreen, DetailsScreen, MyBook
 /* Style */
 import AppStyle from "./App.style";
 import { CameraButtonColor, TextColor } from "./src/common/colorPalette";
-import HomeIcon from "./assets/home.svg"; // TODO: Refactor
-import BookIcon from "./assets/book.svg";
-import ProfileIcon from "./assets/profile.svg";
+import { HomeIcon, BookIcon, ProfileIcon } from "./assets";
 
 // https://reactnative.dev/docs/environment-setup?guide=quickstart&package-manager=npm
 // https://reactnative.dev/docs/typescript

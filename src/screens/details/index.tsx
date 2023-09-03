@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { Image } from "expo-image";
 import { TextColor } from "../../common/colorPalette";
 import { useNavigation } from "@react-navigation/native";
-import ArrowForwardIOS from "../../../assets/arrow_forward_ios.svg";
 import { addPrefixToBase64, logJSON, logWithTime } from "../../utils/utils";
 import { isTextEmpty } from "../../helpers/validationHelpers";
 import { AppRealmContext } from "../../models";

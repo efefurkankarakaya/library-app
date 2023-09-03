@@ -17,12 +17,7 @@ import { useAppDispatch } from "../../store/hooks";
 import Style from "./index.style";
 import { CameraButtonColor } from "../../common/colorPalette";
 // TODO: Refactor icon imports
-import FlashlightOn from "../../../assets/flash_on.svg";
-import FlashlightOff from "../../../assets/flash_off.svg";
-import X from "../../../assets/x.svg";
-import Settings from "../../../assets/settings.svg";
-import Gallery from "../../../assets/gallery2.svg";
-import Send from "../../../assets/send.svg";
+import { SettingsIcon, XIcon, SendIcon, FlashOnIcon, FlashOffIcon, GalleryIcon } from "../../../assets";
 
 /* Others */
 import { addPrefixToBase64, logWithTime } from "../../utils/utils";
@@ -89,7 +84,7 @@ const InformationText: React.FC<InformationTextProps> = ({ children }: Informati
 const CameraCloseButton: React.FC<CameraCloseButtonProps> = ({ onPress }: CameraCloseButtonProps) => {
   return (
     <TransparentButton buttonStyle={Style.cameraButtonGeneric} touchableOpacityProps={{ onPress }}>
-      <X width={iconSize} height={iconSize} style={iconStyle} />
+      <XIcon width={iconSize} height={iconSize} style={iconStyle} />
     </TransparentButton>
   );
 };
@@ -97,9 +92,9 @@ const CameraCloseButton: React.FC<CameraCloseButtonProps> = ({ onPress }: Camera
 const CameraFlashlightButton: React.FC<CameraFlashlightButtonProps> = ({ flashMode, onPress }: CameraFlashlightButtonProps) => {
   const activeIcon = (_iconSize: number, _iconStyle: object) => {
     if (flashMode === "on") {
-      return <FlashlightOff width={_iconSize} height={_iconSize} style={_iconStyle} />;
+      return <FlashOffIcon width={_iconSize} height={_iconSize} style={_iconStyle} />;
     }
-    return <FlashlightOn width={_iconSize} height={_iconSize} style={_iconStyle} />;
+    return <FlashOnIcon width={_iconSize} height={_iconSize} style={_iconStyle} />;
   };
 
   return (
@@ -118,7 +113,7 @@ const CameraSettingsButton: React.FC<CameraSettingsButtonProps> = ({ onPress }: 
       }}
       touchableOpacityProps={{ onPress }}
     >
-      <Settings width={iconSize} height={iconSize} style={iconStyle} />
+      <SettingsIcon width={iconSize} height={iconSize} style={iconStyle} />
     </TransparentButton>
   );
 };
@@ -335,7 +330,7 @@ export default function CamScreen({ navigation }: CamScreenProps) {
                   onPress: onPressGallery,
                 }}
               >
-                <Gallery style={iconStyle} width={iconSize} height={iconSize} />
+                <GalleryIcon style={iconStyle} width={iconSize} height={iconSize} />
               </TransparentButton>
             </View>
             {/* Record Button */}
@@ -358,7 +353,7 @@ export default function CamScreen({ navigation }: CamScreenProps) {
                   onPress: onPressSend,
                 }}
               >
-                <Send style={currentImage && iconStyle} width={iconSize} height={iconSize} />
+                <SendIcon style={currentImage && iconStyle} width={iconSize} height={iconSize} />
               </TransparentButton>
             </View>
           </View>
