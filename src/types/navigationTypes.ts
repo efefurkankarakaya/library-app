@@ -16,8 +16,7 @@ export type RootStackParamList = {
 
 export type BottomTabParamList = {
   HomeScreen: undefined;
-  SearchScreen: undefined; // TODO: My Books
-  ActivitiesScreen: undefined;
+  MyBooksScreen: undefined;
   ProfileScreen: undefined;
 };
 

@@ -33,11 +33,14 @@ import { Provider } from "react-redux";
 import { store } from "./src/store/store";
 
 /* Screens */
-import { LoginScreen, SignUpScreen, HomeScreen, CamScreen, DetailsScreen, ActivitiesScreen, ProfileScreen } from "./src/screens";
+import { LoginScreen, SignUpScreen, HomeScreen, CamScreen, DetailsScreen, MyBooksScreen, ProfileScreen } from "./src/screens";
 
 /* Style */
 import AppStyle from "./App.style";
-import { TextColor } from "./src/common/colorPalette";
+import { CameraButtonColor, TextColor } from "./src/common/colorPalette";
+import HomeIcon from "./assets/home.svg"; // TODO: Refactor
+import BookIcon from "./assets/book.svg";
+import ProfileIcon from "./assets/profile.svg";
 
 // https://reactnative.dev/docs/environment-setup?guide=quickstart&package-manager=npm
 // https://reactnative.dev/docs/typescript
@@ -108,13 +111,32 @@ const AuthenticationStackNavigation = (): JSX.Element => {
   );
 };
 
+const getBottomIconColor = (focused: boolean) => (focused ? "black" : CameraButtonColor.grey); // TODO: Move outside
+
 const MainAppBottomNavigation = (): JSX.Element => {
   return (
     <BottomTab.Navigator initialRouteName="HomeScreen" screenOptions={BottomTabNavigatorScreenOptions}>
-      <BottomTab.Screen name="HomeScreen" component={HomeScreen} />
-      <BottomTab.Screen name="SearchScreen" component={HomeScreen} />
-      <BottomTab.Screen name="ActivitiesScreen" component={ActivitiesScreen} />
-      <BottomTab.Screen name="ProfileScreen" component={ProfileScreen} />
+      <BottomTab.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({ focused }) => <HomeIcon fill={getBottomIconColor(focused)} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="MyBooksScreen"
+        component={MyBooksScreen}
+        options={{
+          tabBarIcon: ({ focused }) => <BookIcon fill={getBottomIconColor(focused)} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({ focused }) => <ProfileIcon fill={getBottomIconColor(focused)} />,
+        }}
+      />
     </BottomTab.Navigator>
   );
 };

@@ -1,12 +1,12 @@
 import { ScrollView } from "react-native";
 import { CustomText } from "../../components";
 
-function ActivitiesScreen() {
+function MyBooksScreen() {
   return (
     <ScrollView>
-      <CustomText>Activities</CustomText>
+      <CustomText>MyBooks</CustomText>
     </ScrollView>
   );
 }
 
-export default ActivitiesScreen;
+export default MyBooksScreen;
