@@ -27,8 +27,12 @@ import { MainStackParamList } from "../../../types/navigationTypes";
 /* Others */
 import { useSwipe } from "../../../helpers/gestureHelpers";
 import { resetBook, updateBookInStore } from "../../../store/slices/bookSlice";
-import { logWithTime } from "../../../utils/utils";
+import { logJSON, logWithTime } from "../../../utils/utils";
 import { BookDataComplete } from "../../../types/commonTypes";
+import User from "../../../models/User";
+import { updateActiveUser } from "../../../store/slices/userSlice";
+import Loan from "../../../models/Loan";
+import { updateLoansInStore } from "../../../store/slices/loanSlice";
 
 /* ================ File Private Functions ================ */
 function filterBooks(books: Realm.Results<Book & Realm.Object>, query: string) {
@@ -93,18 +97,24 @@ const BookItem: React.FC<BookItemProps> = ({ onPressBook, bookData }) => {
 
 // TODO: https://stackoverflow.com/questions/52156083/scroll-through-the-view-when-keyboard-is-open-react-native-expo
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+  const dispatch = useAppDispatch();
+
   const { useRealm, useQuery } = AppRealmContext; // TODO: Remove unused destructuring
   // const realm = useRealm();
   const books = useQuery(Book).sorted("createdAt", true); /* Newest top */
-
-  const dispatch = useAppDispatch();
+  const loans = useQuery(Loan);
+  console.log(loans);
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const filteredBooks = useMemo(() => filterBooks(books, searchQuery), [books, searchQuery]);
 
   const user = useAppSelector(({ user }) => user);
-  console.log(user);
+  // const loansInStore = useAppSelector(({ loan }) => loan);
+  // const userData = useQuery(User).filtered("email == $0", user.data.email);
+  logJSON(user);
+  // console.log(userData);
 
+  /* TODO: Need to find a touch action to delete books. */
   // useEffect(() => {
   //   realm.write(() => {
   //     realm.delete(books);
@@ -112,15 +122,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   // }, []);
 
   useEffect(() => {
-    /* Remove active book */
+    /* Remove active book if exists from previous user. */
     dispatch(resetBook());
   }, []);
 
-  // https://stackoverflow.com/questions/45854450/detect-swipe-left-in-react-native
-  // https://docs.expo.dev/versions/latest/sdk/gesture-handler/
-  // https://docs.swmansion.com/react-native-gesture-handler/docs/
-  // If user SU and swipe left is triggered, then start camera and save product,
-  // Product Edit / Details page (same page, but if user is su, it becomes editable)
+  useEffect(() => {
+    dispatch(updateLoansInStore(loans));
+  }, [loans]);
 
   useEffect(() => {
     /* TODO: During the development, state can change and user login status turned to be false when hot reload runs but what if it happens in production? */

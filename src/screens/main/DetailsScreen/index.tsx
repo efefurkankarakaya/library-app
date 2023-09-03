@@ -15,7 +15,7 @@ import Book from "../../../models/Book";
 import { createBook, updateBook } from "../../../helpers/databaseHelpers";
 
 /* Custom Components */
-import { CustomTextInput, TextButton, ValidatorTextInput } from "../../../components";
+import { CustomButton, CustomTextInput, TextButton, ValidatorTextInput } from "../../../components";
 
 /* Store */
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
@@ -28,10 +28,11 @@ import Style from "./index.style";
 import { BookData, BookDataComplete } from "../../../types/commonTypes";
 
 /* Others */
-import { addPrefixToBase64, logWithTime } from "../../../utils/utils";
+import { addPrefixToBase64, logJSON, logWithTime } from "../../../utils/utils";
 import { isTextEmpty } from "../../../helpers/validationHelpers";
 import { temporaryDataID } from "../../../common/static";
 import { imageLibraryOptions } from "../../../common/options";
+import Loan from "../../../models/Loan";
 
 type BookDataValidationStatus = {
   [key in keyof BookData]: boolean;
@@ -70,16 +71,20 @@ const SaveButton: React.FC<SaveButtonProps> = ({ onPress }: SaveButtonProps) => 
  */
 function DetailsScreen({ navigation }: DetailsScreenProps) {
   /* ================ Custom Hooks ================ */
-  const { useRealm, useObject } = AppRealmContext;
+  const { useRealm, useObject, useQuery } = AppRealmContext;
   const { user: activeUser, book: activeBook } = useAppSelector((state) => state);
+
+  const realm = useRealm();
   const dispatch = useAppDispatch();
   const navigationHook = useNavigation();
 
-  const realm = useRealm();
   const bookToBeUpdated = useObject(Book, activeBook.data._id);
+  const matchedLoan = useQuery(Loan).filtered("bookId == $0 && userId == $1", activeBook.data._id, activeUser.data._id);
   /* ================ End ================ */
 
   /* ================ States ================ */
+  const [isBorrowed, setIsBorrowed] = useState<boolean>(false);
+
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   const [bookData, setBookData] = useState<BookData>({
@@ -122,6 +127,10 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
       logWithTime("[Details] Unmounted.");
     };
   }, []);
+
+  useEffect(() => {
+    setIsBorrowed(matchedLoan.length > 0);
+  }, [matchedLoan]);
 
   useEffect(() => {
     const { bookName, bookImage, bookDescription, isbn, authors, genres, isHardcover } = activeBook.data;
@@ -185,6 +194,23 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
   };
 
   /* On Change Main Handler */
+  const onPressBorrow = () => {
+    console.log(activeBook.data._id);
+    console.log(activeUser.data._id);
+
+    realm.write(() => {
+      realm.create("Loan", Loan.create(activeBook.data._id, activeUser.data._id));
+    });
+  };
+
+  const onPressPutBack = () => {
+    console.log("Put back!");
+
+    realm.write(() => {
+      realm.delete(matchedLoan[0]);
+    });
+  };
+
   const onChangeText = (text: string, textKey: BookDataKeys) => {
     const isValid = !isTextEmpty(text);
 
@@ -260,6 +286,13 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
             editable: activeUser.isSU,
           }}
         />
+        <CustomButton
+          touchableOpacityProps={{
+            onPress: isBorrowed ? onPressPutBack : onPressBorrow,
+          }}
+        >
+          {isBorrowed ? "Put Back" : "Borrow"}
+        </CustomButton>
         {/* Selectbox isHardcover? */}
       </View>
     </KeyboardAvoidingView>

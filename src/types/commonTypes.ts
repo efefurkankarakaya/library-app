@@ -33,3 +33,7 @@ export interface BookData {
 export interface BookDataComplete extends BookData {
   _id: Realm.BSON.ObjectId;
 }
+
+export interface UserDataComplete extends UserData {
+  _id: Realm.BSON.ObjectId;
+}

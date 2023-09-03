@@ -30,7 +30,7 @@ export function logWithTime(message: string | any, ...rest: any[]): void {
   console.log(`[${currentTime}] ${message}`, ...rest);
 }
 
-export function logJSON(message: string, JSONData: JSON | object): void {
+export function logJSON(JSONData: JSON | object, message: string = ""): void {
   const beautifiedJSON: string = JSON.stringify(JSONData, null, "\t");
   logWithTime(`${message}\n ${beautifiedJSON}`);
 }

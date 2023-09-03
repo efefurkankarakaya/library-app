@@ -13,7 +13,7 @@ import { CustomTextInput, CustomText, CustomButton, ValidatorTextInput, TextButt
 
 /* Store */
 import { useAppDispatch } from "../../../store/hooks";
-import { grantPermission, logIn, logOut, revokePermission } from "../../../store/slices/userSlice";
+import { grantPermission, logIn, logOut, revokePermission, updateActiveUser, updateEmail } from "../../../store/slices/userSlice";
 
 /* Database */
 import { AppRealmContext } from "../../../models";
@@ -70,13 +70,16 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     authenticate(users, loginData.email, loginData.password)
       .then((result) => {
         /* Regular flow, function worked but authentication can fail in user side. */
-        const { isAuthenticated, isSU } = result;
+        const { isAuthenticated, isSU, user } = result;
         setIsAuthenticated(isAuthenticated);
         setIsSubmitted(true);
 
         /* If user authenticated */
         if (result.isAuthenticated) {
           isSU && dispatch(grantPermission());
+          // dispatch(updateEmail(loginData.email));
+          // @ts-ignore
+          dispatch(updateActiveUser(user)); /* If user is not authenticated, then this action won't work. */
           dispatch(logIn());
           // @ts-ignore: https://reactnavigation.org/docs/nesting-navigators/#passing-params-to-a-screen-in-a-nested-navigator
           navigation.navigate("MainApp", { screen: "MainAppBottomNavigation" });
