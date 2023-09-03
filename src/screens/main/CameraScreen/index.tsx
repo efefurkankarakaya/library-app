@@ -1,6 +1,6 @@
 /* Core */
 import { useRef, type ReactNode, useState, useEffect } from "react";
-import { Dimensions, TouchableWithoutFeedbackProps, View } from "react-native";
+import { Dimensions, TouchableOpacityProps, View } from "react-native";
 
 /* Expo */
 import { Image } from "expo-image";
@@ -23,6 +23,7 @@ import { SettingsIcon, XIcon, SendIcon, FlashOnIcon, FlashOffIcon, GalleryIcon }
 import { addPrefixToBase64, logWithTime } from "../../../utils/utils";
 import { updateBookInStore } from "../../../store/slices/bookSlice";
 import { temporaryDataID } from "../../../common/static";
+import { BookDataComplete, TBase64 } from "../../../types/commonTypes";
 
 /* TODO: In some cases, screen might need to be considered here. */
 const iconSize: number = Dimensions.get("window").width * 0.09;
@@ -43,7 +44,7 @@ interface InformationTextProps {
 }
 
 interface CameraScreenButtonProps {
-  onPress: TouchableWithoutFeedbackProps["onPress"];
+  onPress: TouchableOpacityProps["onPress"];
 }
 
 interface CameraCloseButtonProps extends CameraScreenButtonProps {}
@@ -55,9 +56,9 @@ interface CameraFlashlightButtonProps extends CameraScreenButtonProps {
 }
 
 interface CameraTopBarOnPress {
-  onPressX?: TouchableWithoutFeedbackProps["onPress"];
-  onPressFlashlight?: TouchableWithoutFeedbackProps["onPress"];
-  onPressSettings?: TouchableWithoutFeedbackProps["onPress"];
+  onPressX?: TouchableOpacityProps["onPress"];
+  onPressFlashlight?: TouchableOpacityProps["onPress"];
+  onPressSettings?: TouchableOpacityProps["onPress"];
 }
 
 interface CameraTopBarProps {
@@ -90,6 +91,7 @@ const CameraCloseButton: React.FC<CameraCloseButtonProps> = ({ onPress }: Camera
 };
 
 const CameraFlashlightButton: React.FC<CameraFlashlightButtonProps> = ({ flashMode, onPress }: CameraFlashlightButtonProps) => {
+  /* Local Function */
   const activeIcon = (_iconSize: number, _iconStyle: object) => {
     if (flashMode === "on") {
       return <FlashOffIcon width={_iconSize} height={_iconSize} style={_iconStyle} />;
@@ -120,7 +122,7 @@ const CameraSettingsButton: React.FC<CameraSettingsButtonProps> = ({ onPress }: 
 
 const CameraTopBar: React.FC<CameraTopBarProps> = ({
   isPermissionGranted,
-  isImageDisplayOn,
+  isImageDisplayOn, // This data using for preventing flashlight attempts when image is displayed.
   flashMode,
   onPressFunctions,
 }: CameraTopBarProps) => {
@@ -172,7 +174,7 @@ export default function CamScreen({ navigation }: CamScreenProps) {
   const cameraRef = useRef(null);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [flashMode, setFlashMode] = useState<FlashMode>(FlashMode.off);
-  const [currentImage, setCurrentImage] = useState<ImagePicker.ImagePickerAsset["base64"]>(null);
+  const [currentImage, setCurrentImage] = useState<TBase64>(null);
   const [isPermissionGranted, setIsPermissionGranted] = useState<boolean>(false);
   const [isImageDisplayOn, setIsImageDisplayOn] = useState<boolean>(false);
   // const [isCameraReady, setIsCameraReady] = useState<boolean>(false);
@@ -200,14 +202,15 @@ export default function CamScreen({ navigation }: CamScreenProps) {
   //   }
   // }, [currentImage]);
 
-  const updateImage = (base64Text: ImagePicker.ImagePickerAsset["base64"]): void => {
+  const updateImage = (base64Text: TBase64): void => {
     let updatedBase64Text = null;
 
     if (base64Text) {
       updatedBase64Text = addPrefixToBase64(base64Text);
     }
 
-    const data = {
+    // TODO: Debug here, why did I do this instead of updating image in store?
+    const data: BookDataComplete = {
       _id: temporaryDataID,
       bookName: "",
       bookImage: updatedBase64Text,
@@ -215,6 +218,7 @@ export default function CamScreen({ navigation }: CamScreenProps) {
       isbn: "",
       authors: "",
       genres: "",
+      isHardcover: false,
     };
 
     setCurrentImage(updatedBase64Text);

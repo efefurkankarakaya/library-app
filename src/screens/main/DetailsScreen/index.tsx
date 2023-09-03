@@ -1,25 +1,36 @@
+/* Core */
 import { useEffect, useRef, useState } from "react";
-import { Dimensions, KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
-import { CustomButton, CustomText, CustomTextInput, TextButton, ValidatorTextInput } from "../../../components";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { KeyboardAvoidingView, Platform, TouchableOpacityProps, View } from "react-native";
+
+/* Expo */
 import { Image } from "expo-image";
-import { TextColor } from "../../../common/colorPalette";
+import * as ImagePicker from "expo-image-picker";
+
+/* Navigation */
 import { useNavigation } from "@react-navigation/native";
-import { addPrefixToBase64, logJSON, logWithTime } from "../../../utils/utils";
-import { isTextEmpty } from "../../../helpers/validationHelpers";
+
+/* Database */
 import { AppRealmContext } from "../../../models";
 import Book from "../../../models/Book";
-import { BookData } from "../../../types/commonTypes";
-import Style from "./index.style";
 import { createBook, updateBook } from "../../../helpers/databaseHelpers";
-import { temporaryDataID } from "../../../common/static";
-import * as ImagePicker from "expo-image-picker";
-import { updateImageInStore } from "../../../store/slices/bookSlice";
-// TODO: Refactor imports
 
-/* 
-    TODO: If user is authenticated, then user can create and edit books.
-  */
+/* Custom Components */
+import { CustomTextInput, TextButton, ValidatorTextInput } from "../../../components";
+
+/* Store */
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { updateImageInStore } from "../../../store/slices/bookSlice";
+
+/* Style */
+import Style from "./index.style";
+
+/* Types */
+import { BookData } from "../../../types/commonTypes";
+
+/* Others */
+import { addPrefixToBase64, logWithTime } from "../../../utils/utils";
+import { isTextEmpty } from "../../../helpers/validationHelpers";
+import { temporaryDataID } from "../../../common/static";
 
 type BookDataValidationStatus = {
   [key in keyof BookData]: boolean;
@@ -29,7 +40,7 @@ type BookDataKeys = keyof BookData;
 
 /* ================ Component Props ================ */
 interface SaveButtonProps {
-  onPress: any;
+  onPress: TouchableOpacityProps["onPress"];
 }
 
 interface DetailsScreenProps {
@@ -52,6 +63,7 @@ const SaveButton: React.FC<SaveButtonProps> = ({ onPress }: SaveButtonProps) => 
 };
 /* ================ End ================ */
 
+/* ================ Main Component ================ */
 function DetailsScreen({ navigation }: DetailsScreenProps) {
   /* ================ Custom Hooks ================ */
   const { useRealm, useObject } = AppRealmContext;
@@ -68,23 +80,25 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
 
   const [bookData, setBookData] = useState<BookData>({
     bookName: "",
-    bookImage: "" /* Not in use, just for fulfilling the type for now. */,
+    bookImage: "" /* Adding an image is mandatory (in the camera section, otherwise you can't get to the details), 
+    but changing the image is optional. */,
     bookDescription: "",
     isbn: "",
     authors: "",
     genres: "",
-    // isHardcover: false,
+    isHardcover: false /* Not in use, for now */,
   });
   const bookDataRef = useRef<BookData>(); // To get latest state in onSave function.
   bookDataRef.current = bookData;
 
   const [bookDataValidationStatus, setBookDataValidationStatus] = useState<BookDataValidationStatus>({
-    bookName: false /* Mandatory */,
-    bookImage: true /* Image can't be removed, no need to validate */,
+    bookName: false,
+    bookImage: true /* Image can't be removed, can be changed only. That's why no need to validate */,
     bookDescription: true /* Optional */,
-    isbn: false /* Mandatory */,
-    authors: false /* Mandatory */,
-    genres: false /* Mandatory */,
+    isbn: false,
+    authors: false,
+    genres: false,
+    isHardcover: true /* Not in use, for now */,
   });
 
   const [isBookDataValid, setIsBookDataValid] = useState<boolean>(false);
@@ -94,7 +108,6 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
 
   /* ================ Effects ================ */
   useEffect(() => {
-    /* TODO: Add Change Image Button in headerCenter */
     navigationHook.setOptions({
       headerRight: () => activeUser.isSU && <SaveButton onPress={onSave} />,
       headerTitle: () => activeUser.isSU && <TextButton textProps={{ onPress: onChangeImage }}>Change</TextButton>,
@@ -102,7 +115,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
   }, []);
 
   useEffect(() => {
-    const { bookName, bookImage, bookDescription, isbn, authors, genres } = activeBook.data;
+    const { bookName, bookImage, bookDescription, isbn, authors, genres, isHardcover } = activeBook.data;
 
     setBookData({
       bookName,
@@ -111,6 +124,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
       isbn,
       authors,
       genres,
+      isHardcover,
     });
 
     setBookDataValidationStatus({
@@ -120,6 +134,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
       isbn: !!isbn,
       authors: !!authors,
       genres: !!genres,
+      isHardcover: true,
     });
 
     logWithTime("[Details] Change detected.");
@@ -128,7 +143,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
   useEffect(() => {
     const isValidationFailed = Object.values(bookDataValidationStatus).includes(false);
     setIsBookDataValid(!isValidationFailed);
-  }); // TODO: Check this validation
+  }); // TODO: Check this validation, there's no dependency yet.
   /* ================ End ================ */
 
   /* ================ Event Handlers ================ */
@@ -142,7 +157,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
     });
 
     if (!result.canceled) {
-      const updatedBase64 = addPrefixToBase64(result.assets[0].base64); // TODO: Fix
+      const updatedBase64 = addPrefixToBase64(result.assets[0].base64);
       dispatch(updateImageInStore(updatedBase64));
     }
   };
@@ -155,10 +170,6 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
       logWithTime("Data is not valid.");
       return;
     }
-
-    // const { bookName = "", bookDescription = "", isbn = "", authors = "", genres = "" } = bookDataRef.current || {};
-    // const arrayOfAuthors = authors?.split(",").map((author) => author.trim()) || []; // TODO: Remove
-    // const arrayOfGenres = genres?.split(",").map((genre) => genre.trim()) || [];
 
     if (activeBook.data._id !== temporaryDataID) {
       updateBook(realm, bookDataRef.current, bookToBeUpdated);
@@ -187,7 +198,6 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
   };
 
   /* ================ Screen (Main Component) ================ */
-  // TODO: Use text component for non-su
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -195,7 +205,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
       contentContainerStyle={Style.contentContainer}
     >
       {/* <CustomText>Details Page</CustomText> */}
-      {/* @ts-ignore: URI can be string, null or undefined. */}
+      {/* TODO: Handle the case image is not available. Use red screen base64 or default image. */}
       <Image source={{ uri: activeBook.data.bookImage }} style={Style.image} />
       <View style={Style.inputContainer}>
         <CustomTextInput

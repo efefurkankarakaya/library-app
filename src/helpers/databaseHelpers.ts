@@ -11,9 +11,30 @@ import { BookData, UserData } from "../types/commonTypes";
 import { logWithTime } from "../utils/utils";
 import Book from "../models/Book";
 
-export function updateBook(realm: Realm, data: BookData | undefined, bookToBeUpdated: (Book & Realm.Object<Book, never>) | null) {
+type TBookDataRef = BookData | undefined; /* To get the latest data in state, using ref instead of state */
+type TBookToBeUpdated = (Book & Realm.Object<Book, never>) | null;
+
+const CRUDErrors = {
+  CreateError: "Create Error",
+  UpdateError: "Update Error",
+};
+
+/** 
+ Book Operations
+ * TODO: Realm does not allow more than 16 MB data, image size should be reduced if larger than 16 MB. 
+ * Error: Exception in HostFunction: String too big
+*/
+export function updateBook(realm: Realm, data: TBookDataRef, bookToBeUpdated: TBookToBeUpdated) {
   try {
-    const { bookName, bookImage, bookDescription, isbn, authors, genres } = data || {};
+    const {
+      bookName = CRUDErrors.UpdateError,
+      bookImage = CRUDErrors.UpdateError,
+      bookDescription = CRUDErrors.UpdateError,
+      isbn = CRUDErrors.UpdateError,
+      authors = CRUDErrors.UpdateError,
+      genres = CRUDErrors.UpdateError,
+      isHardcover = false /* Currently, not in use. */,
+    } = data || {};
 
     realm.write(() => {
       /* @ts-ignore */
@@ -28,6 +49,8 @@ export function updateBook(realm: Realm, data: BookData | undefined, bookToBeUpd
       bookToBeUpdated.authors = authors;
       /* @ts-ignore */
       bookToBeUpdated.genres = genres;
+      /* @ts-ignore */
+      bookToBeUpdated.isHardcover = isHardcover;
     });
 
     logWithTime("Succcessfully updated: ", bookToBeUpdated?.bookName);
@@ -37,10 +60,18 @@ export function updateBook(realm: Realm, data: BookData | undefined, bookToBeUpd
   }
 }
 
-export function createBook(realm: Realm, data: BookData | undefined) {
+export function createBook(realm: Realm, data: TBookDataRef) {
   try {
-    const { bookName = "", bookImage = "", bookDescription = "", isbn = "", authors = "", genres = "" } = data || {};
-    const bookToBeCreated = Book.create(bookName, bookImage, bookDescription, isbn, authors, genres, false);
+    const {
+      bookName = CRUDErrors.CreateError,
+      bookImage = CRUDErrors.CreateError,
+      bookDescription = CRUDErrors.CreateError,
+      isbn = CRUDErrors.CreateError,
+      authors = CRUDErrors.CreateError,
+      genres = CRUDErrors.CreateError,
+      isHardcover = false,
+    } = data || {};
+    const bookToBeCreated = Book.create(bookName, bookImage, bookDescription, isbn, authors, genres, isHardcover);
     realm.write(() => {
       realm.create("Book", bookToBeCreated);
       logWithTime("Succcessfully created: ", bookToBeCreated.bookName);
@@ -51,6 +82,7 @@ export function createBook(realm: Realm, data: BookData | undefined) {
   }
 }
 
+/* User Operations */
 export async function createUser(realm: Realm, userData: UserData): Promise<void> {
   /**
    * https://stackoverflow.com/questions/1054022/best-way-to-store-password-in-database

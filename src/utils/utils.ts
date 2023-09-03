@@ -1,6 +1,8 @@
-const moment = require("moment-timezone");
+import moment from "moment-timezone";
+import { TBase64 } from "../types/commonTypes";
 
-export function addPrefixToBase64(base64Text: string): string {
+export function addPrefixToBase64(base64Text: TBase64): string {
+  // TODO: Add here a color page. If Base64 is falsy, then send base64 form of Red Screen.
   const prefix = "data:image/png;base64,";
   return prefix + base64Text;
 }

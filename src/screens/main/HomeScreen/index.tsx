@@ -1,6 +1,6 @@
 /* Core */
 import { useEffect, useMemo, useState } from "react";
-import { FlatList, Text, SafeAreaView, View, Dimensions } from "react-native";
+import { FlatList, SafeAreaView, View } from "react-native";
 
 /* Expo */
 import { Image } from "expo-image";
@@ -9,7 +9,7 @@ import { Image } from "expo-image";
 import { NavigationProp } from "@react-navigation/native";
 
 /* Custom Components */
-import { CustomButton, CustomText, CustomTextInput, TransparentButton } from "../../../components";
+import { CustomText, CustomTextInput, TransparentButton } from "../../../components";
 
 /* Database */
 import { AppRealmContext } from "../../../models";
@@ -26,17 +26,11 @@ import { MainStackParamList } from "../../../types/navigationTypes";
 
 /* Others */
 import { useSwipe } from "../../../helpers/gestureHelpers";
-import { updateBookInStore, updateImageInStore } from "../../../store/slices/bookSlice";
+import { updateBookInStore } from "../../../store/slices/bookSlice";
 import { logWithTime } from "../../../utils/utils";
+import { BookDataComplete } from "../../../types/commonTypes";
 
-interface HomeScreenProps {
-  navigation: NavigationProp<MainStackParamList>; // TODO: Probably, this argument is going to be MainScreenParamList which is mixed of all the main screens.
-}
-
-interface FlatListItem {
-  index: number;
-  item: Book & Realm.Object;
-}
+type TOnPressBook = (bookData: BookDataComplete) => void;
 
 function filterBooks(books: Realm.Results<Book & Realm.Object>, query: string) {
   const lowerCaseQuery = query.toLowerCase().trim();
@@ -50,10 +44,53 @@ function filterBooks(books: Realm.Results<Book & Realm.Object>, query: string) {
   });
 }
 
+interface FlatListItem {
+  index: number;
+  item: Book & Realm.Object;
+}
+
+/* ================ Component Props ================ */
+interface HomeScreenProps {
+  navigation: NavigationProp<MainStackParamList>; // TODO: Probably, this argument is going to be MainScreenParamList which is mixed of all the main screens.
+}
+
+interface BookItemProps {
+  onPressBook: TOnPressBook;
+  bookData: BookDataComplete;
+}
+/* ================ End ================ */
+
+/* ================ File Private Components ================ */
+const BookItem: React.FC<BookItemProps> = ({ onPressBook, bookData }) => {
+  return (
+    <View style={Style.itemContainer}>
+      <TransparentButton
+        buttonStyle={Style.itemButton}
+        touchableOpacityProps={{
+          onPress: () => onPressBook(bookData),
+        }}
+      >
+        <View style={Style.itemButtonInnerContainer}>
+          <View style={Style.itemImageContainer}>
+            {/* TODO: Handle the case image is not available. Use red screen base64 or default image. */}
+            <Image source={{ uri: bookData.bookImage }} style={Style.itemImage} />
+          </View>
+          <View style={Style.itemDetailsContainer}>
+            <CustomText textStyle={Style.itemTitle}>{bookData.bookName}</CustomText>
+            <CustomText textStyle={Style.itemSubtitle}>{bookData.authors}</CustomText>
+            <CustomText textStyle={Style.itemSubtitle}>{bookData.genres}</CustomText>
+          </View>
+        </View>
+      </TransparentButton>
+    </View>
+  );
+};
+/* ================ End ================ */
+
 // TODO: https://stackoverflow.com/questions/52156083/scroll-through-the-view-when-keyboard-is-open-react-native-expo
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
-  const { useRealm, useObject, useQuery } = AppRealmContext; // TODO: Remove unused destructuring
-  const realm = useRealm();
+  const { useRealm, useQuery } = AppRealmContext; // TODO: Remove unused destructuring
+  // const realm = useRealm();
   const books = useQuery(Book);
 
   const dispatch = useAppDispatch();
@@ -103,8 +140,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
   const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6);
 
-  const onPressBook = (bookData: any) => {
-    // TODO: Add type
+  const onPressBook = (bookData: BookDataComplete) => {
     dispatch(updateBookInStore(bookData));
     navigation.navigate("DetailsScreen");
   };
@@ -112,11 +148,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   /* FlatList functions */
   const keyExtractor = (item: Book & Realm.Object) => item._id.toHexString();
 
-  // TODO: Move this component as file-private component
   const renderItem = ({ index, item }: FlatListItem) => {
     // https://github.com/DylanVann/react-native-fast-image
     const { _id, bookName, bookImage, bookDescription, isbn, authors, genres, isHardcover } = item;
-    const data = {
+    const bookData: BookDataComplete = {
       _id,
       bookName,
       bookImage,
@@ -127,27 +162,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       isHardcover,
     };
 
-    return (
-      <View style={Style.itemContainer}>
-        <TransparentButton
-          buttonStyle={Style.itemButton}
-          touchableOpacityProps={{
-            onPress: () => onPressBook(data),
-          }}
-        >
-          <View style={Style.itemButtonInnerContainer}>
-            <View style={Style.itemImageContainer}>
-              <Image source={{ uri: item.bookImage }} style={Style.itemImage} />
-            </View>
-            <View style={Style.itemDetailsContainer}>
-              <CustomText textStyle={Style.itemTitle}>{item.bookName}</CustomText>
-              <CustomText textStyle={Style.itemSubtitle}>{item.authors}</CustomText>
-              <CustomText textStyle={Style.itemSubtitle}>{item.genres}</CustomText>
-            </View>
-          </View>
-        </TransparentButton>
-      </View>
-    );
+    return <BookItem onPressBook={onPressBook} bookData={bookData} />;
   };
 
   // TODO: Create a card component for books

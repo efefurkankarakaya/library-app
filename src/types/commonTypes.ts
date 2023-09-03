@@ -27,5 +27,9 @@ export interface BookData {
   isbn: string;
   authors: string;
   genres: string;
-  // isHardcover: boolean;
+  isHardcover: boolean;
+}
+
+export interface BookDataComplete extends BookData {
+  _id: Realm.BSON.ObjectId;
 }

@@ -1,17 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction, Store } from "@reduxjs/toolkit";
-import type { ImagePickerAsset } from "expo-image-picker";
-import { BookData, TBase64 } from "../../types/commonTypes";
-
-// TODO: Refactor here
-interface StoreBookData extends BookData {
-  _id: Realm.BSON.ObjectId;
-}
+import { BookDataComplete, TBase64 } from "../../types/commonTypes";
 
 // TODO: Refactor here
 interface BookState {
   base64: TBase64;
-  data: StoreBookData;
+  data: BookDataComplete;
 }
 
 const initialState: BookState = {
@@ -26,7 +20,7 @@ export const bookSlice = createSlice({
     updateImageInStore: (state, action: PayloadAction<TBase64>) => {
       state.data.bookImage = action.payload;
     },
-    updateBookInStore: (state, action: PayloadAction<StoreBookData>) => {
+    updateBookInStore: (state, action: PayloadAction<BookDataComplete>) => {
       state.data = action.payload;
     },
   },
