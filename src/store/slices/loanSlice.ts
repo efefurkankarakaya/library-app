@@ -18,7 +18,6 @@ export const loanSlice = createSlice({
   initialState,
   reducers: {
     updateLoansInStore: (state, action: PayloadAction<TLoanResults>) => {
-      logJSON(action.payload, "[Store]");
       state.loans = action.payload;
     },
   },

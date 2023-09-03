@@ -3,21 +3,53 @@ import * as Crypto from "expo-crypto"; // TODO: Imports functions only
 
 /* Database */
 import User from "../models/User";
+import Book from "../models/Book";
+import Loan from "../models/Loan";
 
 /* Types */
 import { BookData, UserData } from "../types/commonTypes";
 
 /* Others */
 import { logWithTime } from "../utils/utils";
-import Book from "../models/Book";
 
 type TBookDataRef = BookData | undefined; /* To get the latest data in state, using ref instead of state */
 type TBookToBeUpdated = (Book & Realm.Object<Book, never>) | null;
+
+type TLoanObject = Loan & Realm.Object<unknown, never>;
+
+type TRealmObjectId = Realm.BSON.ObjectId;
 
 const CRUDErrors = {
   CreateError: "Create Error",
   UpdateError: "Update Error",
 };
+
+/**
+ Loaning Operations
+ */
+export function removeLoan(realm: Realm, loanObject: TLoanObject) {
+  try {
+    realm.write(() => {
+      realm.delete(loanObject);
+    });
+    logWithTime("Loan is removed successfully: ", loanObject._id);
+  } catch (error) {
+    logWithTime("[Realm | removeLoan]");
+    logWithTime(error);
+  }
+}
+
+export function createLoan(realm: Realm, bookId: TRealmObjectId, userId: TRealmObjectId) {
+  try {
+    realm.write(() => {
+      realm.create("Loan", Loan.create(bookId, userId));
+    });
+    logWithTime("Borrowed successfully: ", bookId);
+  } catch (error) {
+    logWithTime("[Realm | createLoan]");
+    logWithTime(error);
+  }
+}
 
 /** 
  Book Operations
@@ -26,6 +58,7 @@ const CRUDErrors = {
 */
 export function updateBook(realm: Realm, data: TBookDataRef, bookToBeUpdated: TBookToBeUpdated) {
   try {
+    /* Error strings for seeing if anything wrong in CRUD operations. Ref object can be undefined if something is missed during development. */
     const {
       bookName = CRUDErrors.UpdateError,
       bookImage = CRUDErrors.UpdateError,

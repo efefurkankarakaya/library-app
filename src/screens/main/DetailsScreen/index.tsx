@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 /* Database */
 import { AppRealmContext } from "../../../models";
 import Book from "../../../models/Book";
-import { createBook, updateBook } from "../../../helpers/databaseHelpers";
+import { createBook, createLoan, removeLoan, updateBook } from "../../../helpers/databaseHelpers";
 
 /* Custom Components */
 import { CustomButton, CustomTextInput, TextButton, ValidatorTextInput } from "../../../components";
@@ -195,20 +195,11 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
 
   /* On Change Main Handler */
   const onPressBorrow = () => {
-    console.log(activeBook.data._id);
-    console.log(activeUser.data._id);
-
-    realm.write(() => {
-      realm.create("Loan", Loan.create(activeBook.data._id, activeUser.data._id));
-    });
+    createLoan(realm, activeBook.data._id, activeUser.data._id);
   };
 
   const onPressPutBack = () => {
-    console.log("Put back!");
-
-    realm.write(() => {
-      realm.delete(matchedLoan[0]);
-    });
+    removeLoan(realm, matchedLoan[0]);
   };
 
   const onChangeText = (text: string, textKey: BookDataKeys) => {
