@@ -25,3 +25,8 @@ export const TextColor = {
 export const CameraButtonColor = {
   grey: "lightgray",
 };
+
+export const IconColor = {
+  grey: "lightgray",
+  black: "black",
+};

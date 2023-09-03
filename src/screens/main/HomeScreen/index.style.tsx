@@ -35,6 +35,12 @@ export default StyleSheet.create({
   },
   itemTitle: {
     fontWeight: "bold" /* TODO: Add bold font */,
+    fontFamily: "Montserrat_600SemiBold",
   },
-  itemSubtitle: {},
+  itemSubtitle: {
+    fontSize: 13,
+  },
+  itemGenre: {
+    fontSize: 11,
+  },
 });

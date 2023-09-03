@@ -10,7 +10,7 @@ import { BottomTabParamList, RootStackParamList } from "./src/types/navigationTy
 
 /* Expo */
 import { StatusBar } from "expo-status-bar";
-import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
+import { useFonts, Montserrat_400Regular, Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
 import * as SplashScreen from "expo-splash-screen";
 
 /**
@@ -37,7 +37,7 @@ import { LoginScreen, SignUpScreen, HomeScreen, CamScreen, DetailsScreen, MyBook
 
 /* Style */
 import AppStyle from "./App.style";
-import { CameraButtonColor, TextColor } from "./src/common/colorPalette";
+import { IconColor, TextColor } from "./src/common/colorPalette";
 import { HomeIcon, BookIcon, ProfileIcon } from "./assets";
 
 // https://reactnative.dev/docs/environment-setup?guide=quickstart&package-manager=npm
@@ -81,7 +81,6 @@ const StackScreenLoginOptions = {
 };
 
 const BottomTabNavigatorScreenOptions = {
-  // TODO: Use icons for bottom navigation instead of their titles.
   ...DefaultNavigatorScreenOptions,
   // title: "",
   // headerShown: false,
@@ -109,7 +108,7 @@ const AuthenticationStackNavigation = (): JSX.Element => {
   );
 };
 
-const getBottomIconColor = (focused: boolean) => (focused ? "black" : CameraButtonColor.grey); // TODO: Move outside
+const getBottomIconColor = (focused: boolean) => (focused ? IconColor.black : IconColor.grey); // TODO: Move outside
 
 const MainAppBottomNavigation = (): JSX.Element => {
   return (
@@ -173,6 +172,7 @@ const App: React.FC<JSX.Element> = (): JSX.Element | null => {
   const [fontsLoaded] = useFonts({
     // Montserrat_100Thin,
     Montserrat_400Regular,
+    Montserrat_600SemiBold,
   });
 
   const onLayoutRootView = useCallback(async () => {

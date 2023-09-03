@@ -82,7 +82,7 @@ const BookItem: React.FC<BookItemProps> = ({ onPressBook, bookData }) => {
           <View style={Style.itemDetailsContainer}>
             <CustomText textStyle={Style.itemTitle}>{bookData.bookName}</CustomText>
             <CustomText textStyle={Style.itemSubtitle}>{bookData.authors}</CustomText>
-            <CustomText textStyle={Style.itemSubtitle}>{bookData.genres}</CustomText>
+            <CustomText textStyle={Style.itemGenre}>{bookData.genres}</CustomText>
           </View>
         </View>
       </TransparentButton>
