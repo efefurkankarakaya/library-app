@@ -8,21 +8,21 @@ import { Camera, CameraType, FlashMode } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 
 /* Custom Components */
-import { TransparentButton, CustomText, TextButton } from "../../components";
+import { TransparentButton, CustomText, TextButton } from "../../../components";
 
 /* Store */
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch } from "../../../store/hooks";
 
 /* Style */
 import Style from "./index.style";
-import { CameraButtonColor } from "../../common/colorPalette";
+import { CameraButtonColor } from "../../../common/colorPalette";
 // TODO: Refactor icon imports
-import { SettingsIcon, XIcon, SendIcon, FlashOnIcon, FlashOffIcon, GalleryIcon } from "../../../assets";
+import { SettingsIcon, XIcon, SendIcon, FlashOnIcon, FlashOffIcon, GalleryIcon } from "../../../../assets";
 
 /* Others */
-import { addPrefixToBase64, logWithTime } from "../../utils/utils";
-import { updateBookInStore } from "../../store/slices/bookSlice";
-import { temporaryDataID } from "../../common/static";
+import { addPrefixToBase64, logWithTime } from "../../../utils/utils";
+import { updateBookInStore } from "../../../store/slices/bookSlice";
+import { temporaryDataID } from "../../../common/static";
 
 /* TODO: In some cases, screen might need to be considered here. */
 const iconSize: number = Dimensions.get("window").width * 0.09;

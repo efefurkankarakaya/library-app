@@ -1,20 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { Dimensions, KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
-import { CustomButton, CustomText, CustomTextInput, TextButton, ValidatorTextInput } from "../../components";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { CustomButton, CustomText, CustomTextInput, TextButton, ValidatorTextInput } from "../../../components";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { Image } from "expo-image";
-import { TextColor } from "../../common/colorPalette";
+import { TextColor } from "../../../common/colorPalette";
 import { useNavigation } from "@react-navigation/native";
-import { addPrefixToBase64, logJSON, logWithTime } from "../../utils/utils";
-import { isTextEmpty } from "../../helpers/validationHelpers";
-import { AppRealmContext } from "../../models";
-import Book from "../../models/Book";
-import { BookData } from "../../types/commonTypes";
+import { addPrefixToBase64, logJSON, logWithTime } from "../../../utils/utils";
+import { isTextEmpty } from "../../../helpers/validationHelpers";
+import { AppRealmContext } from "../../../models";
+import Book from "../../../models/Book";
+import { BookData } from "../../../types/commonTypes";
 import Style from "./index.style";
-import { createBook, updateBook } from "../../helpers/databaseHelpers";
-import { temporaryDataID } from "../../common/static";
+import { createBook, updateBook } from "../../../helpers/databaseHelpers";
+import { temporaryDataID } from "../../../common/static";
 import * as ImagePicker from "expo-image-picker";
-import { updateImageInStore } from "../../store/slices/bookSlice";
+import { updateImageInStore } from "../../../store/slices/bookSlice";
 // TODO: Refactor imports
 
 /* 

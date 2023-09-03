@@ -9,25 +9,25 @@ import { Image } from "expo-image";
 import { NavigationProp } from "@react-navigation/native";
 
 /* Custom Components */
-import { CustomButton, CustomText, CustomTextInput, TransparentButton } from "../../components";
+import { CustomButton, CustomText, CustomTextInput, TransparentButton } from "../../../components";
 
 /* Database */
-import { AppRealmContext } from "../../models";
-import Book from "../../models/Book";
+import { AppRealmContext } from "../../../models";
+import Book from "../../../models/Book";
 
 /* Store */
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 
 /* Style */
 import Style from "./index.style";
 
 /* Types */
-import { MainStackParamList } from "../../types/navigationTypes";
+import { MainStackParamList } from "../../../types/navigationTypes";
 
 /* Others */
-import { useSwipe } from "../../helpers/gestureHelpers";
-import { updateBookInStore, updateImageInStore } from "../../store/slices/bookSlice";
-import { logWithTime } from "../../utils/utils";
+import { useSwipe } from "../../../helpers/gestureHelpers";
+import { updateBookInStore, updateImageInStore } from "../../../store/slices/bookSlice";
+import { logWithTime } from "../../../utils/utils";
 
 interface HomeScreenProps {
   navigation: NavigationProp<MainStackParamList>; // TODO: Probably, this argument is going to be MainScreenParamList which is mixed of all the main screens.

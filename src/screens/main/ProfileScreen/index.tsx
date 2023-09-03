@@ -1,5 +1,5 @@
 import { ScrollView } from "react-native";
-import { CustomText } from "../../components";
+import { CustomText } from "../../../components";
 
 function ProfileScreen() {
   return (

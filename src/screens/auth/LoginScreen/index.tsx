@@ -37,7 +37,8 @@ interface LoginData {
 
 type LoginDataKeys = keyof LoginData;
 
-// TODO: Do I really need this?
+// TODO: https://github.com/mrousavy/react-native-blurhash
+// TODO: Use blurhash for all images.
 const blurhash =
   "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
 

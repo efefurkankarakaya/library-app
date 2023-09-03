@@ -1,5 +1,5 @@
 import { Dimensions, Platform, StyleSheet } from "react-native";
-import { CameraButtonColor, TextColor } from "../../common/colorPalette";
+import { CameraButtonColor, TextColor } from "../../../common/colorPalette";
 
 const { width, height } = Dimensions.get("screen"); // TODO: common.ts -> screenWidth, screenHeight, windowWidth, windowHeight
 
