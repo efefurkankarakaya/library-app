@@ -6,5 +6,5 @@ export { default as SignUpScreen } from "./auth/SignUpScreen";
 export { default as HomeScreen } from "./main/HomeScreen";
 export { default as CamScreen } from "./main/CameraScreen";
 export { default as DetailsScreen } from "./main/DetailsScreen";
-export { default as ProfileScreen } from "./main/ProfileScreen";
+export { default as SettingsScreen } from "./main/SettingsScreen";
 export { default as MyBooksScreen } from "./main/MyBooksScreen";

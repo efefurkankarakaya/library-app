@@ -33,12 +33,12 @@ import { Provider } from "react-redux";
 import { store } from "./src/store/store";
 
 /* Screens */
-import { LoginScreen, SignUpScreen, HomeScreen, CamScreen, DetailsScreen, MyBooksScreen, ProfileScreen } from "./src/screens";
+import { LoginScreen, SignUpScreen, HomeScreen, CamScreen, DetailsScreen, MyBooksScreen, SettingsScreen } from "./src/screens";
 
 /* Style */
 import AppStyle from "./App.style";
 import { IconColor, TextColor } from "./src/common/colorPalette";
-import { HomeIcon, BookIcon, ProfileIcon } from "./assets";
+import { HomeIcon, BookIcon, SettingsIcon } from "./assets";
 
 // https://reactnative.dev/docs/environment-setup?guide=quickstart&package-manager=npm
 // https://reactnative.dev/docs/typescript
@@ -128,10 +128,10 @@ const MainAppBottomNavigation = (): JSX.Element => {
         }}
       />
       <BottomTab.Screen
-        name="ProfileScreen"
-        component={ProfileScreen}
+        name="SettingsScreen"
+        component={SettingsScreen}
         options={{
-          tabBarIcon: ({ focused }) => <ProfileIcon fill={getBottomIconColor(focused)} />,
+          tabBarIcon: ({ focused }) => <SettingsIcon fill={getBottomIconColor(focused)} height={24} />,
         }}
       />
     </BottomTab.Navigator>

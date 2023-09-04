@@ -11,13 +11,12 @@ export type RootStackParamList = {
   MainAppBottomNavigation: undefined;
   CamScreen: undefined; // TODO: Refactor
   DetailsScreen: undefined;
-  // Profile: { userId: string };
 };
 
 export type BottomTabParamList = {
   HomeScreen: undefined;
   MyBooksScreen: undefined;
-  ProfileScreen: undefined;
+  SettingsScreen: undefined;
 };
 
 export interface MainStackParamList extends RootStackParamList, BottomTabParamList {}
