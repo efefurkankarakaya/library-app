@@ -85,6 +85,9 @@ const BottomTabNavigatorScreenOptions = {
   // title: "",
   // headerShown: false,
   // headerTransparent: true,
+  tabBarStyle: {
+    backgroundColor: "transparent",
+  },
 };
 
 const MainAppNavigatorScreenOptions = {
