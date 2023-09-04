@@ -184,6 +184,11 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
       return;
     }
 
+    /* Temporary Data ID is used here to determine if the active book existed before or going to be created soon. */
+    /* Temporary Data ID is set when resetBook() function runs, the function runs when Home component is mounted. */
+    /* If SU wants to update a book, then active book has the original ID of the existed book instead of temporary one. */
+    /* But if SU wants to create new book, then Temporary Data ID will be used till the process is ended and Realm will assign 
+    a new ID while registering it to database. */
     if (activeBook.data._id !== temporaryDataID) {
       updateBook(realm, bookDataRef.current, bookToBeUpdated);
     } else {
