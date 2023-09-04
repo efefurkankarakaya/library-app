@@ -38,7 +38,7 @@ export default StyleSheet.create({
     /* https://stackoverflow.com/questions/36938742/touchablehighlight-not-clickable-if-position-absolute */
     zIndex: 1 /* To be able to click on the button which is absolute positioned by its container. */,
     position: "absolute",
-    marginTop: 50,
+    marginTop: isIOS ? 50 : 30,
     width: "100%",
   },
   cameraTopBarInnerContainer: {
