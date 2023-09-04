@@ -50,7 +50,7 @@ export default StyleSheet.create({
     position: "absolute",
     bottom: isIOS ? 70 : 40,
     width: "100%",
-    height: isIOS ? "auto" : "14%" /* Android somehow manage absolute containers in flex container different than expected. */,
+    height: isIOS ? "auto" : height * 0.17 /* Android somehow manage absolute containers in flex container different than expected. */,
   },
   cameraBottomBarInnerContainer: {
     // backgroundColor: "grey",
