@@ -1,8 +1,9 @@
-import { Platform, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import { isIOS } from "../../../common/common";
 
 export default StyleSheet.create({
   container: {
-    marginTop: Platform.OS === "ios" ? "30%" : "15%",
+    marginTop: isIOS ? "30%" : "15%",
     flex: 1,
     alignItems: "center",
   },

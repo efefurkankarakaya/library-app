@@ -1,11 +1,11 @@
 import { Dimensions, StyleSheet } from "react-native";
+import { MainAppDefaultContainerStyle } from "../../../common/style";
 
 const { width } = Dimensions.get("screen");
 
 export default StyleSheet.create({
   container: {
-    flex: 1,
-    margin: 20,
+    ...MainAppDefaultContainerStyle,
   },
   header: {
     fontSize: 32,

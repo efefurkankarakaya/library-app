@@ -1,9 +1,8 @@
-import { Dimensions, Platform, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { CameraButtonColor, TextColor } from "../../../common/colorPalette";
+import { isIOS } from "../../../common/common";
 
 const { width, height } = Dimensions.get("screen"); // TODO: common.ts -> screenWidth, screenHeight, windowWidth, windowHeight
-
-const isIOS = Platform.OS === "ios"; // TODO: common.ts
 
 export default StyleSheet.create({
   container: {

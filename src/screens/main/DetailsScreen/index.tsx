@@ -33,6 +33,7 @@ import { isTextEmpty } from "../../../helpers/validationHelpers";
 import { temporaryDataID } from "../../../common/static";
 import { imageLibraryOptions } from "../../../common/options";
 import Loan from "../../../models/Loan";
+import { isIOS } from "../../../common/common";
 
 type BookDataValidationStatus = {
   [key in keyof BookData]: boolean;
@@ -225,11 +226,7 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
 
   /* ================ Screen (Main Component) ================ */
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={Style.container}
-      contentContainerStyle={Style.contentContainer}
-    >
+    <KeyboardAvoidingView behavior={isIOS ? "padding" : "height"} style={Style.container} contentContainerStyle={Style.contentContainer}>
       {/* <CustomText>Details Page</CustomText> */}
       {/* TODO: Handle the case image is not available. Use red screen base64 or default image. */}
       <Image source={{ uri: activeBook.data.bookImage }} style={Style.image} />

@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
+import { MainAppDefaultContainerStyle } from "../../../common/style";
 
 const itemContainerWidth = 150;
 
 export default StyleSheet.create({
   container: {
-    flex: 1,
-    margin: 20,
+    ...MainAppDefaultContainerStyle,
   },
   header: {
     fontWeight: "600",

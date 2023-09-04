@@ -15,6 +15,7 @@ import { BorderColor, TextColor } from "../../common/colorPalette";
 
 /* Others */
 import { combineStyles } from "../../helpers/styleHelpers";
+import { isIOS } from "../../common/common";
 
 interface CustomTextInputProps {
   label?: string;
@@ -102,7 +103,7 @@ const CustomTextInput = ({
         autoCapitalize="none"
         autoComplete="off"
         maxLength={32}
-        selectionColor={Platform.OS === "ios" ? TextColor.darkgrey : TextColor.grey}
+        selectionColor={isIOS ? TextColor.darkgrey : TextColor.grey}
         {...textInputProps}
       />
       {activateSublabel && <CustomText textStyle={combinedSublabelStyle}>{showSublabel ? sublabel : " "}</CustomText>}
