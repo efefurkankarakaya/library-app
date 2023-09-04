@@ -282,13 +282,16 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
             editable: activeUser.isSU,
           }}
         />
-        <CustomButton
-          touchableOpacityProps={{
-            onPress: isBorrowed ? onPressPutBack : onPressBorrow,
-          }}
-        >
-          {isBorrowed ? "Put Back" : "Borrow"}
-        </CustomButton>
+        {/* If book is being created, then do not allow borrow / put back. */}
+        {activeBook.data._id !== temporaryDataID && (
+          <CustomButton
+            touchableOpacityProps={{
+              onPress: isBorrowed ? onPressPutBack : onPressBorrow,
+            }}
+          >
+            {isBorrowed ? "Put Back" : "Borrow"}
+          </CustomButton>
+        )}
         {/* Selectbox isHardcover? */}
       </View>
     </KeyboardAvoidingView>
