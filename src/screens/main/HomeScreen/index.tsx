@@ -1,6 +1,6 @@
 /* Core */
 import { useEffect, useMemo, useState } from "react";
-import { FlatList, SafeAreaView, View } from "react-native";
+import { FlatList, SafeAreaView, Text, View } from "react-native";
 
 /* Expo */
 import { Image } from "expo-image";
@@ -186,11 +186,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       {/* TODO: Add search icon to search bar
       TODO: Maybe smaller text input?
       */}
+      {/* To use default font */}
+      <Text style={Style.header}>Library</Text>
       <CustomTextInput
-        customContainerStyle={{
-          width: "100%",
-          marginBottom: 20,
-        }}
+        customContainerStyle={Style.searchBar}
         textInputProps={{
           value: searchQuery,
           onChangeText: (text: string) => setSearchQuery(text),
@@ -198,7 +197,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         }}
       />
       <View style={{}}>
-        <FlatList data={filteredBooks} renderItem={renderItem} keyExtractor={keyExtractor} horizontal={false} numColumns={1} />
+        <FlatList
+          contentContainerStyle={Style.flatlistContentContainer}
+          data={filteredBooks}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          horizontal={false}
+          numColumns={1}
+        />
       </View>
     </SafeAreaView>
   );
