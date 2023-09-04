@@ -28,7 +28,7 @@ export default StyleSheet.create({
   bookImage: {
     borderRadius: 5,
     width: itemContainerWidth,
-    height: 150,
+    height: 200,
   },
   bookDetailsContainer: {
     alignItems: "center",
