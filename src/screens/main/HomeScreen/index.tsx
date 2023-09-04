@@ -98,17 +98,21 @@ const BookItem: React.FC<BookItemProps> = ({ onPressBook, bookData }) => {
 // TODO: https://stackoverflow.com/questions/52156083/scroll-through-the-view-when-keyboard-is-open-react-native-expo
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(({ user }) => user);
 
   const { useRealm, useQuery } = AppRealmContext; // TODO: Remove unused destructuring
   // const realm = useRealm();
-  const books = useQuery(Book).sorted("createdAt", true); /* Newest top */
   const loans = useQuery(Loan);
+  const loanedBookIds = useMemo(() => loans.map((loan) => loan.bookId), [loans]);
+  const books = useQuery(Book)
+    .filtered("NOT _id IN $0", loanedBookIds) /* Books that are not loaned / borrowed. */
+    .sorted("createdAt", true); /* Newest top */
+
   console.log(loans);
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const filteredBooks = useMemo(() => filterBooks(books, searchQuery), [books, searchQuery]);
 
-  const user = useAppSelector(({ user }) => user);
   // const loansInStore = useAppSelector(({ loan }) => loan);
   // const userData = useQuery(User).filtered("email == $0", user.data.email);
   logJSON(user);
