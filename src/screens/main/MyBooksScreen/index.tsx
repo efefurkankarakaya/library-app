@@ -85,8 +85,14 @@ function MyBooksScreen({ navigation }) {
   return (
     /* TODO: Use SafeAreaView for those components which has container other than ScrollView */
     <SafeAreaView style={Style.container}>
-      <Text style={Style.header}>Borrowed</Text>
-      <FlatList data={borrowedBooks} renderItem={renderItem} keyExtractor={keyExtractor} numColumns={2} />
+      <Text style={Style.header}>My Books</Text>
+      <FlatList
+        columnWrapperStyle={Style.columnWrapperStyle}
+        data={borrowedBooks}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        numColumns={2}
+      />
     </SafeAreaView>
   );
 }
