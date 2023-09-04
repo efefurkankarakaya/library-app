@@ -14,9 +14,12 @@ import { CustomText, CustomTextInput, TransparentButton } from "../../../compone
 /* Database */
 import { AppRealmContext } from "../../../models";
 import Book from "../../../models/Book";
+import Loan from "../../../models/Loan";
+import { updateLoansInStore } from "../../../store/slices/loanSlice";
 
 /* Store */
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { resetBook, updateBookInStore } from "../../../store/slices/bookSlice";
 
 /* Style */
 import Style from "./index.style";
@@ -26,13 +29,8 @@ import { MainStackParamList } from "../../../types/navigationTypes";
 
 /* Others */
 import { useSwipe } from "../../../helpers/gestureHelpers";
-import { resetBook, updateBookInStore } from "../../../store/slices/bookSlice";
 import { logJSON, logWithTime } from "../../../utils/utils";
 import { BookDataComplete } from "../../../types/commonTypes";
-import User from "../../../models/User";
-import { updateActiveUser } from "../../../store/slices/userSlice";
-import Loan from "../../../models/Loan";
-import { updateLoansInStore } from "../../../store/slices/loanSlice";
 
 /* ================ File Private Functions ================ */
 function filterBooks(books: Realm.Results<Book & Realm.Object>, query: string) {
@@ -59,7 +57,7 @@ interface FlatListItem {
 
 /* ================ Component Props ================ */
 interface HomeScreenProps {
-  navigation: NavigationProp<MainStackParamList>; // TODO: Probably, this argument is going to be MainScreenParamList which is mixed of all the main screens.
+  navigation: NavigationProp<MainStackParamList>;
 }
 
 interface BookItemProps {
@@ -98,25 +96,21 @@ const BookItem: React.FC<BookItemProps> = ({ onPressBook, bookData }) => {
 // TODO: https://stackoverflow.com/questions/52156083/scroll-through-the-view-when-keyboard-is-open-react-native-expo
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(({ user }) => user);
+  const activeUser = useAppSelector(({ user }) => user);
 
   const { useRealm, useQuery } = AppRealmContext; // TODO: Remove unused destructuring
   // const realm = useRealm();
   const loans = useQuery(Loan);
+  /* TODO: What if there's no data? */
   const loanedBookIds = useMemo(() => loans.map((loan) => loan.bookId), [loans]);
   const books = useQuery(Book)
     .filtered("NOT _id IN $0", loanedBookIds) /* Books that are not loaned / borrowed. */
     .sorted("createdAt", true); /* Newest top */
 
-  console.log(loans);
-
   const [searchQuery, setSearchQuery] = useState<string>("");
   const filteredBooks = useMemo(() => filterBooks(books, searchQuery), [books, searchQuery]);
 
-  // const loansInStore = useAppSelector(({ loan }) => loan);
-  // const userData = useQuery(User).filtered("email == $0", user.data.email);
-  logJSON(user);
-  // console.log(userData);
+  logJSON(activeUser);
 
   /* TODO: Need to find a touch action to delete books. */
   // useEffect(() => {
@@ -130,24 +124,24 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     dispatch(resetBook());
   }, []);
 
-  useEffect(() => {
-    dispatch(updateLoansInStore(loans));
-  }, [loans]);
+  // useEffect(() => {
+  //   dispatch(updateLoansInStore(loans));
+  // }, [loans]);
 
   useEffect(() => {
     /* TODO: During the development, state can change and user login status turned to be false when hot reload runs but what if it happens in production? */
-    if (!user.isLoggedIn) {
+    if (!activeUser.isLoggedIn) {
       /* @ts-ignore */
       navigation.navigate("Authentication", { screen: "Login" });
     }
-  }, [user]);
+  }, [activeUser]);
 
   useEffect(() => {
     console.log("[Home] Change detected.");
   }, [books]);
 
   const onSwipeRight = () => {
-    if (user.isSU) {
+    if (activeUser.isSU) {
       // Run Camera
       navigation.navigate("CamScreen");
       logWithTime("[Swipe Right]");

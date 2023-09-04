@@ -2,7 +2,7 @@ class Loan extends Realm.Object<Loan> {
   _id!: Realm.BSON.ObjectId;
   bookId!: Realm.BSON.ObjectId;
   userId!: Realm.BSON.ObjectId;
-  createdAt!: Date;
+  createdAt!: Date; /* TODO: Should be loanedAt!: Date */
 
   static create = (bookId: Realm.BSON.ObjectId, userId: Realm.BSON.ObjectId) => {
     return {

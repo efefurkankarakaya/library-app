@@ -3,8 +3,12 @@ import { TBase64 } from "../types/commonTypes";
 
 export function addPrefixToBase64(base64Text: TBase64): string {
   // TODO: Add here a color page. If Base64 is falsy, then send base64 form of Red Screen.
-  const prefix = "data:image/png;base64,";
-  return prefix + base64Text;
+  // TODO: Or if there's no base64 string, then return empty string and render a default image.
+  if (base64Text) {
+    const prefix = "data:image/png;base64,";
+    return prefix + base64Text;
+  }
+  return "";
 }
 
 export function isEmptyObject(value: {}): boolean {
@@ -17,6 +21,10 @@ export function isObject(value: any): boolean {
 
 export function isEmptyArray(array: []): boolean {
   return Array.isArray(array) && array.length === 0;
+}
+
+export function formatDate(date: string): string {
+  return moment(date).format("DD/MM/YYYY, HH:mm:ss");
 }
 
 export function getCurrentTime(): string {
