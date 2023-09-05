@@ -144,6 +144,6 @@ Therefore, a basic case should be like:
 
 <img src="./docs/screenshots/libraryapp_camera.png" />
 
-### Camera (onImagePick)
+### Camera (onImagePick)
 
 <img src="./docs/screenshots/libraryapp_onimagepick.png" />
