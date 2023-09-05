@@ -51,3 +51,32 @@ You can find the JDK11 installer by clicking <a href="https://www.oracle.com/tr/
 - Create a file named `local.properties` under `android/` folder in project.
 - Set inside `sdk.dir = {YOUR_SDK_PATH}`
 - Then run `$ npm run android`
+
+## Screenshots
+
+### Login
+
+<img src="./docs//images/libraryapp_login.png">
+
+### Sign Up
+
+<img src="./docs/images/libraryapp_signup.png">
+<img src="./docs/images/libraryapp_signup_event.png">
+<img src="./docs/images/libraryapp_signup_event2.png">
+
+### Home
+
+<img src="./docs/images/libraryapp_home.png">
+
+### Details (w/ SU Privileges)
+
+<img src="./docs/images/libraryapp_details_su.png" />
+
+### My Books (Borrowed)
+
+<img src="./docs/images/libraryapp_mybooks.png" />
+
+### Camera (Requires SU Privileges)
+
+<img src="./docs/images/libraryapp_camera.png">
+<img src="./docs/images/libraryapp_onimagepick.png">
