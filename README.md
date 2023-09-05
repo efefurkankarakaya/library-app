@@ -103,7 +103,7 @@ Therefore, a basic case should be like:
 
 ### Login
 
-<img src="./docs//images/libraryapp_login.png">
+<img src="./docs/screenshots/libraryapp_login.png">
 
 ### Sign Up
 
