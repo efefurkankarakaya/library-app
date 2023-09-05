@@ -2,6 +2,8 @@
 
 A library application built on React Native and Realm.
 
+<img src="./docs/screenshots/libraryapp_home_new.png">
+
 ## Technologies
 
 - <a href="https://reactnative.dev/">React Native</a> (v0.71.8)
@@ -92,7 +94,7 @@ You should be able to:
 
 Therefore, a basic case should be like:
 
-- User signs up with an e-mail address that ends with `@protonmail.com` to be privileged user.
+- User signs up with their personal information.
 - User logs in and sees the books.
 - User taps on a book that interested in.
 - User taps on `Borrow` button.
@@ -105,26 +107,26 @@ Therefore, a basic case should be like:
 
 ### Sign Up
 
-<img src="./docs/images/libraryapp_signup.png">
-<img src="./docs/images/libraryapp_signup_event.png">
+<img src="./docs/screenshots/libraryapp_signup.png">
+<img src="./docs/screenshots/libraryapp_signup_event.png">
 
 ### Sign Up (onSubmit)
 
-<img src="./docs/images/libraryapp_signup_event2.png">
+<img src="./docs/screenshots/libraryapp_signup_event2.png">
 
 ### Home
 
-<img src="./docs/images/libraryapp_home.png">
+<img src="./docs/screenshots/libraryapp_home.png">
 
 ### Details (w/ SU Privileges)
 
-<img src="./docs/images/libraryapp_details_su.png" />
+<img src="./docs/screenshots/libraryapp_details_su.png" />
 
 ### My Books (Borrowed)
 
-<img src="./docs/images/libraryapp_mybooks.png" />
+<img src="./docs/screenshots/libraryapp_mybooks.png" />
 
 ### Camera (Requires SU Privileges)
 
-<img src="./docs/images/libraryapp_camera.png">
-<img src="./docs/images/libraryapp_onimagepick.png">
+<img src="./docs/screenshots/libraryapp_camera.png">
+<img src="./docs/screenshots/libraryapp_onimagepick.png">
