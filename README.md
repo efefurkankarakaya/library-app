@@ -2,7 +2,7 @@
 
 A book library application built on React Native and Realm.
 
-<img src="./docs/screenshots/libraryapp_home_new.png">
+<img src="./docs/screenshots/libraryapp_home_new.png" />
 
 ## Technologies
 
@@ -114,20 +114,23 @@ Therefore, a basic case should be like:
 
 ### Login
 
-<img src="./docs/screenshots/libraryapp_login.png">
+<img src="./docs/screenshots/libraryapp_login.png" />
 
 ### Sign Up
 
-<img src="./docs/screenshots/libraryapp_signup.png">
-<img src="./docs/screenshots/libraryapp_signup_event.png">
+<img src="./docs/screenshots/libraryapp_signup.png" />
+
+### Sign Up (onChange)
+
+<img src="./docs/screenshots/libraryapp_signup_event.png" />
 
 ### Sign Up (onSubmit)
 
-<img src="./docs/screenshots/libraryapp_signup_event2.png">
+<img src="./docs/screenshots/libraryapp_signup_event2.png" />
 
 ### Home
 
-<img src="./docs/screenshots/libraryapp_home.png">
+<img src="./docs/screenshots/libraryapp_home.png" />
 
 ### Details (w/ SU Privileges)
 
@@ -139,5 +142,8 @@ Therefore, a basic case should be like:
 
 ### Camera (Requires SU Privileges)
 
-<img src="./docs/screenshots/libraryapp_camera.png">
-<img src="./docs/screenshots/libraryapp_onimagepick.png">
+<img src="./docs/screenshots/libraryapp_camera.png" />
+
+### Camera (onImagePick)
+
+<img src="./docs/screenshots/libraryapp_onimagepick.png" />
