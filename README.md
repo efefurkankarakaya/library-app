@@ -1,6 +1,6 @@
 # Library App
 
-A library application built on React Native and Realm.
+A book library application built on React Native and Realm.
 
 <img src="./docs/screenshots/libraryapp_home_new.png">
 
@@ -56,7 +56,7 @@ You can find the JDK11 installer by clicking <a href="https://www.oracle.com/tr/
 
 ## Registration
 
-### As a Privileged User
+### As a Privileged User (aka: SU, Super User)
 
 All you need to do is using an e-mail address that ends with `@protonmail.com`
 
