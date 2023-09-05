@@ -52,6 +52,51 @@ You can find the JDK11 installer by clicking <a href="https://www.oracle.com/tr/
 - Set inside `sdk.dir = {YOUR_SDK_PATH}`
 - Then run `$ npm run android`
 
+## Use Cases
+
+### Case 1: Librarian
+
+Consider that you are a librarian, you need to create entries of books. <br />
+
+You should be able to:
+
+- Access to full CRUD operations (create, read, update and delete) for books.
+- Upload image.
+- Take photograph.
+- Change image of a book.
+- Change any detail of book.
+- Save changes.
+
+Therefore, a basic case should be like:
+
+- User signs up with an e-mail address that ends with `@protonmail.com` to be privileged user.
+- User logs in.
+- User swipes left to create a new book.
+- User takes a photograph of a book.
+- User enters details of the book.
+- User saves the book.
+- User sees the book in home, and keep goes create new books.
+- User swipes left again.
+- User picks an book image from gallery.
+- User enters details of the book. <br />
+  `...`
+
+### Case 2: Regular Library User
+
+Consider that you are a user of a library application and you want to borrow some books.
+
+You should be able to:
+
+- Access book data.
+- Borrow or put back books.
+
+Therefore, a basic case should be like:
+
+- User signs up with an e-mail address that ends with `@protonmail.com` to be privileged user.
+- User logs in and sees the books.
+- User taps on a book that interested in.
+- User taps on `Borrow` button.
+
 ## Screenshots
 
 ### Login
@@ -62,6 +107,9 @@ You can find the JDK11 installer by clicking <a href="https://www.oracle.com/tr/
 
 <img src="./docs/images/libraryapp_signup.png">
 <img src="./docs/images/libraryapp_signup_event.png">
+
+### Sign Up (onSubmit)
+
 <img src="./docs/images/libraryapp_signup_event2.png">
 
 ### Home
