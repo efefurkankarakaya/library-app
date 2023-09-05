@@ -74,6 +74,7 @@ Therefore, a basic case should be like:
 - User signs up with an e-mail address that ends with `@protonmail.com` to be privileged user.
 - User logs in.
 - User swipes left to create a new book.
+  <img src="./docs/gifs/swipeleft.gif" width="294.5" height="639">
 - User takes a photograph of a book.
 - User enters details of the book.
 - User saves the book.
