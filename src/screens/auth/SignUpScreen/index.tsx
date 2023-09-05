@@ -23,7 +23,7 @@ import { UserData } from "../../../types/commonTypes";
 import { logWithTime } from "../../../utils/utils";
 import { createUser } from "../../../helpers/databaseHelpers";
 import {
-  confirmPassword,
+  // confirmPassword,
   validateEmailAddress,
   validateName,
   validatePassword,
@@ -61,7 +61,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
     phoneNumber: "",
     email: "",
     password: "",
-    confirmPassword: "",
+    // confirmPassword: "",
   });
 
   const [isUserDataOK, setIsUserDataOK] = useState<UserDataValidationStatus>({
@@ -69,7 +69,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
     phoneNumber: false,
     email: false,
     password: false,
-    confirmPassword: false,
+    // confirmPassword: false,
   });
 
   const [isUserDataAlreadyExisted, setIsUserDataAlreadyExisted] = useState<UserDataExistenceStatus>({
@@ -143,8 +143,8 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
         // processedText = pureText;
         isTextOK = validatePassword(processedText);
         break;
-      case "confirmPassword":
-        isTextOK = confirmPassword(userData.password, processedText);
+      // case "confirmPassword":
+      //   isTextOK = confirmPassword(userData.password, processedText);
       default:
         break;
     }
@@ -287,7 +287,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           value: userData.password,
         }}
       />
-      <ValidatorTextInput
+      {/* <ValidatorTextInput
         isDataOK={isUserDataOK.confirmPassword}
         activateSublabel={true}
         showSublabel={userData.confirmPassword.length > 0}
@@ -298,7 +298,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenP
           onChangeText: (text: string) => onChangeText(text, "confirmPassword"),
           value: userData.confirmPassword,
         }}
-      />
+      /> */}
       {/* TODO: Need margin here */}
       <CustomButton buttonStyle={Style.signUpButton} touchableOpacityProps={{ onPress: onPressSignUp }}>
         Sign Up
