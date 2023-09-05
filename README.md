@@ -54,6 +54,16 @@ You can find the JDK11 installer by clicking <a href="https://www.oracle.com/tr/
 - Set inside `sdk.dir = {YOUR_SDK_PATH}`
 - Then run `$ npm run android`
 
+## Registration
+
+### As a Privileged User
+
+All you need to do is using an e-mail address that ends with `@protonmail.com`
+
+### As a Regular User
+
+Just sign up with an e-mail address that does not end with `@protonmail.com`
+
 ## Use Cases
 
 ### Case 1: Librarian
