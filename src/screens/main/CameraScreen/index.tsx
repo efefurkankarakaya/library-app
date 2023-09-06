@@ -24,6 +24,7 @@ import { addPrefixToBase64, logJSON, logWithTime } from "../../../utils/utils";
 import { resetBook, updateImageInStore } from "../../../store/slices/bookSlice";
 import { TBase64 } from "../../../types/commonTypes";
 import { imageLibraryOptions } from "../../../common/options";
+import { isIOS } from "../../../common/common";
 
 /* TODO: In some cases, screen might need to be considered here. */
 const iconSize: number = Dimensions.get("window").width * 0.09;
@@ -284,8 +285,11 @@ export default function CamScreen({ navigation }: CamScreenProps) {
   }
 
   if (permission) {
+    logJSON(permission, "Permission");
+  }
+
+  if (permission?.granted) {
     logWithTime("Permission is granted.");
-    // logJSON("Permission", permission);
   }
 
   return (
@@ -298,13 +302,26 @@ export default function CamScreen({ navigation }: CamScreenProps) {
         // onCameraReady={onCameraReady}
       >
         {currentImage && <Image style={Style.image} source={{ uri: currentImage }} />}
+        {/* iOS and Android handles absolute containers different, that's why there 2 different render conditions with the same components, the same props. */}
+        {!isIOS && (
+          <CameraTopBar
+            isPermissionGranted={isPermissionGranted}
+            isImageDisplayOn={isImageDisplayOn}
+            flashMode={flashMode}
+            onPressFunctions={{ onPressX, onPressFlashlight, onPressSettings }}
+          />
+        )}
+        {/* In Android, Permission Screen is covering all the screen and zIndex value does not effect on items if topbar is rendered after permission screen */}
         {!isPermissionGranted && <PermissionContainer requestPermission={requestPermission} />}
-        <CameraTopBar
-          isPermissionGranted={isPermissionGranted}
-          isImageDisplayOn={isImageDisplayOn}
-          flashMode={flashMode}
-          onPressFunctions={{ onPressX, onPressFlashlight, onPressSettings }}
-        />
+        {/* But, in iOS, it should be rendered after PermissionScreen to use zIndex properly. */}
+        {isIOS && (
+          <CameraTopBar
+            isPermissionGranted={isPermissionGranted}
+            isImageDisplayOn={isImageDisplayOn}
+            flashMode={flashMode}
+            onPressFunctions={{ onPressX, onPressFlashlight, onPressSettings }}
+          />
+        )}
         <View style={Style.cameraBottomBarContainer}>
           <View style={Style.cameraBottomBarInnerContainer}>
             {/* Gallery Button */}
