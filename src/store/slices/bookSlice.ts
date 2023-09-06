@@ -1,5 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction, Store } from "@reduxjs/toolkit";
+import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { BookDataComplete, TBase64 } from "../../types/commonTypes";
 import { temporaryDataID } from "../../common/static";
 import { logWithTime } from "../../utils/utils";

@@ -9,7 +9,7 @@ export type RootStackParamList = {
   Authentication: undefined;
   MainApp: undefined;
   MainAppBottomNavigation: undefined;
-  CamScreen: undefined; // TODO: Refactor
+  CamScreen: undefined;
   DetailsScreen: undefined;
 };
 

@@ -12,16 +12,15 @@ import { TransparentButton, CustomText, TextButton } from "../../../components";
 
 /* Store */
 import { useAppDispatch } from "../../../store/hooks";
+import { resetBook, updateImageInStore } from "../../../store/slices/bookSlice";
 
 /* Style */
 import Style from "./index.style";
 import { CameraButtonColor } from "../../../common/colorPalette";
-// TODO: Refactor icon imports
 import { SettingsIcon, XIcon, SendIcon, FlashOnIcon, FlashOffIcon, GalleryIcon } from "../../../../assets";
 
 /* Others */
 import { addPrefixToBase64, logJSON, logWithTime } from "../../../utils/utils";
-import { resetBook, updateImageInStore } from "../../../store/slices/bookSlice";
 import { TBase64 } from "../../../types/commonTypes";
 import { imageLibraryOptions } from "../../../common/options";
 import { isIOS } from "../../../common/common";

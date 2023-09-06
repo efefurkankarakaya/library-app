@@ -21,9 +21,9 @@ def copyToClipboard(text: str) -> int:
     if operatingSystem == 'darwin':
         command = prefix + '|pbcopy'
     # elif operatingSystem == 'linux' or operatingSystem == 'windows':
-    # TODO: Has not been tried yet.
-    # https://stackoverflow.com/questions/11063458/python-script-to-copy-text-to-clipboard
-    #     command = prefix + '|clip'
+        # NOTE: This part of condition is experimental, not tried yet on Linux Distributions and Windows.
+        # https://stackoverflow.com/questions/11063458/python-script-to-copy-text-to-clipboard
+        # command = prefix + '|clip'
 
     return subprocess.check_call(command, shell=True)
 

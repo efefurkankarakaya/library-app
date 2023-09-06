@@ -12,7 +12,6 @@ class Book extends Realm.Object<Book> {
   isHardcover!: boolean;
   createdAt!: Date;
 
-  /* TODO: Consider using constructor instead of static function */
   static create = (
     bookName: string,
     bookImage: ImagePickerAsset["base64"],

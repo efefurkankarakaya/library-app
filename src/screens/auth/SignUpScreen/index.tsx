@@ -8,6 +8,7 @@ import type { NavigationProp } from "@react-navigation/native";
 /* Database */
 import { AppRealmContext } from "../../../models";
 import User from "../../../models/User";
+import { createUser } from "../../../helpers/databaseHelpers";
 
 /* Custom Components */
 import { CustomText, CustomButton, ValidatorTextInput } from "../../../components";
@@ -21,7 +22,6 @@ import { UserData } from "../../../types/commonTypes";
 
 /* Others */
 import { logWithTime } from "../../../utils/utils";
-import { createUser } from "../../../helpers/databaseHelpers";
 import {
   // confirmPassword,
   validateEmailAddress,
@@ -31,7 +31,6 @@ import {
 } from "../../../helpers/validationHelpers";
 
 /* TODO: Add confirmation page (Show 6 random digits and let user write this digit by digit */
-
 /* TODO: After registration, show user a success page and route user to home / dashboard */
 
 interface SignUpScreenProps {
@@ -52,7 +51,7 @@ type UserDataKeys = keyof UserData;
 
 // Components and basic functions are written as arrow functions
 const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenProps) => {
-  const { useRealm, useObject, useQuery } = AppRealmContext; // TODO: Remove unused destructuring
+  const { useRealm, useQuery } = AppRealmContext;
   const realm = useRealm();
   const users = useQuery(User);
 

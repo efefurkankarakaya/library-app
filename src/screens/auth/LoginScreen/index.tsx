@@ -38,9 +38,7 @@ interface LoginData {
 type LoginDataKeys = keyof LoginData;
 
 // TODO: https://github.com/mrousavy/react-native-blurhash
-// TODO: Use blurhash for all images.
-const blurhash =
-  "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
+// TODO: Use blurhash for non-static images.
 
 interface LoginScreenProps {
   navigation: NavigationProp<RootStackParamList>;
@@ -116,7 +114,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={Style.container}>
-      <Image style={Style.image} source={LibLogo} placeholder={blurhash} contentFit="cover" transition={1000} />
+      <Image style={Style.image} source={LibLogo} contentFit="cover" transition={1000} />
       {/* <CustomText textStyle={Style.title}>Logo</CustomText> */}
       {/* TODO: Set e-mail address here after registration */}
       {/* TODO: Add Remember me */}

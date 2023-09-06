@@ -1,16 +1,31 @@
-import { SafeAreaView, ScrollView, Text, View } from "react-native";
-import { CustomText, TransparentButton } from "../../../components";
+/* Core */
+import { useEffect, useMemo } from "react";
+import { SafeAreaView, Text, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+
+/* Expo */
+import { Image } from "expo-image";
+
+/* Store */
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { formatDate, logJSON, logWithTime } from "../../../utils/utils";
+import { updateBookInStore } from "../../../store/slices/bookSlice";
+
+/* Database */
 import { AppRealmContext } from "../../../models";
-import { useEffect, useMemo, useState } from "react";
 import Loan from "../../../models/Loan";
 import Book from "../../../models/Book";
-import { FlatList } from "react-native-gesture-handler";
-import { Image } from "expo-image";
+
+/* Custom Components */
+import { CustomText, TransparentButton } from "../../../components";
+
+/* Style */
 import Style from "./index.style";
+
+/* Others */
+import { formatDate, logJSON, logWithTime } from "../../../utils/utils";
 import { BookDataComplete } from "../../../types/commonTypes";
-import { updateBookInStore } from "../../../store/slices/bookSlice";
+
+/* TODO: Add missing types */
 
 interface BookItemProps {
   bookData: BookDataComplete;

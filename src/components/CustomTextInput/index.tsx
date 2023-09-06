@@ -52,13 +52,14 @@ const CustomTextInput = ({
   const combinedSublabelStyle: TStyleSheet = combineStyles(Style().sublabel, customSublabelStyle);
   const combinedTextInputStyle: TStyleSheet = combineStyles(Style(currentOnFocusStyle).textInput, customTextInputStyle);
 
-  // TODO: Should I change onChangeText event to onChange?
-  // https://stackoverflow.com/questions/44416541/react-native-difference-between-onchange-vs-onchangetext-of-textinput
-  // It seems like, if I ever need to use event object on change, to prevent conflict I have to care about not to change the value of text input.
-  // onChange --> Trigger a side effect when change occurs
-  // onChangeText --> Trigger a function that manages the input data when change occurs.
-  // Or, otherwise, I can use switch/case and manage all the things in a particular structure under onChange event.
-  // const onChange = (event: NativeSyntheticEvent<TextInputChangeEventData>) => setText(event.nativeEvent.text);
+  /** Should I consider change onChangeText event to onChange?
+   * https://stackoverflow.com/questions/44416541/react-native-difference-between-onchange-vs-onchangetext-of-textinput
+   * It seems like, if I ever need to use event object on change, to prevent conflict I have to care about not to change the value of text input.
+   * onChange --> Trigger a side effect when change occurs.
+   * onChangeText --> Trigger a function that manages the input data when change occurs.
+   * Or, otherwise, I can use switch/case and manage all the things in a particular structure under onChange event.
+   * const onChange = (event: NativeSyntheticEvent<TextInputChangeEventData>) => setText(event.nativeEvent.text);
+   */
 
   const onChangeText = (content: string) => setText(content);
 

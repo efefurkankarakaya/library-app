@@ -1,6 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
-import { logJSON } from "../../utils/utils";
+import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import Loan from "../../models/Loan";
 
 type TLoanResults = Realm.Results<Loan & Realm.Object<unknown, never>> | null;

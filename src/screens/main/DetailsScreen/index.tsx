@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 /* Database */
 import { AppRealmContext } from "../../../models";
 import Book from "../../../models/Book";
+import Loan from "../../../models/Loan";
 import { createBook, createLoan, removeLoan, updateBook } from "../../../helpers/databaseHelpers";
 
 /* Custom Components */
@@ -32,7 +33,6 @@ import { addPrefixToBase64, logJSON, logWithTime } from "../../../utils/utils";
 import { isTextEmpty } from "../../../helpers/validationHelpers";
 import { temporaryDataID } from "../../../common/static";
 import { imageLibraryOptions } from "../../../common/options";
-import Loan from "../../../models/Loan";
 import { isIOS } from "../../../common/common";
 
 type BookDataValidationStatus = {
