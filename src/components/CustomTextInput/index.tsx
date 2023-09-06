@@ -104,7 +104,7 @@ const CustomTextInput = ({
         autoCapitalize="none"
         autoComplete="off"
         maxLength={32}
-        selectionColor={isIOS ? TextColor.darkgrey : TextColor.grey}
+        selectionColor={isIOS ? TextColor.iOSGrey : TextColor.AndroidGrey}
         {...textInputProps}
       />
       {activateSublabel && <CustomText textStyle={combinedSublabelStyle}>{showSublabel ? sublabel : " "}</CustomText>}

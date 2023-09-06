@@ -16,7 +16,7 @@ import { resetBook, updateImageInStore } from "../../../store/slices/bookSlice";
 
 /* Style */
 import Style from "./index.style";
-import { CameraButtonColor } from "../../../common/colorPalette";
+import { IconColor } from "../../../common/colorPalette";
 import { SettingsIcon, XIcon, SendIcon, FlashOnIcon, FlashOffIcon, GalleryIcon } from "../../../../assets";
 
 /* Others */
@@ -29,7 +29,7 @@ import { isIOS } from "../../../common/common";
 const iconSize: number = Dimensions.get("window").width * 0.09;
 const iconStyle: object = {
   /* SVG styles are not supported natively in StyleSheets */
-  fill: CameraButtonColor.grey, // TODO: Find a better grey
+  fill: IconColor.grey,
 };
 
 // https://github.com/expo/examples
@@ -111,7 +111,7 @@ const CameraFlashlightButton: React.FC<CameraFlashlightButtonProps> = ({ flashMo
         width={iconSize}
         height={iconSize}
         style={{
-          fill: flashMode === "on" ? CameraButtonColor.grey : "#FFFF00",
+          fill: flashMode === "on" ? IconColor.grey : IconColor.yellow,
         }}
       />
     </TransparentButton>

@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet } from "react-native";
-import { CameraButtonColor, TextColor } from "../../../common/colorPalette";
+import { IconColor, TextColor } from "../../../common/colorPalette";
 import { isIOS } from "../../../common/common";
 
 const { width, height } = Dimensions.get("screen"); // TODO: common.ts -> screenWidth, screenHeight, windowWidth, windowHeight
@@ -67,7 +67,7 @@ export default StyleSheet.create({
     left: 22.5,
   },
   cameraCaptureButton: {
-    backgroundColor: CameraButtonColor.grey, // TODO: Find a better grey
+    backgroundColor: IconColor.grey,
     height: 65,
     width: 65,
     borderRadius: 100,

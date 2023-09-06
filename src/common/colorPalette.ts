@@ -14,8 +14,6 @@ export const ShadowColor = {
 
 export const TextColor = {
   black: "#171717",
-  grey: "#e2e2e2", // TODO: Replace all occurrences with AndroidGrey
-  darkgrey: "#414a4c", // TODO: Replace all occurrences with iOSGrey
   iOSGrey: "#414a4c",
   AndroidGrey: "#e2e2e2",
   whiteGrey: "#d6d5cb",
@@ -29,4 +27,5 @@ export const CameraButtonColor = {
 export const IconColor = {
   grey: "lightgray",
   black: "black",
+  yellow: "#FFFF00",
 };
