@@ -297,23 +297,14 @@ export default function CamScreen({ navigation }: CamScreenProps) {
         flashMode={flashMode}
         // onCameraReady={onCameraReady}
       >
-        {currentImage && (
-          <Image
-            style={{
-              height: "100%",
-            }}
-            source={{
-              uri: currentImage,
-            }}
-          />
-        )}
+        {currentImage && <Image style={Style.image} source={{ uri: currentImage }} />}
+        {!isPermissionGranted && <PermissionContainer requestPermission={requestPermission} />}
         <CameraTopBar
           isPermissionGranted={isPermissionGranted}
           isImageDisplayOn={isImageDisplayOn}
           flashMode={flashMode}
           onPressFunctions={{ onPressX, onPressFlashlight, onPressSettings }}
         />
-        {!isPermissionGranted && <PermissionContainer requestPermission={requestPermission} />}
         <View style={Style.cameraBottomBarContainer}>
           <View style={Style.cameraBottomBarInnerContainer}>
             {/* Gallery Button */}

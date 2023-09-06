@@ -13,13 +13,12 @@ export default StyleSheet.create({
     backgroundColor: "black",
     width,
     height,
-    // height: "100%",
   },
   row: {
     flexDirection: "row",
   },
   permissionContainer: {
-    height: "100%",
+    height,
     alignItems: "center",
     justifyContent: "center",
   },
