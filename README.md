@@ -130,7 +130,7 @@ Therefore, a basic case should be like:
 
 ### Home
 
-<img src="./docs/screenshots/libraryapp_home.png" />
+<img src="./docs/screenshots/libraryapp_home_fixed_new.png" />
 
 ### Details (w/ SU Privileges)
 
@@ -138,7 +138,7 @@ Therefore, a basic case should be like:
 
 ### My Books (Borrowed)
 
-<img src="./docs/screenshots/libraryapp_mybooks.png" />
+<img src="./docs/screenshots/libraryapp_mybooks_fixed.png" />
 
 ### Camera (Requires SU Privileges)
 
