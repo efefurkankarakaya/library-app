@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { View } from "react-native";
 
 /* Navigation */
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BottomTabParamList, RootStackParamList } from "./src/types/navigationTypes";
@@ -59,9 +59,6 @@ const DefaultNavigatorScreenOptions = {
   headerTransparent: true,
   headerShown: false,
   headerTintColor: TextColor.urlBlue,
-  // headerTitleStyle: {
-  //   fontFamily: "Montserrat_400Regular",
-  // },
 };
 
 // Used in the root stack navigator
@@ -86,7 +83,7 @@ const BottomTabNavigatorScreenOptions = {
   // headerShown: false,
   // headerTransparent: true,
   tabBarStyle: {
-    backgroundColor: "transparent",
+    backgroundColor: DefaultTheme.colors.background /* color: 'transparent' does not work as expected in Android here. */,
   },
 };
 
@@ -151,6 +148,7 @@ const MainAppNavigation = (): JSX.Element => {
         name="CamScreen"
         component={CamScreen}
         // TODO: Gesture Direction doesn't work on Android.
+        // TODO: https://reactnavigation.org/docs/stack-navigator/#animation-related-options
         options={{
           gestureDirection: "horizontal-inverted",
         }}
@@ -161,19 +159,20 @@ const MainAppNavigation = (): JSX.Element => {
 };
 /* ================ End ================ */
 
-// TODO: Add an splash screen (with setTimeout or interval to replicate an real app scenario.)
-// https://blog.logrocket.com/building-splash-screens-react-native/
-// https://www.npmjs.com/package/react-native-splash-screen
+/** Splash Screen
+ * https://blog.logrocket.com/building-splash-screens-react-native/
+ * https://www.npmjs.com/package/react-native-splash-screen
+ * TODO: Add an splash screen (with setTimeout or interval to replicate an real app scenario.)
+ */
 SplashScreen.preventAutoHideAsync();
 
-// TODO: https://reactnavigation.org/docs/themes/
-// TODO: https://stackoverflow.com/questions/63159757/change-the-default-light-grey-background-color
-// TODO: https://reactnavigation.org/docs/stack-navigator/#animation-related-options
+/** App Color
+ * https://reactnavigation.org/docs/themes/
+ * https://stackoverflow.com/questions/63159757/change-the-default-light-grey-background-color
+ */
 
-// https://reactnative.dev/docs/testing-overview
 const App: React.FC<JSX.Element> = (): JSX.Element | null => {
   const [fontsLoaded] = useFonts({
-    // Montserrat_100Thin,
     Montserrat_400Regular,
     Montserrat_600SemiBold,
   });
