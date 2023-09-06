@@ -111,7 +111,7 @@ const CameraFlashlightButton: React.FC<CameraFlashlightButtonProps> = ({ flashMo
         width={iconSize}
         height={iconSize}
         style={{
-          fill: flashMode === "on" ? IconColor.grey : IconColor.yellow,
+          fill: flashMode === "on" ? IconColor.yellow : IconColor.grey,
         }}
       />
     </TransparentButton>
