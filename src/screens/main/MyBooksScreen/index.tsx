@@ -49,6 +49,7 @@ const BookItem: React.FC<BookItemProps> = ({ bookData, onPressBook }: BookItemPr
             <CustomText textStyle={Style.bookName}>{bookData.bookName}</CustomText>
             <CustomText textStyle={Style.bookAuthors}>{bookData.authors}</CustomText>
             <CustomText textStyle={Style.bookDateBorrowed}>{formatDate(bookData.createdAt)}</CustomText>
+            {/* TODO: Currently, it returns the current time. */}
             {/* TODO: Find a way to show borrowing date here. */}
           </View>
         </View>
