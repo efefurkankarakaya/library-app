@@ -16,7 +16,7 @@ export default StyleSheet.create({
     marginBottom: 20,
   },
   flatlistContentContainer: {
-    height: "100%",
+    // height: "100%",
   },
   itemContainer: {
     marginBottom: 10,
