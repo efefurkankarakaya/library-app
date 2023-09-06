@@ -99,9 +99,21 @@ const CameraFlashlightButton: React.FC<CameraFlashlightButtonProps> = ({ flashMo
     return <FlashOnIcon width={_iconSize} height={_iconSize} style={_iconStyle} />;
   };
 
-  return (
+  return isIOS ? (
     <TransparentButton buttonStyle={Style.cameraButtonGeneric} touchableOpacityProps={{ onPress }}>
-      {activeIcon(iconSize, iconStyle)}
+      {flashMode === "on" && <FlashOnIcon width={iconSize} height={iconSize} style={iconStyle} />}
+      {flashMode === "off" && <FlashOffIcon width={iconSize} height={iconSize} style={iconStyle} />}
+    </TransparentButton>
+  ) : (
+    /* In android, icon change inside a TouchableOpacity, being resulted as disappearing icons. */
+    <TransparentButton buttonStyle={Style.cameraButtonGeneric} touchableOpacityProps={{ onPress }}>
+      <FlashOnIcon
+        width={iconSize}
+        height={iconSize}
+        style={{
+          fill: flashMode === "on" ? CameraButtonColor.grey : "#FFFF00",
+        }}
+      />
     </TransparentButton>
   );
 };
