@@ -1,5 +1,4 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-// import type { PayloadAction } from "@reduxjs/toolkit";
+import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import { UserDataComplete } from "../../types/commonTypes";
 import { temporaryDataID } from "../../common/static";
@@ -7,7 +6,7 @@ import { temporaryDataID } from "../../common/static";
 interface UserState {
   isLoggedIn: boolean;
   isSU: boolean;
-  data: UserDataComplete;
+  data: Partial<UserDataComplete>;
 }
 
 const initialState: UserState = {
@@ -35,7 +34,7 @@ export const userSlice = createSlice({
     updateEmail: (state, action: PayloadAction<string>) => {
       state.data.email = action.payload;
     },
-    updateActiveUser: (state, action: PayloadAction<UserDataComplete>) => {
+    updateActiveUser: (state, action: PayloadAction<Partial<UserDataComplete>>) => {
       state.data = action.payload;
     },
     resetActiveUser: (state) => {
@@ -44,8 +43,6 @@ export const userSlice = createSlice({
       state.data._id = temporaryDataID;
       state.data.fullName = "";
       state.data.email = "";
-      state.data.password = "";
-      state.data.confirmPassword = "";
       state.data.phoneNumber = "";
     },
   },
