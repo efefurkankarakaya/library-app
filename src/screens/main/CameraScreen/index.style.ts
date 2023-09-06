@@ -17,6 +17,9 @@ export default StyleSheet.create({
   row: {
     flexDirection: "row",
   },
+  image: {
+    height: "100%",
+  },
   permissionContainer: {
     height,
     alignItems: "center",
