@@ -2,7 +2,7 @@
 
 A book library application built on React Native and Realm.
 
-<img src="./docs/screenshots/libraryapp_home_new.png" />
+<img src="./docs/screenshots/libraryapp_home_fixed_new.png" />
 
 ## Technologies
 
@@ -138,7 +138,7 @@ Therefore, a basic case should be like:
 
 ### My Books (Borrowed)
 
-<img src="./docs/screenshots/libraryapp_mybooks_fixed.png" />
+<img src="./docs/screenshots/libraryapp_mybooks_fixed_.png" />
 
 ### Camera (Requires SU Privileges)
 
