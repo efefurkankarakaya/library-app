@@ -28,7 +28,6 @@ export default StyleSheet.create({
     flexDirection: "row",
   },
   itemImageContainer: {
-    // backgroundColor: "green",
     justifyContent: "center",
     marginRight: 10,
   },
@@ -36,6 +35,7 @@ export default StyleSheet.create({
     borderRadius: 5,
     height: 150,
     width: 100,
+    resizeMode: "contain",
     // backgroundColor: "blue",
   },
   itemDetailsContainer: {
