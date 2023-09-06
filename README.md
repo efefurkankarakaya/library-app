@@ -2,7 +2,7 @@
 
 A book library application built on React Native and Realm.
 
-<img src="./docs/screenshots/libraryapp_home_clean.png" />
+<img src="./docs/screenshots/libraryapp_home.png" width="381" />
 
 ## Technologies
 
@@ -114,27 +114,27 @@ Therefore, a basic case should be like:
 
 ### Login
 
-<img src="./docs/screenshots/libraryapp_login.png" />
+<img src="./docs/screenshots/libraryapp_login.png" width="381"/>
 
 ### Sign Up
 
-<img src="./docs/screenshots/libraryapp_signup.png" />
+<img src="./docs/screenshots/libraryapp_signup.png" width="381"/>
 
 ### Sign Up (onChange)
 
-<img src="./docs/screenshots/libraryapp_signup_event.png" />
+<img src="./docs/screenshots/libraryapp_signup_event.png" width="381" />
 
 ### Sign Up (onSubmit)
 
-<img src="./docs/screenshots/libraryapp_signup_event2.png" />
+<img src="./docs/screenshots/libraryapp_signup_event2.png" width="381" />
 
 ### Home
 
-<img src="./docs/screenshots/libraryapp_home.png" />
+<img src="./docs/screenshots/libraryapp_home.png" width="381" />
 
 ### Details (w/ SU Privileges)
 
-<img src="./docs/screenshots/libraryapp_details_su.png" />
+<img src="./docs/screenshots/libraryapp_details_su.png" width="381" />
 
 ### My Books (Borrowed)
 
@@ -142,8 +142,8 @@ Therefore, a basic case should be like:
 
 ### Camera (Requires SU Privileges)
 
-<img src="./docs/screenshots/libraryapp_camera.png" />
+<img src="./docs/screenshots/libraryapp_camera.png" width="381" />
 
 ### Camera (onImagePick)
 
-<img src="./docs/screenshots/libraryapp_onimagepick.png" />
+<img src="./docs/screenshots/libraryapp_onimagepick.png" width="381" />
