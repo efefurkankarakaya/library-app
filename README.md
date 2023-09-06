@@ -83,13 +83,13 @@ Therefore, a basic case should be like:
 
 - User signs up with an e-mail address that ends with `@protonmail.com` to be privileged user.
 - User logs in.
-- User swipes left to create a new book. <br />
-  <img src="./docs/gifs/swipeleft.gif" width="294.5" height="639">
+- User swipes right to create a new book. <br />
+  <img src="./docs/gifs/swipe_right.gif" width="294.5" height="639">
 - User takes a photograph of a book.
 - User enters details of the book.
 - User saves the book.
 - User sees the book in home, and keep goes create new books.
-- User swipes left again.
+- User swipes right again.
 - User picks an book image from gallery.
 - User enters details of the book. <br />
   `...`
