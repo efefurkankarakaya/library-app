@@ -108,8 +108,8 @@ Therefore, a basic case should be like:
 - User signs up with their personal information.
 - User logs in and sees the books.
 - User taps on a book that interested in.
-- User taps on `Borrow` button.
-  `...`
+- User taps on `Borrow` button. <br />
+  `... (after a while)`
 - User wants to return the book, logs in the app.
 - User goes to `My Books` screen.
 - User taps on the book, that they want to return.
