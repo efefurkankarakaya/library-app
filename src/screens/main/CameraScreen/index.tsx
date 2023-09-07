@@ -24,6 +24,7 @@ import { addPrefixToBase64, logJSON, logWithTime } from "../../../utils/utils";
 import { TBase64 } from "../../../types/commonTypes";
 import { imageLibraryOptions } from "../../../common/options";
 import { isIOS } from "../../../common/common";
+import { useSwipe } from "../../../helpers/gestureHelpers";
 
 /* TODO: In some cases, screen might need to be considered here. */
 const iconSize: number = Dimensions.get("window").width * 0.09;
@@ -280,7 +281,6 @@ export default function CamScreen({ navigation }: CamScreenProps) {
     navigation.navigate("MainApp", { screen: "DetailsScreen" });
   };
 
-  // TODO: onSwipeLeft, navigation.goBack()
   /* ================ End ================ */
 
   if (!permission) {
@@ -295,6 +295,17 @@ export default function CamScreen({ navigation }: CamScreenProps) {
     logWithTime("Permission is granted.");
   }
 
+  const onSwipeRight = () => {
+    logWithTime("[Swipe Right]");
+  };
+
+  const onSwipeLeft = () => {
+    logWithTime("[Swipe Left]");
+    navigation.navigate("HomeScreen");
+  };
+
+  const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6);
+
   return (
     <View style={Style.container}>
       <Camera
@@ -303,6 +314,8 @@ export default function CamScreen({ navigation }: CamScreenProps) {
         ref={cameraRef}
         flashMode={flashMode}
         // onCameraReady={onCameraReady}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
       >
         {currentImage && <Image style={Style.image} source={{ uri: currentImage }} />}
         {/* iOS and Android handles absolute containers different, that's why there 2 different render conditions with the same components, the same props. */}
