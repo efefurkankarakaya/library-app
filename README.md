@@ -109,6 +109,11 @@ Therefore, a basic case should be like:
 - User logs in and sees the books.
 - User taps on a book that interested in.
 - User taps on `Borrow` button.
+  `...`
+- User wants to return the book, logs in the app.
+- User goes to `My Books` screen.
+- User taps on the book, that they want to return.
+- User taps on `Put Back` button in detail screen.
 
 ## Screenshots
 
