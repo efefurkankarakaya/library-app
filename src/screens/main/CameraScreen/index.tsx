@@ -91,18 +91,10 @@ const CameraCloseButton: React.FC<CameraCloseButtonProps> = ({ onPress }: Camera
 };
 
 const CameraFlashlightButton: React.FC<CameraFlashlightButtonProps> = ({ flashMode, onPress }: CameraFlashlightButtonProps) => {
-  /* Local Function */
-  const activeIcon = (_iconSize: number, _iconStyle: object) => {
-    if (flashMode === "on") {
-      return <FlashOffIcon width={_iconSize} height={_iconSize} style={_iconStyle} />;
-    }
-    return <FlashOnIcon width={_iconSize} height={_iconSize} style={_iconStyle} />;
-  };
-
   return isIOS ? (
     <TransparentButton buttonStyle={Style.cameraButtonGeneric} touchableOpacityProps={{ onPress }}>
-      {flashMode === "on" && <FlashOnIcon width={iconSize} height={iconSize} style={iconStyle} />}
-      {flashMode === "off" && <FlashOffIcon width={iconSize} height={iconSize} style={iconStyle} />}
+      {flashMode === "off" && <FlashOnIcon width={iconSize} height={iconSize} style={iconStyle} />}
+      {flashMode === "on" && <FlashOffIcon width={iconSize} height={iconSize} style={iconStyle} />}
     </TransparentButton>
   ) : (
     /* In android, icon change inside a TouchableOpacity, being resulted as disappearing icons. */
