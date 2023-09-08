@@ -54,6 +54,29 @@ You can find the JDK11 installer by clicking <a href="https://www.oracle.com/tr/
 - Set inside `sdk.dir = {YOUR_SDK_PATH}`
 - Then run `$ npm run android`
 
+### $ npx expo start → Missing Realm constructor.
+
+```
+ ERROR  Error: Missing Realm constructor. Did you run "pod install"? Please see https://docs.mongodb.com/realm/sdk/react-native/install/ for troubleshooting, js engine: hermes
+
+ ERROR  Invariant Violation: "main" has not been registered. This can happen if:
+* Metro (the local dev server) is run from the wrong folder. Check if Metro is running, stop it and restart it in the current project.
+* A module failed to load due to an error and `AppRegistry.registerComponent` wasn't called., js engine: hermes
+```
+
+In a Realm project, you can't use `$ npx expo start`. Realm uses customized native codes and because of that it requires platform builds. This command does not create builds (also does not use existing ones) and that explains why it fails.
+
+You need to run the project using by <br />
+`$ npx expo run:ios` <br />
+or <br />
+`$ npx expo run:android`
+
+In `package.json` these scripts are already defined like below: <br />
+`$ npm run ios` → `$ npx expo run:ios` <br />
+`$ npm run android` → `$ npx expo run:android`
+
+Feel free to use both ways, but don't forget to use the correct scripts which create and use the platform builds.
+
 ## Registration
 
 ### As a Privileged User (aka: SU, Super User)
