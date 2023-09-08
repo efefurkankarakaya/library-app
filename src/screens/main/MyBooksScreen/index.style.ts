@@ -29,7 +29,7 @@ export default StyleSheet.create({
     borderRadius: 5,
     width: itemContainerWidth,
     height: 200,
-    resizeMode: "stretch",
+    resizeMode: "cover",
   },
   bookDetailsContainer: {
     alignItems: "center",
