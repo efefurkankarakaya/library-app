@@ -44,7 +44,7 @@ interface LoginScreenProps {
   navigation: NavigationProp<RootStackParamList>;
 }
 
-const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
+const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }): JSX.Element => {
   const dispatch = useAppDispatch();
   // const user = useAppSelector(({ user }) => user);
 

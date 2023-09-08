@@ -50,7 +50,7 @@ type UserDataExistenceStatus = {
 type UserDataKeys = keyof UserData;
 
 // Components and basic functions are written as arrow functions
-const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenProps) => {
+const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }: SignUpScreenProps): JSX.Element => {
   const { useRealm, useQuery } = AppRealmContext;
   const realm = useRealm();
   const users = useQuery(User);

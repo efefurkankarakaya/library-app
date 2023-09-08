@@ -8,9 +8,15 @@ import { combineStyles } from "../../helpers/styleHelpers";
 /* Types */
 import { CustomButtonProps } from "../../types/componentProps";
 
-interface TextButton extends CustomButtonProps {}
+interface TextButtonProps extends CustomButtonProps {}
 
-const TextButton = ({ children, buttonStyle, textStyle, touchableOpacityProps, textProps }: TextButton) => {
+const TextButton: React.FC<TextButtonProps> = ({
+  children,
+  buttonStyle,
+  textStyle,
+  touchableOpacityProps,
+  textProps,
+}: TextButtonProps): JSX.Element => {
   const combinedButtonStyle = combineStyles(Style.button, buttonStyle);
   const combinedTextStyle = combineStyles(Style.text, textStyle);
 

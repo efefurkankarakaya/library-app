@@ -67,7 +67,7 @@ interface BookItemProps {
 /* ================ End ================ */
 
 /* ================ File Private Components ================ */
-const BookItem: React.FC<BookItemProps> = ({ onPressBook, bookData }) => {
+const BookItem: React.FC<BookItemProps> = ({ onPressBook, bookData }): JSX.Element => {
   return (
     <View style={Style.itemContainer}>
       <TransparentButton

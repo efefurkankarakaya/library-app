@@ -5,7 +5,7 @@ import Loan from "./Loan";
 
 export const AppRealmContext = createRealmContext({
   path: "database.realm",
-  deleteRealmIfMigrationNeeded: true, // TODO: Remove this after all the schemas are ready.
+  deleteRealmIfMigrationNeeded: false,
   /**
    * Migration steps (if needed future again)
    * https://www.mongodb.com/docs/legacy/realm/javascript/latest/#migrations

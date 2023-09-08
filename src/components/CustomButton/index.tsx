@@ -1,5 +1,4 @@
 /* Core */
-import React from "react";
 import { TouchableOpacity } from "react-native";
 
 /* Custom Components */
@@ -12,7 +11,13 @@ import Style from "./index.style";
 import { combineStyles } from "../../helpers/styleHelpers";
 import { CustomButtonProps } from "../../types/componentProps";
 
-const CustomButton = ({ children, buttonStyle, textStyle, touchableOpacityProps, textProps }: CustomButtonProps) => {
+const CustomButton: React.FC<CustomButtonProps> = ({
+  children,
+  buttonStyle,
+  textStyle,
+  touchableOpacityProps,
+  textProps,
+}: CustomButtonProps): JSX.Element => {
   const combinedButtonStyle = combineStyles(Style.button, buttonStyle);
   const combinedTextStyle = combineStyles(Style.text, textStyle);
 

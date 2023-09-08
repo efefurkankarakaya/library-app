@@ -70,7 +70,7 @@ const SaveButton: React.FC<SaveButtonProps> = ({ onPress }: SaveButtonProps) => 
 /**
   In emulator, swipe left motion can cause click on book and mount Details Screen with Camera Screen. Beware of that.
  */
-function DetailsScreen({ navigation }: DetailsScreenProps) {
+function DetailsScreen({ navigation }: DetailsScreenProps): JSX.Element {
   /* ================ Custom Hooks ================ */
   const { useRealm, useObject, useQuery } = AppRealmContext;
   const { user: activeUser, book: activeBook } = useAppSelector((state) => state);

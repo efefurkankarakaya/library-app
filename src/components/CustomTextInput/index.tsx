@@ -31,7 +31,7 @@ interface CustomTextInputProps {
   onFocusStyleProps?: onFocusStyleProps;
 }
 
-const CustomTextInput = ({
+const CustomTextInput: React.FC<CustomTextInputProps> = ({
   label,
   sublabel,
   activateSublabel,
@@ -43,7 +43,7 @@ const CustomTextInput = ({
   textProps,
   textInputProps,
   onFocusStyleProps,
-}: CustomTextInputProps) => {
+}: CustomTextInputProps): JSX.Element => {
   const [text, setText] = useState<string>("");
   const [currentOnFocusStyle, setCurrentOnFocusStyle] = useState<onFocusStyleProps>({});
 

@@ -35,7 +35,7 @@ const ValidatorTextInput: React.FC<ValidatorTextInputProps> = ({
   customContainerStyle,
   textInputProps,
   onFocusStyleProps,
-}) => {
+}): JSX.Element => {
   const combinedSublabelStyle = combineStyles(Style(isDataOK).sublabel, customSublabelStyle);
 
   return (

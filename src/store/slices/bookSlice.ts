@@ -3,14 +3,11 @@ import { BookDataComplete, TBase64 } from "../../types/commonTypes";
 import { temporaryDataID } from "../../common/static";
 import { logWithTime } from "../../utils/utils";
 
-// TODO: Refactor here
 interface BookState {
-  base64: TBase64;
   data: BookDataComplete;
 }
 
 const initialState: BookState = {
-  base64: null, // TODO: Should be string only.
   data: {},
 } as BookState;
 

@@ -12,7 +12,13 @@ import { combineStyles } from "../../helpers/styleHelpers";
 
 interface TransparentButtonProps extends CustomButtonProps {}
 
-const TransparentButton = ({ children, buttonStyle, textStyle, touchableOpacityProps, textProps }: TransparentButtonProps) => {
+const TransparentButton: React.FC<TransparentButtonProps> = ({
+  children,
+  buttonStyle,
+  textStyle,
+  touchableOpacityProps,
+  textProps,
+}: TransparentButtonProps): JSX.Element => {
   const combinedButtonStyle = combineStyles(Style.button, buttonStyle);
   const combinedTextStyle = combineStyles(Style.text, textStyle);
 

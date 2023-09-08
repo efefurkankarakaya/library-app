@@ -175,7 +175,7 @@ const PermissionContainer: React.FC<PermissionContainerProps> = ({ requestPermis
   * See: https://docs.gradle.org/current/userguide/plugins.html#sec:subprojects_plugins_dsl
   * The Kotlin plugin was loaded in the following projects: ':expo', ':expo-modules-core'
 */
-export default function CamScreen({ navigation }: CamScreenProps) {
+export default function CamScreen({ navigation }: CamScreenProps): JSX.Element {
   const cameraRef = useRef(null);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [flashMode, setFlashMode] = useState<FlashMode>(FlashMode.off);

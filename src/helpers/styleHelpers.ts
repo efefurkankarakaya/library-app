@@ -1,16 +1,16 @@
-import { StyleProp, StyleSheet } from "react-native";
+import { type StyleProp, StyleSheet } from "react-native";
 
 // Type Definitions
 type TStyleSheet = StyleProp<object>;
-// type TInitial = TStyleSheet | TStyleSheet[];
 type TStyle = TStyleSheet | TStyleSheet[];
 
 // Function Definitions
 type TCombineStyles = (initial: TStyle, upcoming: TStyle) => TStyle;
 
 /**
+ * @function combineStyles
  * @param {TStyle} initial - StyleSheet object or an array of StyleSheet objects.
- * @param {TStyle} upcoming - The StyleSheet object to be combined with initial StyleSheets.
+ * @param {TStyle} upcoming - The StyleSheet object or array of StyleSheet objects to be combined with initial StyleSheets.
  * @returns {TStyle} - Returns a merged version of all styles.
  */
 export const combineStyles: TCombineStyles = (initial: TStyle, upcoming: TStyle): TStyle => {

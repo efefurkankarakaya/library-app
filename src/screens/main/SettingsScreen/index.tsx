@@ -11,8 +11,12 @@ import { resetActiveUser } from "../../../store/slices/userSlice";
 /* Style */
 import Style from "./index.style";
 
+interface SettingScreenProps {
+  navigation: any;
+}
+
 /* TODO: Add missing types */
-function SettingsScreen({ navigation }) {
+function SettingsScreen({ navigation }: SettingScreenProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const onPressLogOut = () => {

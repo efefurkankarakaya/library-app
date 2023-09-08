@@ -32,7 +32,7 @@ interface BookItemProps {
   onPressBook: any; // TODO: Commonize and use type here.
 }
 
-const BookItem: React.FC<BookItemProps> = ({ bookData, onPressBook }: BookItemProps) => {
+const BookItem: React.FC<BookItemProps> = ({ bookData, onPressBook }: BookItemProps): JSX.Element => {
   return (
     <View style={Style.itemContainer}>
       <TransparentButton

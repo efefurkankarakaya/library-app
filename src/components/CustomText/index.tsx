@@ -16,7 +16,7 @@ interface CustomTextProps {
   textStyle?: TStyleSheet;
 }
 
-const CustomText: React.FC<CustomTextProps> = ({ children, textStyle, ...restTextProps }: CustomTextProps) => {
+const CustomText: React.FC<CustomTextProps> = ({ children, textStyle, ...restTextProps }: CustomTextProps): JSX.Element => {
   const combinedTextStyle = combineStyles(Style.text, textStyle);
 
   return (
