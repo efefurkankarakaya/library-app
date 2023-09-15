@@ -171,7 +171,7 @@ SplashScreen.preventAutoHideAsync();
  * https://stackoverflow.com/questions/63159757/change-the-default-light-grey-background-color
  */
 
-const App: React.FC<JSX.Element> = (): JSX.Element | null => {
+const App: React.FC<any> = (): JSX.Element | null => {
   const [fontsLoaded] = useFonts({
     Montserrat_400Regular,
     Montserrat_600SemiBold,
@@ -204,7 +204,7 @@ const App: React.FC<JSX.Element> = (): JSX.Element | null => {
 /**
  * @note Root allows to use application-level implementations.
  */
-const Root: React.FC<JSX.Element> = (): JSX.Element => {
+const Root: React.FC<any> = (): JSX.Element => {
   const { RealmProvider } = AppRealmContext;
 
   return (
